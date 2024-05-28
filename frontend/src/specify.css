@@ -1,0 +1,45 @@
+.specify1{
+    margin-top: 30px;
+    /* background-color: palegoldenrod; */
+}
+
+
+.specify-item{
+    display: flex;
+    padding: 30px;
+    /* justify-content: center;
+    align-items: center; */
+}
+
+
+.specify-item-child{
+    display: flex;
+    flex-direction: column;
+    flex: 0.50;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+
+
+}
+
+.specify-item-child h1{
+    font-size:21px;
+    font-family: 'Sans-serif' Verdana;
+    margin-bottom: 9px;
+    color: #F6AF65;
+    font-weight: 700;
+}
+
+.specify-item img{
+    width:400px;
+
+}
+
+.practice{
+    padding-left: 50px;
+    padding-right: 50px;
+}
+.practice p{
+    font-family: 'Abril Fatface', cursive;
+}

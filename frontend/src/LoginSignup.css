@@ -1,0 +1,100 @@
+/* LoginSignup.css */
+
+.auth-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Change height to min-height */
+}
+
+.background-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 0.7px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  margin: 0 auto;
+
+}
+
+.container-auth {
+  position: relative;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 7px;
+  box-shadow: 0px 0px 10px 0.7px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  width: 100%;
+  z-index: 2; /* Ensure this is above the background image */
+}
+
+.auth-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.entry-auth {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.entry-auth:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.sub-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.sub-btn:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 500px) {
+  .container-auth {
+    padding: 1rem;
+  }
+
+  .auth-label {
+    margin-bottom: 0.25rem;
+  }
+
+  .entry-auth {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .sub-btn {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+

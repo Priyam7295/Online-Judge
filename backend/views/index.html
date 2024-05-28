@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <!-- #include virtual="header.html" -->
+
+    <div id="header"></div>
+
+    <h1>Welcome to our site!</h1>
+    <button onclick="location.href='/login'">Login</button>
+    <button onclick="location.href='/signup'">Signup</button>
+    <button onclick="location.href='/logout'">Logout</button>
+    <button onclick="location.href='/problems'">problems</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          fetch('header.html')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.text();
+            })
+            .then(data => {
+              document.getElementById('header').innerHTML = data;
+            })
+            .catch(error => console.error('Error fetching header:', error));
+        });
+      </script>
+</body>
+</html>

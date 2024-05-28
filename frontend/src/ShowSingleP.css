@@ -1,0 +1,104 @@
+
+
+.prblm-row {
+    display: flex;
+    margin-left:10px;
+    
+  }
+  
+  .prblm-entry {
+    flex: 1; /* Default to occupy remaining space */
+    /* border: 1px solid black; */
+    box-shadow: 0px 2px 3px red;
+
+  }
+  
+  .prblm-entry:nth-child(2) {
+    flex: 3;
+  }
+  
+  .prblm-entry:first-child,
+  .prblm-entry:last-child {
+    flex: 1; 
+  }
+  
+
+  .prblm-row > .prblm-entry {
+    padding: 10px;
+    margin-right: 10px;
+  }
+  
+  .prblm-row {
+    border-radius: 5px;
+    /* margin: 10px; */
+    transition: transform 0.3s ease;
+  }
+  
+  .prblm-row:hover {
+    transform: scale(1.004);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .prblm-entry:nth-child(2) {
+    flex: 3;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis for overflow */
+  }
+  
+
+
+  .style-level{
+    /* border: 1px solid violet; */
+    /* padding: 3px; */
+    padding-left:12px;
+    padding-right:12px;
+    border-radius: 8px;
+  }
+
+  .basic-difficulty span {
+    /* Styles for basic difficulty */
+/*     
+    border: 1px solid rgb(156, 232, 156);
+    color: white;
+    background-color: rgb(156, 232, 156); */
+    background-color: rgb(217, 241, 182);
+  }
+  
+  .easy-difficulty {
+    /* Styles for easy difficulty */
+  }
+  
+  .medium-difficulty {
+    /* Styles for medium difficulty */
+  }
+  
+  .hard-difficulty span{
+    background-color: rgb(246, 146, 146);
+    /* Styles for hard difficulty */
+  }
+  
+
+  .solve-button {
+    background-color: #007bff; /* Blue */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .solve-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .prblm-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .prblm-entry button {
+    align-self: flex-start; /* Align the button to the start of the flex container */
+  }
+  

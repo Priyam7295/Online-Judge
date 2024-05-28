@@ -1,0 +1,34 @@
+.ProblemList-container {
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    height: 100vh; /* Adjust as needed */
+  }
+  
+  .ProblemList {
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .total-prob {
+    font-size: 19px;
+    padding: 3px;
+    /* text-align: flex-start; */
+    box-shadow: 0 4px 8px pink;
+
+  }
+  
+  @media (max-width: 768px) {
+    .ProblemList {
+      font-size: 2.5rem;
+      padding: 15px;
+    }
+  }
+  
