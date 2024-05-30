@@ -9,7 +9,9 @@ const problemSchema = new mongoose.Schema({
       input: String,
       expectedOutput: String
     }
-  ]
+  ],
+  tags:String,
+  hints:String,
 });
 
 const Problems = mongoose.model('Problem', problemSchema);

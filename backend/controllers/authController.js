@@ -74,11 +74,10 @@ module.exports.problems = async (req , res)=>{
 }
 
 // posting problems , can be done by me only 
-
 module.exports.problems_post = async (req, res) => {
     console.log(req.body); // Log the received request body to check if testCases are included
 
-    const { name, description, difficulty, testCases } = req.body;
+    const { name, description, difficulty, testCases , tags , hints } = req.body;
 
     let errors = { name: '', description: '', difficulty: '', testCases: '' };
 
@@ -95,13 +94,13 @@ module.exports.problems_post = async (req, res) => {
         return res.status(400).json({ errors });
     }
     if (!testCases || !Array.isArray(testCases) || testCases.length === 0) {
-        errors.testCases = 'Provide at least one test case';
+        errors.testCases = 'Provide at least two test case';
         return res.status(400).json({ errors });
     }
 
     try {
         // Create the problem with test cases
-        const createProblem = await Problems.create({ name, description, difficulty, testCases });
+        const createProblem = await Problems.create({ name, description, difficulty, testCases , tags , hints });
         console.log("Problem added successfully", createProblem);
         res.status(201).json({ createProblem });
     } catch (error) {
@@ -117,8 +116,10 @@ module.exports.signup_post = async (req , res)=>{
     const email = req.body.email;
     let password = req.body.password;
 
+ 
+
     // hashing password 
-    let errors = {firstname:'',lastname:'',email:'' , password:''};
+    let errors = {firstname:'',lastname:'',email:'' , password:'' };
 
     if (!password ) {
         errors.password='Enter your password';
@@ -133,7 +134,7 @@ module.exports.signup_post = async (req , res)=>{
     let hashedPassword = await bcrypt.hash(password, 10);
     try {
         password=hashedPassword;
-        const user = await User.create({firstname , lastname ,email ,password});
+        const user = await User.create({firstname , lastname ,email ,password });
         const token =createToken(user._id);
 
         // place token inside cookie and send to client as response
@@ -205,3 +206,29 @@ module.exports.logout_get =(req , res)=>{
     res.redirect('/');
 };
 
+
+
+// Getting single problem
+module.exports.problem_details = async (req, res) => {
+    try {
+        const prob_id = req.params.id;
+        const prob = await Problems.findOne({ "_id": prob_id });
+
+        console.log(prob);
+
+        let to_send = {
+            name: prob.name,
+            description: prob.description,
+            difficulty: prob.difficulty,
+            testcase1:prob.testCases[0],
+            testcase2:prob.testCases[1],
+            tags:prob.tags , 
+            hints:prob.hints,
+        };
+
+        res.json(to_send);
+    } catch (error) {
+        
+        res.status(400).json({ message: "Internal server error" });
+    }
+}

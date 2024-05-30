@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Change height to min-height */
+  min-height: 100vh; 
 }
 
 .background-image {
