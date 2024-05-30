@@ -46,7 +46,7 @@ app.get('/login', authController.login_get);
 app.post('/login',authController.login_post);
 app.get('/logout',authController.logout_get );
 
-app.get('/problems',authController.problems);
+app.get('/problems',requireAuth,authController.problems);
 
 app.post("/problems_post" , requireAuth ,authController.problems_post);
 
