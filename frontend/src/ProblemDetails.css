@@ -149,7 +149,7 @@ a {
     padding-right: 5px;
     margin-top: 5px;  
     margin-bottom: 5px;
-    margin-left: 14px;
+    margin-left: 18px;
 }
 .p_hint{
     
@@ -180,7 +180,7 @@ a {
 }
 
 .prob_name{
-    margin-top:14px;
+    margin-top:18px;
     margin-left:14px;
     font-weight: 590;
     font-size: 20px;
@@ -189,7 +189,7 @@ a {
 
 .p_leveleasy{
     background-color: greenyellow;
-    margin-left: 14px;
+    margin-left: 18px;
     margin-right: 20px;
     margin-bottom: 20px;
     margin-top: 18px;
@@ -205,7 +205,7 @@ a {
     padding-top:2px;
     padding-bottom:1px;
     border-radius: 9px;
-    margin-left: 14px;
+    margin-left: 18px;
     margin-right: 20px;
     margin-bottom: 20px;
     margin-top: 18px;
@@ -218,7 +218,7 @@ a {
     padding-top:2px;
     padding-bottom:1px;
     border-radius: 9px;
-    margin-left: 14px;
+    margin-left: 18px;
     margin-right: 20px;
     margin-bottom: 11px;
     margin-top: 18px;
@@ -230,7 +230,7 @@ a {
     padding-top:2px;
     padding-bottom:1px;
     border-radius: 9px;
-    margin-left: 14px;
+    margin-left: 18px;
     margin-right: 20px;
 
     margin-top: 18px;
@@ -247,7 +247,7 @@ a {
 .upvote{
     height: 30px;
     margin-right:10px;
-    margin-left: 14px;
+    margin-left: 18px;
 }
 .devote{
     height: 30px;
@@ -257,14 +257,26 @@ a {
 
 .prob_info h2{
     font-size:19px;
-    margin-left:14px;
+    margin-left:18px;
     margin-top:9px;
 
 }   
 
+.prob_state {
+    font-size: 32px; /* Increase font size */
+
+
+    font-weight: normal; /* Remove bold font weight */
+    text-transform: uppercase; /* Convert text to uppercase */
+
+
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Add slight text shadow */
+}
+
+
 .prob_description{
-   margin-left:14px;
-   margin-top: 29px;
+   margin-left:18px;
+   margin-top: 20px;
 
    padding-left: 19px;
    padding-right: 19px;
@@ -285,32 +297,128 @@ a {
 
 
 .tc_num{
-    margin-left: 14px;
-    margin-top:17px;
+    margin-left: 18px;
+
+    margin-top:10px;
     font-size:17px;
-    box-shadow: 0px 10px 10px -5px rgba(0, 0, 0, 0.15);
+
 
 
   }
  
   
   .tc_out{
-    margin-left:14px;
+    margin-left:18px;
     margin-top: 5px;
   }
 
   .name_and_tags{
     display: flex;
+    margin-top:10px ;
   }
 
   .tags_name{
     margin-top:19px;
-    margin-left:70px;
+    margin-left:90px;
     font-weight: 400;
     font-size: 15px;
     border-radius: 5px;
     padding-left:5px;
     padding-right:5px;
-    background-color: rgb(78, 232, 78);
+    background-color: #f76C6C;
   }
 
+
+  .Item-2_prob{
+    max-height:600px;
+
+  }
+
+  .inputs-given{
+    margin-top:10px;
+    font-size: px;
+}
+
+
+
+.enclose_ftc  {
+    /* border: 1px solid #25274D; */
+    border-radius: 2cqmax;
+    padding: 20px;
+    margin-left: 18px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    background-color: #f7f5f5;
+}
+
+.tc_num {
+    margin-top: 0;
+    font-size: 17px;
+    
+}
+
+.tc_out {
+    margin-top: 10px;
+}
+
+.inputs-given {
+ 
+    margin-bottom: 5px;
+}
+
+
+.name_and_tags {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px; /* Decrease padding */
+    border-radius: 10px; /* Reduce border radius */
+    background-color: #f8f9fa; /* Light gray background */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.prob_name {
+    font-weight: bold;
+    font-size: 28px; /* Decrease font size */
+    color: #343a40; /* Darker text color */
+}
+
+.tags_name {
+    font-weight: bold;
+    font-size: 10px; /* Decrease font size */
+    border-radius: 5px; /* Keep it slightly rounded */
+    padding: 6px 10px; /* Adjust padding */
+    background-color: #6c757d; /* Dark gray background */
+    color: white; /* White text color */
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+
+.desc_and_hint {
+    display: flex;
+    margin-right: 10px; /* Add margin for spacing */
+}
+
+.p_desc,
+.p_hint {
+    padding: 4px 6px; 
+    border: none;
+    border-radius: 8px; 
+    background-color: #6c757d; 
+    color: white; 
+    font-size: 16px; /* Font size */
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+    width: 100px; 
+}
+
+.p_desc.active,
+.p_hint.active {
+    background-color: #17a2b8;
+}
+
+.p_desc:hover,
+.p_hint:hover {
+    background-color: #5a6268; 
+}

@@ -9,6 +9,7 @@ dotenv.config();
 const requireAuth = function(req , res , next){
     const token = req.cookies.jwt;
     console.log("token",token);
+
     // check if token exists
     if(token){
         jwt.verify(token ,process.env.SECRET_KEY , (err , decodedToken) =>{
@@ -23,6 +24,7 @@ const requireAuth = function(req , res , next){
         });
     }
     else{
+
         res.redirect('/login');
     }
 }

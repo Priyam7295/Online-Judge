@@ -51,7 +51,7 @@ app.get('/problems',requireAuth,authController.problems);
 
 
 
-app.post("/problems_post" , requireAuth ,authController.problems_post);
+app.post("/problems_post" ,authController.problems_post);
 
 
 // get partivular problems

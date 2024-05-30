@@ -212,6 +212,7 @@ module.exports.logout_get =(req , res)=>{
 module.exports.problem_details = async (req, res) => {
     try {
         const prob_id = req.params.id;
+        console.log(req.body);
         const prob = await Problems.findOne({ "_id": prob_id });
 
         console.log(prob);

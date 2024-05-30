@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './ProblemDetails.css';
-import './ShowingTC.jsx'
+
 function ProblemDetails() {
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
   const [activeButton, setActiveButton] = useState('p_desc');
-
-  const [like, setLike] = useState(0);
-  const [dislike, setDislike] = useState(0);
 
   useEffect(() => {
     const fetchProblem = async () => {
@@ -66,9 +63,8 @@ function ProblemDetails() {
 
               <div>
                 <div className ='name_and_tags'>
-
-                <div className='prob_name'>{problem.name}</div>
-                <div className='tags_name'>{problem.tags}</div>
+                  <div className='prob_name'>{problem.name}</div>
+                  <div className='tags_name'>{problem.tags}</div>
                 </div>
                 <button className={`p_level${problem.difficulty}`}>{problem.difficulty}</button>
                 <div className ='reviewQ'>
@@ -76,32 +72,44 @@ function ProblemDetails() {
                   <img className='devote' src="https://tse2.mm.bing.net/th?id=OIP.gIIID9Dl1jE_KJpOfoNfcgHaHa&pid=Api&P=0&h=180" alt="" />
                 </div>
                 <div className ="prob_info">
-                  <h2>Problem Statement</h2>
+                  <h2 className='prob_state' >Problem Statement</h2>
                   <div className='prob_description'>{problem.description}</div>
 
                   <h2 className='tc_heading'>Test Cases</h2>
-                
-                <div>
-                  <h3 className='tc_num'>Test Case 1:</h3>
-                  {Object.entries(problem.testcase1).map(([key, value]) => (
-                     key!=='_id' && <p className='tc_out' key={key}>{key}: {value}</p>
-                  ))}
-                </div>
-             
+                  <div>
+                    {problem.testcase1 && (
+                      <>
+                        <div className='enclose_ftc'>
 
-            
-                <div>
-                  <h3 className='tc_num' >Test Case 2:</h3>
-                  {Object.entries(problem.testcase2).map(([key, value]) => (
-                    
-                      key!=='_id' && <p className='tc_out' key={key}>{key}: {value}</p>
+                          <h3 className='tc_num'>Test Case 1:</h3>
+                          <div className='tc_out'>
 
-                    
-                  ))}
-                </div>
-              
+                            {problem.testcase1.inputs.map((input, index) => (
+                              <p key={index}>{input.key}: {input.value}</p>
+                            ))}
+                            <p  >Expected Output: {problem.testcase1.expectedOutput}</p>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div>
+                    {problem.testcase2 && (
+                      <>
+                      <div className='enclose_ftc'>
 
+                        <h3 className='tc_num'>Test Case 2:</h3>
+                        <div className='tc_out'>
 
+                          {problem.testcase2.inputs.map((input, index) => (
+                            <p key={index}>{input.key}: {input.value}</p>
+                          ))}
+                          <p>Expected Output: {problem.testcase2.expectedOutput}</p>
+                        </div>
+                      </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -109,9 +117,7 @@ function ProblemDetails() {
 
             <div className='Item-2_prob'>
               <div className='temp-code'>
-
-
-            
+                {/* Additional code functionality can go here */}
               </div>
             </div>
           </div>
