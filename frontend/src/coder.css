@@ -46,10 +46,10 @@
     /* font-size: 50px; */
     padding: 40px;
     margin: auto;
-    margin-left: 80px;
+    margin-left: 85px;
     color: #1C2541;
     font-size: 48px;
-    font-weight: 700;
+    font-weight: 500;
     display: inline-block; /* Allows width adjustment */
     border-bottom: 3px solid #FF5733; /* Change the color of the underline */
     width: 70%; /* Adjust the width of the underline */

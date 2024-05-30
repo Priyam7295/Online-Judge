@@ -5,7 +5,7 @@ import './specify.css'
 
 function Specify() {
   return (
-    <div class="specifyFeatures">
+    <div className="specifyFeatures">
         <div className="specify1" >
             <div className="specify-item">
                 <div className="specify-item-child" >

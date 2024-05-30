@@ -22,9 +22,9 @@ function ShowSingleP({ id ,name, description, difficulty }) {
   
   function Solve_this_Problem(){
     
-      navigate(`/${id}/${name}`);
-  
-    
+
+      navigate(`/problems/${id}`);
+   
   }
 
   return (

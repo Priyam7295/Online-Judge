@@ -3,9 +3,11 @@ import './Contribute.css';
 import axios from 'axios';
 
 import My_image from './assets/two.png';
+import { Navigate } from 'react-router-dom';
 
 function Contribute() {
   const [name, setName] = useState('');
+  const [tags, setTags] = useState('');
   const [description, setDescription] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [testCases, setTestCases] = useState([{ input: '', expectedOutput: '' }]);
@@ -15,14 +17,18 @@ function Contribute() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let hints="lere land ke";
     try {
       const response = await axios.post('http://localhost:5000/problems_post', {
         name,
         description,
         difficulty,
+        tags,
+        hints:hints,
         testCases
       }, { withCredentials: true });
       const data = response.data;
+      
       if (data.errors) {
         setNameError(data.errors.name);
         setDescriptionError(data.errors.description);
@@ -31,6 +37,7 @@ function Contribute() {
         console.log("Question added successfully");
         alert("Thank you for your contribution!");
         // Redirect or handle success
+        
       }
     } catch (error) {
       console.log(error);
@@ -71,6 +78,20 @@ function Contribute() {
               required
               value={name}
             />
+            <br />
+            
+            <label htmlFor="">Choose Tags</label>
+              <select className='DropDown'
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+                required
+                >
+                <option value="">Select Tags</option>
+                <option value="arrays">Arrays</option>
+                <option value="Hash-Map">Hash-Map</option>
+                <option value="Maths">Maths</option>
+                <option value="Binary-Search">Binary-Search</option>
+              </select>
             <br />
             <label htmlFor="">Description:</label>
             <input
