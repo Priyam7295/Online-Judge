@@ -10,6 +10,8 @@ function SLoginSignup() {
   const [passwordError, setPasswordError] = useState('');
   const [cookies, setCookie] = useCookies(['token']);
 
+  const [loggedin , setIsloggedin] = useState(false);
+
   const data_send_to_backend={
     email:email,
     password:password,
@@ -24,6 +26,7 @@ function SLoginSignup() {
         const data= await res.data;
         console.log(res);
         if (data.errors) {
+          console.log(data.errors);
             setEmailError(data.errors.email || '');
             setPasswordError(data.errors.password || '');
         }
@@ -31,12 +34,14 @@ function SLoginSignup() {
         else{
             console.log("Login Successfully");
             setCookie('jwt', res.headers['set-cookie'], { path: '/' });
+            setIsloggedin(true);
             location.assign('/');
         }
 
     }
     catch(err){
-        if (err.response && err.response.status === 400) {
+        if (err.response && err.response.status === 404) {
+          console.log("Email ndaskfhis")
             const data = err.response.data;
             setEmailError(data.errors.email || '');
             setPasswordError(data.errors.password || '');
@@ -45,10 +50,11 @@ function SLoginSignup() {
           }
      }
 
-    }
+    };
 
   return (
     <div className='auth-wrapper2'>
+      <h1 className='log_title' >Login</h1>
       <form onSubmit={login}>
         <div className="container-auth-login">
           <label className='auth-label'>Email Id:</label>
@@ -80,5 +86,7 @@ function SLoginSignup() {
     </div>
   )
 }
+
+
 
 export default SLoginSignup;

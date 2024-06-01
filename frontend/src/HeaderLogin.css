@@ -19,13 +19,13 @@
     height: 100%;
   }
   
-  .login-button, .signup-button {
+  .login-button, .signup-button  , .logout-button {
     /* background-color: #007bff; Blue  */
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 15px;
-    color: grey;
+    color: rgb(162, 161, 161);
     cursor: pointer;
     /* padding-top: 2px;
     padding-bottom: 2px; */
@@ -37,20 +37,21 @@
   .or{
     font-family: Arial, sans-serif;
     font-size: 14px;
-    color:grey;
+    color:rgb(166, 163, 163);
   }
 
-  .login-button:hover, .signup-button:hover {
+  .login-button:hover, .signup-button:hover , .logout-button:hover {
     /* background-color: #45a049; Darker green */
     color:black;
+    transition: color 0.4s;
   }
-
+  
   .signup-button{
     margin-right: 40px;
   }
 
-
-
+  
+  
   .contribute{
     color:grey;
     margin-right:50px;
@@ -64,6 +65,17 @@
     margin-right:50px;
     border-radius: 20px;
     /* border:1px solid black; */
+    transition: color 0.4s;
     padding:5px;
   }
   
+  .logout-message {
+    color: white;
+    background-color: #f76e56; /* Tomato color */
+    padding: 10px 20px; /* Add padding */
+    border-radius: 5px; /* Add border radius */
+    margin-right: 20px;
+    opacity: 1; /* Set opacity to 1 by default */
+    transition: opacity 0.8s ease-in-out; /* Add transition for opacity */
+  }
+

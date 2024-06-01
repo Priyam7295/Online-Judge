@@ -46,10 +46,15 @@ function LoginSignup() {
   };
 
   return (
+
     <div className="auth-wrapper">
-      <form onSubmit={submit}>
+
+      <form className="farm" onSubmit={submit}>
+        <div className="sign_farm">SignUp</div>
         <div className="container-auth">
+
           <label className='auth-label'>First Name:</label>
+      
           <input className='entry-auth'
             type="text"
             onChange={(e) => setFirstname(e.target.value)}

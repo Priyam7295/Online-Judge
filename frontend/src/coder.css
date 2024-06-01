@@ -24,21 +24,30 @@
   
 
   .solverButton {
-    /* background-color: pink; */
-    /* border: 1px solid black; */
-    border-radius: 20px;
-    padding: 6px;
-    margin-top: 30px;
-    display: block; 
-    margin: 0 auto; 
-    color:gray;
-    margin-top: 40px;
-    box-shadow: 0 0 5px grey;
+    background-color: #3949ab; /* Navy blue background */
+    border: none; /* No border */
+    border-radius: 20px; /* Rounded corners */
+    padding: 10px 20px; /* Padding */
+    margin-top: 40px; /* Top margin */
+    display: block; /* Block-level element */
+    margin: 0 auto; /* Center horizontally */
+    color: #fff; /* White text */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold font weight */
+    text-transform: uppercase; /* Uppercase text */
+    text-decoration: none; /* No underline */
+    cursor: pointer; /* Pointer cursor */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Shadow */
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Transition effects */
   }
-
-  .solverButton:hover{
-    color:black;
+  
+  .solverButton:hover {
+    background-color: #5c6bc0; /* Lighter navy blue on hover */
+    transform: scale(1.04); /* Slightly larger size on hover */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Larger shadow on hover */
   }
+  
+  
   
 
   .tagline {

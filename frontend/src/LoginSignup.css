@@ -6,6 +6,11 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh; 
+  
+}
+
+.farm{
+  width: 420px;
 }
 
 .background-image {
@@ -98,3 +103,14 @@
 }
 
 
+.sign_farm{
+  text-align: center;
+  letter-spacing: 1px;
+  font-family: 'Montserrat', sans-serif;
+  /* text-transform: uppercase;  */
+  font-weight: bold; 
+  font-size: 30px;
+  margin-bottom: 20px;
+
+    color: #4a4e69; 
+}

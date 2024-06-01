@@ -45,7 +45,7 @@ const handleError = (err) => {
 
 
 // creating token 
-const maxAge = 24*60*60; //takes in sec
+const maxAge =5*60*60; //takes in sec
 const createToken = function(id){
     return jwt.sign({id} ,process.env.SECRET_KEY , {expiresIn:maxAge}) //payload , secret key , 
 }
@@ -115,6 +115,7 @@ module.exports.signup_post = async (req , res)=>{
     const lastname = req.body.lastname;
     const email = req.body.email;
     let password = req.body.password;
+    let role='user';
 
  
 
@@ -134,7 +135,7 @@ module.exports.signup_post = async (req , res)=>{
     let hashedPassword = await bcrypt.hash(password, 10);
     try {
         password=hashedPassword;
-        const user = await User.create({firstname , lastname ,email ,password });
+        const user = await User.create({firstname , lastname ,email ,password , role });
         const token =createToken(user._id);
 
         // place token inside cookie and send to client as response
@@ -166,6 +167,7 @@ module.exports.login_post = async (req, res) => {
         const user = await User.findOne({ email: email });
 
         if (!user) {
+            
             errors.email='Email is not registered';
             return res.status(404).json({ errors });
         }
@@ -202,8 +204,8 @@ module.exports.login_post = async (req, res) => {
 // logout
 module.exports.logout_get =(req , res)=>{
     // changing the jwt to '' and with expiry time of 1 milliseconds
-    res.cookie('jwt','' , {maxAge:1});
-    res.redirect('/');
+    res.cookie('jwt','' , {maxAge:5000});
+    res.send({logout:"done"});
 };
 
 
@@ -233,3 +235,9 @@ module.exports.problem_details = async (req, res) => {
         res.status(400).json({ message: "Internal server error" });
     }
 }
+
+
+
+
+
+

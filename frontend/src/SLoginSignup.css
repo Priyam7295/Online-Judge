@@ -8,7 +8,7 @@
     box-shadow: 0px 0px 10px 0.7px rgba(0, 0, 0, 0.2);
     max-width: 400px;
     margin: 0 auto;
-    margin-top: 170px;
+    margin-top: 70px;
   }
   
   .auth-label {
@@ -47,4 +47,16 @@
     margin-top: 4px;
   }
   
+  
+
+  .log_title {
+    text-align: center;
+    margin-top: 80px;
+    font-size: 40px;
+    color: #4a4e69; 
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 1px; 
+    text-transform: uppercase; 
+    font-weight: bold; 
+  }
   

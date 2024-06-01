@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
         required:[true,"Please enter your password"],
         minlength:[6 , "Minimum password length is 6 characters"]
     },
+    role:{
+        type:String,
+        required:[true,"Please enter your role"]
+    }
 
     // the above messages gets stored in the error message 
 });

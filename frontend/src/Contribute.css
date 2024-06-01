@@ -1,97 +1,232 @@
+/* Contribute.css */
 .container {
-    display: flex;
-    height: 100vh;
-  }
+  display: flex;
+  height: 100vh;
+  gap:30px;
+}
+
+.left-section {
+  flex: 1.3;
+  background-color: #f0f0f0;
+  padding: 20px;
   
-  .left-section {
-    flex: 1.3;
-    background-color: #f0f0f0;
-    padding: 20px;
-  }
   
-  .right-section {
-    flex: 1;
-    display: flex;
+}
+.left-section img {
+  height:250px;
+}
+
+.instructions{
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  margin-left: 70px;
+  border-radius: 10px solid black;
+  margin-right: 70px;
+  padding:10px;
+}
+
+.right-section {
+  
+  flex: 1.1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  
+  margin-bottom: 50px;
+}
 
 
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .contributeQ {
-    font-size: 80px;
-    /* font-weight: bold; */
-    margin-bottom: 20px;
-    text-align: center;
-    font-family: 'Brush Script MT', cursive;
-    margin-bottom: 40px;
-  }
-  
-  .form-container {
-    width: 300px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  form label {
-    display: block;
-    margin-bottom: 8px;
-  }
-  
-  form input[type="text"] {
-    width: calc(100% - 20px);
-    padding: 8px;
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  form input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  form input[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-  
-  .DropDown{
-    margin:2px;
-    border:1px solid black;
-    border-radius: 5px;
-    margin-bottom: 12px;
-  }
 
-  .addtc{
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 3px;
+.form-container {
+  width: 700px;
+  padding: 20px;
+  height: 600px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+}
 
-    box-shadow: 0 0 8px green;
-    margin-bottom: 10px;
-    margin-left:7px;
-    
-  }
+form label {
+  display: block;
+  margin-bottom: 8px;
+}
 
-  
-  .remtc{
-    margin:7px;
-    border: 1px solid #ccc;
-    /* color: white; */
-    box-shadow: 0 0 8px red;
-    /* background-color: rgb(228, 15, 15); */
-    border-radius: 4px;
-    padding: 3px;
+form input[type="text"] {
+  width: calc(100% - 20px);
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
-  }
+form input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-.contri-image{
+form input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.DropDown {
+  margin: 2px;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 12px;
+ 
+}
+
+.addtc {
+  background-color: #ff6f61; /* Coral background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 4px 3px; /* Smaller padding */
+  text-align: center; /* Center text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Display as inline block */
+  font-size: 17px; 
+  margin-bottom: 10px;
+  margin-left: 7px;
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 4px; /* Rounded corners */
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+.addtc:hover {
+  background-color: #e85a4f; /* Darker coral on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
+}
+
+.create_prob{
+  transition: background-color 0.3s; 
+}
+
+.remtc {
+  margin: 7px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 8px red;
+  border-radius: 4px;
+  padding: 3px;
+}
+
+.contri-image {
   margin-top: 150px;
+}
+
+.test-case-block {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background-color: #f3f5f7;
+  width:300px;
+}
+
+.test-case-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.test-case-section {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+
+.second_form{
+  margin-left: 30px;
+  margin-right: 10px;
+  /* border: 1px solid #ddd; */
+  width: 500px;
+  padding-left: 60px;
+}
+
+.second_form textarea{
+  border: 1px solid #ddd;
+}
+
+
+.desc_area{
+  height:150px;
+  max-height: 190px;
+
+}
+.hints_area{
+  height:150px;
+  max-height: 150px;
+  
+}
+
+.add_input_buton{
+  
+  padding: 2px 4px;
+  border: 1px solid black;
+  border-radius:4px;
+  color: rgb(187, 185, 185);
+  margin-bottom: 2px;
+}
+.add_input_buton:hover{
+  color:black;
+  transition: color 0.9s;
+}
+
+/* Contribute.css */
+.test-case-counter {
+  font-size: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px; 
+  color: #333;
+  
+  
+}
+.instructions {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f8f9fa; /* Light gray background */
+  max-height: 300px; /* Limit the height */
+  overflow-y: auto;
+}
+
+.instructions_heading {
+  font-size: 24px;
+  margin-bottom: 10px;
+  
+  text-transform: uppercase; 
+  border-bottom: 2px solid #e53e0c; 
+  padding-bottom: 5px; 
+}
+
+
+.instructions_tagline {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.instructions_points {
+  margin-bottom: 10px;
+}
+
+.instructions_points span {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.counter_num {
+  font-weight: bold;
+  border-radius: 60%;
+  padding: 5px 10px;
+
+  border: 1px solid black; 
+
 }
