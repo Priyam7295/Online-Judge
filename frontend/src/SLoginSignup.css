@@ -8,7 +8,7 @@
     box-shadow: 0px 0px 10px 0.7px rgba(0, 0, 0, 0.2);
     max-width: 400px;
     margin: 0 auto;
-    margin-top: 70px;
+    margin-top: 50px;
   }
   
   .auth-label {
@@ -22,7 +22,7 @@
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-bottom: 16px;
+    margin-bottom: 15px;
   }
   
   .sub-btn {
@@ -59,4 +59,45 @@
     text-transform: uppercase; 
     font-weight: bold; 
   }
+  
+  .new_user{
+    text-align: center;
+    margin-top:10px ;
+  }
+
+  
+  .new_user_hai_kya{
+    /* font-size: large; */
+  }
+
+  .go_to_signup{
+    color: red;
+    cursor: pointer;
+    font-weight: 600;
+    font-style: italic;
+    letter-spacing: 1px;
+  }
+
+
+
+  .home_icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    transition: height 0.4s;
+    padding:5px;
+    
+  }
+
+
+  
+  .home_image {
+    width: 50px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+    transition: height 0.4s;
+
+  }
+
+  
   

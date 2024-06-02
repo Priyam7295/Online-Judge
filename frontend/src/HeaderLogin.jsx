@@ -8,6 +8,10 @@ function Header() {
   const [logout, setLogout] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState('');
 
+  function remove_logout_popOut() {
+    setLogoutMessage('');
+  }
+
   const manageLogout = async () => {
     try {
       await axios.get(`http://localhost:5000/logout`, {
@@ -18,10 +22,15 @@ function Header() {
     } catch (error) {
       console.log("Error while logging out", error);
     }
+
+    setTimeout(remove_logout_popOut , 1500);
   };
 
   const jwtToken = Cookies.get('jwt');
   const isLoggedIn = jwtToken !== undefined;
+
+
+
 
   return (
     <div className="headerf">

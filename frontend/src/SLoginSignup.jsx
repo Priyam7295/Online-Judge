@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import "./SLoginSignup.css"
+import { useNavigate } from 'react-router-dom';
+import Home_image from './assets/house-icon.png'
 
 function SLoginSignup() {
   const [email, setEmail] = useState('');
@@ -9,52 +11,74 @@ function SLoginSignup() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [cookies, setCookie] = useCookies(['token']);
+  const [loggedin, setIsloggedin] = useState(false);
 
-  const [loggedin , setIsloggedin] = useState(false);
+  const navigate =useNavigate();
 
-  const data_send_to_backend={
-    email:email,
-    password:password,
+  const data_send_to_backend = {
+    email: email,
+    password: password,
   };
 
   const login = async (e) => {
-    
     e.preventDefault();
     try {
-        
-        const res = await axios.post('http://localhost:5000/login', data_send_to_backend, { withCredentials: true });
-        const data= await res.data;
-        console.log(res);
-        if (data.errors) {
-          console.log(data.errors);
-            setEmailError(data.errors.email || '');
-            setPasswordError(data.errors.password || '');
+      const res = await axios.post('http://localhost:5000/login', data_send_to_backend, { withCredentials: true });
+      const data = await res.data;
+      console.log(res);
+      if (data.errors) {
+        console.log(data.errors);
+        setEmailError(data.errors.email || '');
+        setPasswordError(data.errors.password || '');
+      } else {
+        console.log("Login Successfully");
+        setCookie('jwt', res.headers['set-cookie'], { path: '/' });
+        setIsloggedin(true);
+        location.assign('/');
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        console.log("Email ndaskfhis");
+        const data = err.response.data;
+        setEmailError(data.errors.email || '');
+        setPasswordError(data.errors.password || '');
+      } else {
+        if (err.response && err.response.status === 404) {
+          const data = err.response.data;
+          setEmailError(data.errors.email || '');
         }
+      }
+    }
+  };
 
-        else{
-            console.log("Login Successfully");
-            setCookie('jwt', res.headers['set-cookie'], { path: '/' });
-            setIsloggedin(true);
-            location.assign('/');
-        }
+  // Use useEffect to clear errors after 1 second when email or password changes
+  useEffect(() => {
+    if (emailError || passwordError) {
+      const timer = setTimeout(() => {
+        setEmailError('');
+        setPasswordError('');
+      }, 1000);
 
     }
-    catch(err){
-        if (err.response && err.response.status === 404) {
-          console.log("Email ndaskfhis")
-            const data = err.response.data;
-            setEmailError(data.errors.email || '');
-            setPasswordError(data.errors.password || '');
-          } else {
-            console.error('Error sending data', err);
-          }
-     }
+  }, [emailError, passwordError]);
 
-    };
+
+  function navigate_to_signup(){
+      navigate('/signup');
+  }
+
+  function returnHome(){
+    navigate('/');
+  }
 
   return (
+    <>
+    <div className='home_icon'>
+      <img className='home_image' onClick={returnHome} src={Home_image} alt="" />
+    </div>
+
     <div className='auth-wrapper2'>
-      <h1 className='log_title' >Login</h1>
+      <h1 className='log_title'>Login</h1>
       <form onSubmit={login}>
         <div className="container-auth-login">
           <label className='auth-label'>Email Id:</label>
@@ -83,10 +107,10 @@ function SLoginSignup() {
           <input className='sub-btn' type="submit" value="Submit" />
         </div>
       </form>
+      <div className='new_user' onClick={navigate_to_signup} >New to <span className='new_user_hai_kya'  > Crack the Code ?  </span> <span className='go_to_signup'>Signup</span> </div>
     </div>
-  )
+    </>
+  );
 }
-
-
 
 export default SLoginSignup;

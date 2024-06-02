@@ -77,12 +77,12 @@ module.exports.problems = async (req , res)=>{
 
 module.exports.signup_post = async (req , res)=>{
 
-    console.log("Request uyyyyhreceived");
+    console.log("Request for signup");
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
     const email = req.body.email;
     let password = req.body.password;
-    let role='user';
+    let role=req.body.role;
     
  
 
@@ -103,12 +103,12 @@ module.exports.signup_post = async (req , res)=>{
     try {
         password=hashedPassword;
         const user = await User.create({firstname , lastname ,email ,password , role });
-        const token =createToken(user._id);
+        const token =createToken(user._id ,user.role);
 
         // place token inside cookie and send to client as response
         res.cookie('jwt' , token , {httpOnly:true , maxAge:maxAge*1000}); //cookie expoects in milliseconds
         console.log("Account created successfully");    
-        res.status(201).json({user:user._id}); //in above line created account in db , now sending back to frontend  
+        res.status(201).json({user:user._id , role:role}); //in above line created account in db , now sending back to frontend  
     } 
     catch (error) {
         const errors =handleError(error);
@@ -147,7 +147,7 @@ module.exports.login_post = async (req, res) => {
             return res.status(400).json({ errors });
         } 
         
-        const token =createToken(user._id);
+        const token =createToken(user._id , user.role);
 
         // place token inside cookie and send to client as response
         res.cookie('jwt' , token , {httpOnly:true , maxAge:maxAge*1000}); //cookie expoects in milliseconds

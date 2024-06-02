@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie';
 import "./LoginSignup.css"
 import image from './assets/two.png'
 
+import { useNavigate } from 'react-router-dom';
 function LoginSignup() {
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
@@ -13,6 +14,8 @@ function LoginSignup() {
   const [passwordError, setPasswordError] = useState('');
   const [cookies, setCookie] = useCookies(['jwt']); 
 
+
+  const navigate = useNavigate(); 
   const data_send_to_backend = {
     firstname,
     lastname,
@@ -44,6 +47,10 @@ function LoginSignup() {
       }
     }
   };
+
+  function navigate_to_login(){
+    navigate('/login');
+  }
 
   return (
 
@@ -96,6 +103,7 @@ function LoginSignup() {
           <input className='sub-btn' type="submit" value="Submit" />
         </div>
       </form>
+      <div className='old_user' onClick={navigate_to_login} >New to <span className='old_user_hai_kya'  > Crack the Code ?  </span> <span className='go_to_login'> Login</span> </div>
     </div>
   );
 }
