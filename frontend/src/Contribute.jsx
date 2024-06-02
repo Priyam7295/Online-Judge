@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import './Contribute.css';
 import axios from 'axios';
 import My_image from './assets/two.png';
-import { Navigate } from 'react-router-dom';
+// import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Contribute() {
   const [name, setName] = useState('');
@@ -16,6 +17,39 @@ function Contribute() {
   const [descriptionError, setDescriptionError] = useState('');
   const [difficultyError, setDifficultyError] = useState('');
   const [redirect, setRedirect] = useState(false);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  // First checking that if user authenticated or not if not then redirect
+      
+  const fetchData = async function() {
+    try {
+      const res = await axios.get('http://localhost:5000/problems_post', {
+        withCredentials: true
+      });
+      // Handle response data here
+      if(!res.data.authenticated){
+        console.log("Pakda liya na bssdke")
+        navigate('/login');
+
+      }
+
+      setIsLoading(false);
+
+      console.log(res.data);
+    } catch (error) {
+      // Handle errors here
+      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        navigate('/login');
+      }
+    }
+  };
+  
+  // Call the fetchData function
+  fetchData();
+
+  if (isLoading) {
+    return <div>Please Wait!!</div>;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,6 +84,7 @@ function Contribute() {
       } else {
         console.log("Question added successfully");
         alert("Thank you for your contribution!");
+        navigate('/');
         setRedirect(true);
         // Redirect or handle success
       }
@@ -100,6 +135,8 @@ function Contribute() {
   return (
     <div className="container">
       <div className="left-section">
+      <div className='make_contri'>Make your</div>
+      <div className='make_contri2' >Contributions ...</div>
         <img className='contri-image' src={My_image} alt="Contribution" />
 
         <div className='instructions'>
@@ -112,10 +149,11 @@ function Contribute() {
         </div>
 
       </div>
+          
       <div className="right-section">
         <div className="form-container">
           <form onSubmit={handleSubmit} action="POST">
-            <label>Problem name:</label>
+            <label >Problem name:</label>
             <input
               type="text"
               onChange={(e) => setName(e.target.value)}
@@ -225,3 +263,5 @@ function Contribute() {
 }
 
 export default Contribute;
+
+

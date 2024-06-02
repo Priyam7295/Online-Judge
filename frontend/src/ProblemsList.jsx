@@ -14,6 +14,7 @@ const ProblemsList = () => {
   const [mediumP, setMediumP] = useState(0);
   const [hardP, setHardP] = useState(0);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,7 +76,7 @@ const ProblemsList = () => {
   }, [navigate]);
 
   if (!isAuthenticated) {
-    return <div>Redirecting to login...</div>;
+    return <div>Redirecting ...</div>;
   }
 
   if (error && error.response && (error.response.status !== 401 && error.response.status !== 403)) {
@@ -86,7 +87,7 @@ const ProblemsList = () => {
     <div>
       <div className="ProblemList">
         <h1>Problems-Pit</h1>
-        <button className="total-prob">Total Problems: {totalProblems}</button>
+        <div className="total-prob">Total Problems: {totalProblems}</div>
       </div>
       <br />
 

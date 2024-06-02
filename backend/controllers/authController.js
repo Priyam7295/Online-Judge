@@ -4,7 +4,7 @@ const Problems = require('../models/Problems');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-
+const cookieParser = require('cookie-parser');
 module.exports.signup_get = (req, res) => {
     res.sendFile(path.join(__dirname, '../views/signup.html'));
 }
@@ -73,55 +73,22 @@ module.exports.problems = async (req , res)=>{
 
 }
 
-// posting problems , can be done by me only 
-module.exports.problems_post = async (req, res) => {
-    console.log(req.body); // Log the received request body to check if testCases are included
-
-    const { name, description, difficulty, testCases , tags , hints } = req.body;
-
-    let errors = { name: '', description: '', difficulty: '', testCases: '' };
-
-    if (!name) {
-        errors.name = 'Enter Problem name';
-        return res.status(400).json({ errors });
-    }
-    if (!description) {
-        errors.description = 'Enter Problem description';
-        return res.status(400).json({ errors });
-    }
-    if (!difficulty) {
-        errors.difficulty = 'Enter the difficulty level';
-        return res.status(400).json({ errors });
-    }
-    if (!testCases || !Array.isArray(testCases) || testCases.length === 0) {
-        errors.testCases = 'Provide at least two test case';
-        return res.status(400).json({ errors });
-    }
-
-    try {
-        // Create the problem with test cases
-        const createProblem = await Problems.create({ name, description, difficulty, testCases , tags , hints });
-        console.log("Problem added successfully", createProblem);
-        res.status(201).json({ createProblem });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-};
 
 
 module.exports.signup_post = async (req , res)=>{
+
+    console.log("Request uyyyyhreceived");
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
     const email = req.body.email;
     let password = req.body.password;
     let role='user';
-
+    
  
 
     // hashing password 
     let errors = {firstname:'',lastname:'',email:'' , password:'' };
-
+    
     if (!password ) {
         errors.password='Enter your password';
         return res.status(400).json({errors});
@@ -160,10 +127,10 @@ module.exports.signup_post = async (req , res)=>{
 module.exports.login_post = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-
+    
    let errors = {email:'' , password:''};
 
-    try {
+   try {
         const user = await User.findOne({ email: email });
 
         if (!user) {
@@ -188,7 +155,7 @@ module.exports.login_post = async (req, res) => {
         res.status(201).json({ user: user._id });
     }
     
-
+    
 
     catch (err){
         const errors =handleError(err);
@@ -216,9 +183,9 @@ module.exports.problem_details = async (req, res) => {
         const prob_id = req.params.id;
         console.log(req.body);
         const prob = await Problems.findOne({ "_id": prob_id });
-
+        
         console.log(prob);
-
+        
         let to_send = {
             name: prob.name,
             description: prob.description,
@@ -241,3 +208,39 @@ module.exports.problem_details = async (req, res) => {
 
 
 
+// posting problems , can be done by me only 
+module.exports.postProb = async (req, res) => {
+    console.log(req.body.data);
+    console.log("Asdasmnkj")
+    const { name, description, difficulty, testCases , tags , hints } = req.body;
+
+    let errors = { name: '', description: '', difficulty: '', testCases: '' };
+    
+    if (!name) {
+        errors.name = 'Enter Problem name';
+        return res.status(400).json({ errors });
+    }
+    if (!description) {
+        errors.description = 'Enter Problem description';
+        return res.status(400).json({ errors });
+    }
+    if (!difficulty) {
+        errors.difficulty = 'Enter the difficulty level';
+        return res.status(400).json({ errors });
+    }
+    if (!testCases || !Array.isArray(testCases) || testCases.length === 0) {
+        errors.testCases = 'Provide at least two test case';
+        return res.status(400).json({ errors });
+    }
+
+    try {
+        // Create the problem with test cases
+        const createProblem = await Problems.create({ name, description, difficulty, testCases , tags , hints });
+        
+        console.log("Problem added successfully", createProblem);
+        res.status(201).json({ createProblem });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};

@@ -1,0 +1,19 @@
+{
+  "name": "code-compiler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "generateFiles.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "express": "^4.19.2",
+    "fs": "^0.0.1-security",
+    "nodemon": "^3.1.2",
+    "path": "^0.12.7",
+    "uuid": "^9.0.1"
+  }
+}

@@ -2,13 +2,12 @@ const jwt =require("jsonwebtoken")
 const dotenv = require("dotenv");
 
 
-
 dotenv.config();
 
 
 const requireAuth = function(req , res , next){
     const token = req.cookies.jwt;
-    console.log("token",token);
+    console.log("token is",token);
 
     // check if token exists
     if(token){

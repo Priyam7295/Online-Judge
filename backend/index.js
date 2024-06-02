@@ -3,9 +3,12 @@ const { DBConnection } = require("./database/db");
 const app=express();
 const cookieParser = require('cookie-parser');
 const path = require('path');
-
 const cors = require('cors');
+const authController = require('./controllers/authController');
+const { requireAuth } = require('./middleware/authMiddleware');
 
+const generateFile = require('./Code Compiler/generateFiles');
+const executeCpp = require('./Code Compiler/executeCpp');
 
 const PORT=5000;
 
@@ -26,8 +29,6 @@ app.use(
 
 
 app.set('view engine', 'ejs');
-const authController = require('./controllers/authController');
-const { requireAuth } = require('./middleware/authMiddleware');
 
 
 app.get('/',cors() ,(req, res) => {
@@ -48,14 +49,18 @@ app.post('/login',authController.login_post);
 
 
 app.get('/problems',requireAuth,authController.problems);
+app.post('/problems_post',requireAuth ,authController.postProb);
 
 
+app.get('/problems_post', requireAuth, (req , res) => {
+  res.json({ authenticated: true });
+});
 
-app.post("/problems_post" ,authController.problems_post);
+
 
 
 // get partivular problems
-app.get('/problems/:id' ,requireAuth,authController.problem_details);
+app.get('/problems/:id' , requireAuth ,authController.problem_details);
 
 
 // sending cookie to the client , that is browser
@@ -80,4 +85,59 @@ app.get('/logout', (req, res) => {
   res.clearCookie('jwt', { httpOnly: true, secure: false, sameSite: 'Lax' });
   // Send a response to the client
   res.status(200).json({ message: 'Logged out successfully' });
+});
+
+
+
+
+//  --------compiling the code---------
+
+// ONLINE CODE COMPILER PART
+app.post('/run' , async(req , res)=>{
+  
+  // handling error
+  let errors={language:"" , code:""};
+  if(!req.body.language){
+    errors.language="Please specify Language";
+    return res.status(400).send(errors);
+  }
+  if( !req.body.code ){
+    errors.code ="Enter your code";
+    return res.status(400).json(errors);
+  }
+
+  console.log(req.body.language);
+  console.log(req.body.code);
+
+  const language = req.body.language;
+  const code = req.body.code;
+
+  try{
+    
+    // we will create a file named some_random_thing.cpp 
+    
+    let output;
+    if(language==="cpp"){
+      console.log("jv")
+      const filePath = generateFile(language , code);
+      output =await executeCpp(filePath);
+
+      // code is sucessfully run
+      return res.status(200).send(output);
+    }
+    else{
+      
+      return res.status(404).json({error:" currently unsupported Language"});
+    }
+
+  }
+
+
+  catch(error){
+    console.log(error);
+    res.status(400).send({Codeerror:error});
+  }
+
+
+
 });

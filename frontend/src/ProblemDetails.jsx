@@ -6,7 +6,22 @@ import './ProblemDetails.css';
 function ProblemDetails() {
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
+  const hell ="\"Welcome to Crack the Code!\""
   const [activeButton, setActiveButton] = useState('p_desc');
+  const [lines ,setLines]=useState(0);
+  const [selectedLanguage, setSelectedLanguage] = useState('cpp');
+  const [showCodingScreen, setShowCodingScreen] = useState(true);
+  const [output, setOutput] = useState('');
+
+  const sampleCodes = {
+    cpp: `#include <iostream>\nusing namespace std;\n\nint main(){\n\n   cout<<${hell}<<endl; \n\n   return 0;  \n}; `,
+    py: `print(${hell})`,
+    java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println(${hell});\n    }\n}`
+  };
+  const [code , setCode]=useState(sampleCodes[selectedLanguage]);
+  useEffect(() => {
+    setCode(sampleCodes[selectedLanguage]);
+  }, [selectedLanguage]);
 
   useEffect(() => {
     const fetchProblem = async () => {
@@ -26,6 +41,37 @@ function ProblemDetails() {
   const handleButtonClick = (buttonType) => {
     setActiveButton(buttonType);
   };
+
+  async function Code_Run(){
+    const data_to_send ={language:selectedLanguage ,code:code};
+
+    try {
+      const response =await axios.post( "http://localhost:5000/run"  , data_to_send ,{
+        withCredentials:true
+      });
+
+      console.log("code is->",response.data);
+      // Assuming the response contains the output of the code
+      if(response.status===404){
+        console.log(response.status);
+        setOutput("Noy")
+      }
+      setOutput(response.data);
+
+      // Hide the coding screen
+      setShowCodingScreen(false);
+
+    } catch (error) {
+      if(error.response && error.response.status===404){
+        setOutput(`Currently ${selectedLanguage} is  not supported.`);
+      }
+      else{
+
+        setOutput("There must be some Error With your Code")
+          console.log("Geror",error);
+      }
+    }
+  } 
 
   return (
     <div>
@@ -47,19 +93,27 @@ function ProblemDetails() {
               <div className='desc_and_hint'>
                 <button
                   type="button"
-                  className={`p_desc ${activeButton === 'p_desc' ? 'active' : ''}`}
+                  className={`  p_desc ${activeButton === 'p_desc' ? 'active' : ''}`}
                   onClick={() => handleButtonClick('p_desc')}
                 >
                   Description
                 </button>
                 <button
                   type="button"
-                  className={`p_hint ${activeButton === 'p_hint' ? 'active' : ''}`}
+                  className={`  p_hint ${activeButton === 'p_hint' ? 'active' : ''}`}
                   onClick={() => handleButtonClick('p_hint')}
                 >
                   Hint
                 </button>
+
+
+                <button className='my_sub'>
+                  Submissions
+                </button>
+
               </div>
+
+
 
               <div>
                 <div className ='name_and_tags'>
@@ -115,11 +169,46 @@ function ProblemDetails() {
 
             </div>
 
-            <div className='Item-2_prob'>
-              <div className='temp-code'>
-                {/* Additional code functionality can go here */}
+
+
+             
+              <div className='Item-2_prob' >
+                {/* Code change button */}
+                <div className='choose_language'>
+                  <select name="" id=""
+                    value={selectedLanguage}
+                    onChange={(e)=>{setSelectedLanguage(e.target.value)}}
+                  >
+                    <option value="cpp">CPP</option>
+                    <option value="py">PYTHON</option>
+                    <option value="java">JAVA</option>
+                 
+                  </select>
+                </div>
+
+
+                <textarea value={code}  className=  'code_block'
+                  onChange={(e)=>setCode(e.target.value)} //update code on chnging box
+                  placeholder='Write your code here' spellCheck="false" // Disable spell check
+                >
+                </textarea>
+
+
+                <div className="button-group">
+                  <button className='run-button' onClick={Code_Run} >Run</button>
+                  <button className='submit-button'  >Submit</button>
+                </div>
               </div>
-            </div>
+            
+
+            {output && (
+              
+              <div className="output-container">
+                <h2 className='output_heading' >Output:</h2>
+                <pre className='Output_section'>{output}</pre>
+              </div>
+            )}
+
           </div>
         </div>
       ) : (
