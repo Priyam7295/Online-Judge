@@ -1,1 +1,0 @@
-print("Welcome to Crack the Code!")
