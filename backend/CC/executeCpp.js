@@ -1,10 +1,9 @@
-
 const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
-// to store the output
-const outputPath = path.join(__dirname, 'outputs');  //C:\Users\rajpr\Desktop\Online Compiler\backend\outputs
+// Path to store the output
+const outputPath = path.join(__dirname, 'outputs');
 
 if (!fs.existsSync(outputPath)) {
     try {
@@ -15,14 +14,13 @@ if (!fs.existsSync(outputPath)) {
     }
 }
 
-const executeCPP = (filepath) => {
-    const jobId = path.basename(filepath).split(".")[0]; //["2341402a-d6c6-408c-b8a9-9d63b3601ec9" ,"cpp"]
-    const outputFilename = `${jobId}.exe`; //kjabhsdkjasbdasd.exe
+const executeCPP = (filepath, inputPath) => {
+    const jobId = path.basename(filepath).split(".")[0];
+    const outputFilename = `${jobId}.exe`;
     const outPath = path.join(outputPath, outputFilename);
-      //C:\Users\rajpr\Desktop\Online Compiler\backend\outputs\2341402a-d6c6-408c-b8a9-9d63b3601ec9.exe
 
     return new Promise((resolve, reject) => {
-        const command = `g++ "${filepath}" -o "${outPath}" && cd "${outputPath}" && .\\${outputFilename}`;
+        const command = `g++ "${filepath}" -o "${outPath}" && "${outPath}" < "${inputPath}"`;
         console.log(`Executing command: ${command}`);
 
         exec(command, (error, stdout, stderr) => {
@@ -44,29 +42,3 @@ const executeCPP = (filepath) => {
 };
 
 module.exports = executeCPP;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

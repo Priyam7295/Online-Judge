@@ -7,8 +7,10 @@ const cors = require('cors');
 const authController = require('./controllers/authController');
 const { requireAuth } = require('./middleware/authMiddleware');
 
-const generateFile = require('./Code Compiler/generateFiles');
-const executeCpp = require('./Code Compiler/executeCpp');
+const generateFile = require('./CC/generateFile');
+const executeCpp = require('./CC/executeCpp');
+const executePy = require('./CC/executePy');
+const generateInputFile = require('./CC/generateInputFile');
 
 const PORT=5000;
 
@@ -17,7 +19,7 @@ DBConnection();
 // middle ware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); //we need to use this middleware for cookie
+app.use(cookieParser()) ; //we need to use this middleware for cookie
 
 app.use(
   cors({
@@ -93,51 +95,34 @@ app.get('/logout', (req, res) => {
 //  --------compiling the code---------
 
 // ONLINE CODE COMPILER PART
-app.post('/run' , async(req , res)=>{
-  
-  // handling error
-  let errors={language:"" , code:""};
-  if(!req.body.language){
-    errors.language="Please specify Language";
-    return res.status(400).send(errors);
-  }
-  if( !req.body.code ){
-    errors.code ="Enter your code";
-    return res.status(400).json(errors);
+app.post('/run', async (req, res) => {
+  if (!req.body.language || !req.body.code) {
+      return res.status(400).json({ success: false, error: "Language or code is missing in the request body." });
   }
 
-  console.log(req.body.language);
-  console.log(req.body.code);
+  const { language, code , input } = req.body;
 
-  const language = req.body.language;
-  const code = req.body.code;
+  try {
+      // Store the user given code into a file
+      const filePath = await generateFile(language, code);
+      const inputPath = await generateInputFile(input);
+      let output;
+      if (language === 'cpp') {
+          output = await executeCpp(filePath , inputPath);
+      } else if (language === 'py') {
+          output = await executePy(filePath , inputPath);
+      } else {
+          return res.status(400).json({ success: false, error: "Unsupported language" });
+      }
 
-  try{
-    
-    // we will create a file named some_random_thing.cpp 
-    
-    let output;
-    if(language==="cpp"){
-      console.log("jv")
-      const filePath = generateFile(language , code);
-      output =await executeCpp(filePath);
-
-      // code is sucessfully run
-      return res.status(200).send(output);
-    }
-    else{
-      
-      return res.status(404).json({error:" currently unsupported Language"});
-    }
-
+      res.json({ filePath, output });
+  } catch (error) {
+      if (error && error.message) {
+          const errorMessage = error.message.toLowerCase(); // Convert to lowercase for case-insensitive matching
+          if (errorMessage.includes('error') || errorMessage.includes('syntax error')) {
+              return res.status(400).json({ success: false, error: error.message });
+          }
+      }
+      return res.status(500).json({ success: false, error: "Unknown error occurred" });
   }
-
-
-  catch(error){
-    console.log(error);
-    res.status(400).send({Codeerror:error});
-  }
-
-
-
 });
