@@ -1,57 +1,35 @@
-const mongoose = require('mongoose');
-
-// Define the schema for individual input key-value pairs
-const inputSchema = new mongoose.Schema({
-  key: {
-    type: String,
-    required: true
-  },
-  value: {
-    type: String,
-    required: true
-  }
-});
-
-// Define the schema for test cases
-const testCaseSchema = new mongoose.Schema({
-  inputs: {
-    type: [inputSchema], // Array of input key-value pairs
-    required: true
-  },
-  expectedOutput: {
-    type: String,
-    required: true
-  }
-});
-
-// Define the main schema for problems
+const mongoose = require("mongoose");
 const problemSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  difficulty: {
-    type: String,
-    required: true
+    required: [true, "Enter"],
   },
   tags: {
     type: String,
-    required: true
+    required: [true, "Enter "],
+  },
+  description: {
+    type: String,
+    required: [true, "Enter "],
+  },
+
+  difficulty: {
+    type: String,
+    required: [true, "Enter "],
   },
   hints: {
     type: String,
-    required: true
+    required: [true, "Enter hints"],
   },
   testCases: {
-    type: [testCaseSchema], // Array of test cases
-    required: true
-  }
+    type: Buffer,
+    required: [true, "Please provide PDF data"],
+  },
+  outputs: {
+    type: Buffer,
+    required: [true, "Please provide PDF data"],
+  },
+
 });
-
-const Problem = mongoose.model('Problem', problemSchema);
-
+const Problem = mongoose.model("Problem", problemSchema);
 module.exports = Problem;

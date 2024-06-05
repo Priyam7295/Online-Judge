@@ -1,91 +1,40 @@
-// Contribute.js
-import React, { useState } from 'react';
-import './Contribute.css';
-import axios from 'axios';
-import My_image from './assets/two.png';
-// import { Navigate } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "./Contribute.css";
+import axios from "axios";
+import My_image from "./assets/two.png";
+import { useNavigate } from "react-router-dom";
 
 function Contribute() {
-  const [name, setName] = useState('');
-  const [tags, setTags] = useState('');
-  const [description, setDescription] = useState('');
-  const [hints, setHints] = useState('');
-  const [difficulty, setDifficulty] = useState('');
-  const [testCases, setTestCases] = useState([{ inputs: [], expectedOutput: '' }]);
-  const [nameError, setNameError] = useState('');
-  const [descriptionError, setDescriptionError] = useState('');
-  const [difficultyError, setDifficultyError] = useState('');
-  const [redirect, setRedirect] = useState(false);
+  const [name, setName] = useState("");
+  const [tags, setTags] = useState("");
+  const [description, setDescription] = useState("");
+  const [hints, setHints] = useState("");
+  const [difficulty, setDifficulty] = useState("");
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  // First checking that if user authenticated or not if not then redirect
-      
-  const fetchData = async function() {
-    try {
-      const res = await axios.get('http://localhost:5000/problems_post', {
-        withCredentials: true
-      });
-      // Handle response data here
-      if(!res.data.authenticated){
-        console.log("Pakda liya na bssdke")
-        navigate('/login');
-
-      }
-
-      setIsLoading(false);
-
-      console.log(res.data);
-    } catch (error) {
-      // Handle errors here
-      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-        navigate('/login');
-      }
-    }
-  };
-  
-  // Call the fetchData function
-  fetchData();
-
-  if (isLoading) {
-    return <div>Please Wait!!</div>;
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Check if the number of test cases is less than minTC
-      if (testCases.length < minTC) {
-        alert(`Please add at least ${minTC} test cases.`);
-        return; // Exit the function without saving
-      }
-    }
-    catch (err) {
-      console.log("error")
-    }
-      
-    
-    try {
-      const response = await axios.post('http://localhost:5000/problems_post', {
-        name,
-        description,
-        difficulty,
-        tags,
-        hints,
-        testCases
-      }, { withCredentials: true });
+      const response = await axios.post(
+        "http://localhost:5000/problems_post",
+        {
+          name,
+          description,
+          difficulty,
+          tags,
+          hints,
+        },
+        { withCredentials: true }
+      );
       const data = response.data;
-      
+
       if (data.errors) {
-        setNameError(data.errors.name);
-        setDescriptionError(data.errors.description);
-        setDifficultyError(data.errors.difficulty);
+        // Handle validation errors if any
       } else {
         console.log("Question added successfully");
         alert("Thank you for your contribution!");
-        navigate('/');
-        setRedirect(true);
+        navigate("/");
         // Redirect or handle success
       }
     } catch (error) {
@@ -93,44 +42,6 @@ function Contribute() {
     }
   };
 
-  if(redirect){
-    return <Navigate to="/" />;
-  }
-
-  const handleTestCaseChange = (index, key, value) => {
-    const updatedTestCases = [...testCases];
-    updatedTestCases[index][key] = value;
-    setTestCases(updatedTestCases);
-  };
-
-  const handleInputChange = (testCaseIndex, inputIndex, key, value) => {
-    const updatedTestCases = [...testCases];
-    updatedTestCases[testCaseIndex].inputs[inputIndex][key] = value;
-    setTestCases(updatedTestCases);
-  };
-
-  const addTestCase = () => {
-    setTestCases([...testCases, { inputs: [], expectedOutput: '' }]);
-  };
-
-  const removeTestCase = (index) => {
-    const updatedTestCases = [...testCases];
-    updatedTestCases.splice(index, 1);
-    setTestCases(updatedTestCases);
-  };
-
-  const addInputField = (testCaseIndex) => {
-    const updatedTestCases = [...testCases];
-    updatedTestCases[testCaseIndex].inputs.push({ key: '', value: '' });
-    setTestCases(updatedTestCases);
-  };
-
-  const removeInputField = (testCaseIndex, inputIndex) => {
-    const updatedTestCases = [...testCases];
-    updatedTestCases[testCaseIndex].inputs.splice(inputIndex, 1);
-    setTestCases(updatedTestCases);
-  };
-  const minTC =2;
   return (
     <div className="container">
       <div className="left-section">
