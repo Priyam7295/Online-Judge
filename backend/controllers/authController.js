@@ -211,10 +211,10 @@ module.exports.problem_details = async (req, res) => {
 // posting problems , can be done by me only 
 module.exports.postProb = async (req, res) => {
     console.log(req.body.data);
-    console.log("Asdasmnkj")
-    const { name, description, difficulty, testCases , tags , hints } = req.body;
+    
+    const { name, description, difficulty, inputLink , outputLink, tags , hints } = req.body;
 
-    let errors = { name: '', description: '', difficulty: '', testCases: '' };
+    let errors = { name: '', description: '', difficulty: '' , inputLink:'' , outputLink :''  };
     
     if (!name) {
         errors.name = 'Enter Problem name';
@@ -228,14 +228,18 @@ module.exports.postProb = async (req, res) => {
         errors.difficulty = 'Enter the difficulty level';
         return res.status(400).json({ errors });
     }
-    if (!testCases || !Array.isArray(testCases) || testCases.length === 0) {
-        errors.testCases = 'Provide at least two test case';
-        return res.status(400).json({ errors });
+    if(!inputLink){
+        errors.inputLink="Input Link is not there";
+        return res.status(400).json({errors});
+    }
+    if(!outputLink){
+        errors.outputLink="Output Link is not there";
+        return res.status(400).json({errors});
     }
 
     try {
         // Create the problem with test cases
-        const createProblem = await Problems.create({ name, description, difficulty, testCases , tags , hints });
+        const createProblem = await Problems.create({ name  , tags , description , difficulty , hints , inputLink , outputLink  });
         
         console.log("Problem added successfully", createProblem);
         res.status(201).json({ createProblem });

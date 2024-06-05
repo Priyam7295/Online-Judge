@@ -5,6 +5,10 @@ import axios from 'axios';
 import My_image from './assets/two.png';
 // import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Upload from './Upload.jsx'
+
+import  { TestcasesDownloadLink, OutputsDownloadLink } from './Upload';
+
 
 function Contribute() {
   const [name, setName] = useState('');
@@ -54,18 +58,11 @@ function Contribute() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      // Check if the number of test cases is less than minTC
-      if (testCases.length < minTC) {
-        alert(`Please add at least ${minTC} test cases.`);
-        return; // Exit the function without saving
-      }
-    }
-    catch (err) {
-      console.log("error")
-    }
+
       
     
+    console.log(TestcasesDownloadLink);
+    console.log(OutputsDownloadLink);
     try {
       const response = await axios.post('http://localhost:5000/problems_post', {
         name,
@@ -73,10 +70,12 @@ function Contribute() {
         difficulty,
         tags,
         hints,
-        testCases
+        inputLink:TestcasesDownloadLink, 
+        outputLink:OutputsDownloadLink,
+        
       }, { withCredentials: true });
       const data = response.data;
-      
+      console.log("data", response.data);
       if (data.errors) {
         setNameError(data.errors.name);
         setDescriptionError(data.errors.description);
@@ -197,27 +196,11 @@ function Contribute() {
               </select>
               <br />
 
-              {/* Add input block for test cases */}
-              <div className="file-upload">
-                <label className="file-label">Upload Test Cases:</label>
-                <input
-                  type="file"
-                  accept=".txt"
-                  onChange={(e) => setOutputsFile(e.target.files[0])}
-                  
-                  />
-              </div>
 
-              <div className="file-upload">
-                <label className="file-label">Upload Outputs:</label>
-                <input
-                  type="file"
-                  accept=".txt"
-                  onChange={(e) => setOutputsFile(e.target.files[0])}
-           
-                />
-              </div>
             </form>
+
+              <Upload/>
+              
             <input  onClick={handleSubmit} className="create_prob" type="submit" value="Submit" />
           </div>
 

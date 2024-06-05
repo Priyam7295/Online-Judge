@@ -4,3 +4,4 @@ backend/Code Compiler/node_modules/
 frontend/node_modules/
 backend/Code Compiler/Codes
 backend/Code Compiler/outputs
+frontend/src/firebase.js

@@ -21,12 +21,13 @@ const problemSchema = new mongoose.Schema({
     type: String,
     required: [true, "Enter hints"],
   },
-  testCases: {
-    type: Buffer,
-    required: [true, "Please provide PDF data"],
+  inputLink:{
+    type:String , 
+    required:[true , "Enter hints"],
   },
-  outputs: {
-    type: Buffer,
+
+  outputLink: {
+    type: String,
     required: [true, "Please provide PDF data"],
   },
 
