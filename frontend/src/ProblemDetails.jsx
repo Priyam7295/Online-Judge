@@ -47,6 +47,24 @@ function ProblemDetails() {
     setActiveButton(buttonType);
   };
 
+            
+  async function Code_Submit(){
+    const data_to_send = {language:selectedLanguage , code:code , tcLink: problem.inputLink , ExpectedOutputLink :problem.outputLink };
+
+    try {
+      const response = await axios.post("http://localhost:5000/submit " , data_to_send,
+        {
+          withCredentials:true
+        },
+      );
+
+      console.log("Ouput received after running on test case input->",response.data.output);
+
+    } catch (error) {
+      console.log("Facaing error->" , error);
+    }
+  }
+
   async function Code_Run() {
     const data_to_send = { language: selectedLanguage, code: code, input };
 
@@ -75,7 +93,7 @@ function ProblemDetails() {
       if (error.response && error.response.status === 404) {
         setOutput(`Currently ${selectedLanguage} is  not supported.`);
       } else {
-        setOutput("There must be some Error With your Code");
+        setOutput("There must be  some Error With your Code");
         console.log("Geror", error);
       }
     }
@@ -160,10 +178,10 @@ function ProblemDetails() {
 
                   {/* - - - - - - showing two sample TC block  - -- - - - - */}
 
-<Twotc inputLink={problem.inputLink} outputLink={problem.outputLink} />
-
-
-                  
+                  <Twotc
+                    inputLink={problem.inputLink}
+                    outputLink={problem.outputLink}
+                  />
                 </div>
               </div>
             </div>
@@ -245,7 +263,9 @@ function ProblemDetails() {
                 <button className="run-button" onClick={Code_Run}>
                   Run
                 </button>
-                <button className="submit-button">Submit</button>
+                <button className="submit-button" onClick={Code_Submit}>
+                  Submit
+                </button>
               </div>
             </div>
           </div>

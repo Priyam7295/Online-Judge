@@ -106,6 +106,7 @@ app.post('/run', async (req, res) => {
       // Store the user given code into a file
       const filePath = await generateFile(language, code);
       const inputPath = await generateInputFile(input);
+      console.log(code);
       let output;
       if (language === 'cpp') {
           output = await executeCpp(filePath , inputPath);
@@ -124,5 +125,98 @@ app.post('/run', async (req, res) => {
           }
       }
       return res.status(500).json({ success: false, error: "Unknown error occurred" });
+  }
+});
+
+
+
+//---=-==--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-SUBMITTING THE CODE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-
+// =-=-=-=-=-=-=-=-==-=-=-==-==- Testing on various TC and giving the result --=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- 
+
+const axios=require('axios');
+
+// firebase admin  SDK for interacting with firebase services
+const admin = require('firebase-admin'); 
+
+// import the service account key JSON file required for firebase Admin SDK start
+//  This file contains credentials for accessing Firebase Services.
+const serviceAccount = require('./secKey.json');
+
+// Initialize the Firebase Admin SDK with the service account credentials and the storage bucket URL.
+admin.initializeApp({
+  credential:admin.credential.cert(serviceAccount),
+  storageBucket:'onlinej-68b38.appspot.com'
+});
+// Create a reference to the Firebase Storage bucket for storing files.
+const bucket = admin.storage().bucket();
+
+// this function generates  the signed URL , including version , expiry time
+// signed URL gives temporary access to a URL and it can not be tampered by the user
+// So, in summary, the signed URL is a modified version of the original URL with additional parameters appended to it, which are used for authentication and authorization purposes.
+async function generateSignedUrl(filePath) {
+  const options = {
+    version: 'v4',
+    action: 'read',
+    expires: Date.now() + 3*1000 * 60 * 60, // 3 hour
+  };
+  const [url] = await bucket.file(filePath).getSignedUrl(options);
+  return url;
+}
+
+async function fetchFileContent(url) {
+  try {
+    const response = await axios.get(url);
+    const fileContent = response.data;
+    return fileContent;
+  } catch (error) {
+    console.error('Error fetching the file from firebase:', error);
+    throw error;
+  }
+}
+
+app.post('/submit', async (req, res) => {
+  const { language, code, tcLink, ExpectedOutputLink } = req.body;
+  
+
+  console.log(tcLink);
+  console.log(ExpectedOutputLink);
+
+  try {
+    const tcFilePath = decodeURIComponent(tcLink.split('/o/')[1].split('?alt=media')[0]);
+    const outputFilePath = decodeURIComponent(ExpectedOutputLink.split('/o/')[1].split('?alt=media')[0]);
+
+    const tcSignedUrl = await generateSignedUrl(tcFilePath);
+    const outputSignedUrl = await generateSignedUrl(outputFilePath);
+
+    const testCases = await fetchFileContent(tcSignedUrl);
+    const expectedOutput = await fetchFileContent(outputSignedUrl);
+
+
+
+    try {
+      const filePath =  await generateFile(language, code); 
+      const inputPath = await generateInputFile(testCases);    
+      const output = await executeCpp(filePath , inputPath);
+
+      res.json({ filePath, output });
+    } catch (error) {
+      if (error && error.message) {
+        const errorMessage = error.message.toLowerCase(); 
+        if (errorMessage.includes('error') || errorMessage.includes('syntax error')) {
+            return res.status(400).json({ success: false, error: error.message });
+        }
+      }
+      return res.status(500).json({ success: false, error: "Unknown error occurred" });
+    }
+
+
+
+    console.log('TEST CASES FILE', testCases);
+    console.log('OUTPUT FILE', expectedOutput);
+
+    // res.status(200).send('Received successfully');
+  } catch (error) {
+    console.error('Error processing request:', error);
+    res.status(500).send('Internal server error');
   }
 });

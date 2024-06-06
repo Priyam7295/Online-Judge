@@ -5,3 +5,5 @@ frontend/node_modules/
 backend/Code Compiler/Codes
 backend/Code Compiler/outputs
 frontend/src/firebase.js
+
+backend/secKey.json
