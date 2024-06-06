@@ -7,6 +7,13 @@
   gap:60px;
 }
 
+
+.main_p{
+  color:rgb(206, 30, 30);
+}
+.main_p span{
+  color:black;
+}
 .left-section {
   flex: 1.6;
   background-color: #f0f0f0;
@@ -228,6 +235,17 @@ form input[type="submit"]:hover {
   /* border: 1px solid black; */
   background-color: #f0f0f0;
   border-radius: 4px;
+  font-size: 17px;
+  
+}
+.make_sure span{
+  font-size: 23px;
+  border:1px solid black;
+  border-radius: 18px;
+  padding:3px;
+  padding-left:6px;
+  padding-right:6px;
+  
 }
 
 .desc_area{

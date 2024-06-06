@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import "./LoginSignup.css"
 import image from './assets/two.png'
-
+import Home_image from './assets/house-icon.png'
 import { useNavigate } from 'react-router-dom';
 function LoginSignup() {
   const [firstname, setFirstname] = useState('');
@@ -52,9 +52,17 @@ function LoginSignup() {
     navigate('/login');
   }
 
+  function returnHome(){
+    navigate('/');
+  }
+
+
   return (
 
     <div className="auth-wrapper">
+    <div className='home_icon'>
+      <img className='home_image' onClick={returnHome} src={Home_image} alt="" />
+    </div>
 
       <form className="farm" onSubmit={submit}>
         <div className="sign_farm">SignUp</div>

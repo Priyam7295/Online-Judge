@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./ProblemDetails.css";
+import Twotc from "./Twotc.jsx";
 
 function ProblemDetails() {
   const { id } = useParams();
@@ -13,11 +14,11 @@ function ProblemDetails() {
   const [input, setInput] = useState("");
   const [activeTab, setActiveTab] = useState("input");
 
-const sampleCodes = {
-  cpp: `#include <iostream>\nusing namespace std;\n\nint main(){\n\n   cout<<"Hello, World!"<<endl; \n\n   return 0;  \n}; `,
-  py: `print("Hello, World!")`,
-  java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}`,
-};
+  const sampleCodes = {
+    cpp: `#include <iostream>\nusing namespace std;\n\nint main(){\n\n   cout<<"Hello, World!"<<endl; \n\n   return 0;  \n}; `,
+    py: `print("Hello, World!")`,
+    java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}`,
+  };
 
   const [code, setCode] = useState(sampleCodes[selectedLanguage]);
   useEffect(() => {
@@ -50,36 +51,35 @@ const sampleCodes = {
     const data_to_send = { language: selectedLanguage, code: code, input };
 
     try {
-        const response = await axios.post(
-            "http://localhost:5000/run",
-            data_to_send,
-            {
-                withCredentials: true,
-            }
-        );
-
-        console.log("code is->", response.data);
-        console.log("code is->", response.data.output);
-        // Assuming the response contains the output of the code
-        if (response.status === 404) {
-            console.log(response.status);
-            setOutput("Noy");
+      const response = await axios.post(
+        "http://localhost:5000/run",
+        data_to_send,
+        {
+          withCredentials: true,
         }
-        setOutput(response.data.output);
+      );
 
-        // Show the output section
-        setShowCodingScreen(false);
-        setActiveTab("output"); // Switch to the output tab
+      console.log("code is->", response.data);
+      console.log("code is->", response.data.output);
+      // Assuming the response contains the output of the code
+      if (response.status === 404) {
+        console.log(response.status);
+        setOutput("Noy");
+      }
+      setOutput(response.data.output);
+
+      // Show the output section
+      setShowCodingScreen(false);
+      setActiveTab("output"); // Switch to the output tab
     } catch (error) {
-        if (error.response && error.response.status === 404) {
-            setOutput(`Currently ${selectedLanguage} is  not supported.`);
-        } else {
-            setOutput("There must be some Error With your Code");
-            console.log("Geror", error);
-        }
+      if (error.response && error.response.status === 404) {
+        setOutput(`Currently ${selectedLanguage} is  not supported.`);
+      } else {
+        setOutput("There must be some Error With your Code");
+        console.log("Geror", error);
+      }
     }
-}
-
+  }
 
   const toggleTab = (tabName) => {
     setActiveTab(tabName);
@@ -154,47 +154,16 @@ const sampleCodes = {
                   <h2 className="prob_state">Problem Statement</h2>
                   <div className="prob_description">{problem.description}</div>
 
-                  <h2 className="tc_heading">Test Cases</h2>
-                  <div>
-                    {problem.testcase1 && (
-                      <>
-                        <div className="enclose_ftc">
-                          <h3 className="tc_num">Test Case 1:</h3>
-                          <div className="tc_out">
-                            {problem.testcase1.inputs.map((input, index) => (
-                              <p key={index}>
-                                {input.key}: {input.value}
-                              </p>
-                            ))}
-                            <p>
-                              Expected Output:{" "}
-                              {problem.testcase1.expectedOutput}
-                            </p>
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                  <div>
-                    {problem.testcase2 && (
-                      <>
-                        <div className="enclose_ftc">
-                          <h3 className="tc_num">Test Case 2:</h3>
-                          <div className="tc_out">
-                            {problem.testcase2.inputs.map((input, index) => (
-                              <p key={index}>
-                                {input.key}: {input.value}
-                              </p>
-                            ))}
-                            <p>
-                              Expected Output:{" "}
-                              {problem.testcase2.expectedOutput}
-                            </p>
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
+                  <h2 className="tc_heading">TEST CASES:</h2>
+                  <h2>Link is -{problem.inputLink}</h2>
+                  <h2>{problem.outputLink}</h2>
+
+                  {/* - - - - - - showing two sample TC block  - -- - - - - */}
+
+<Twotc inputLink={problem.inputLink} outputLink={problem.outputLink} />
+
+
+                  
                 </div>
               </div>
             </div>

@@ -1,104 +1,86 @@
+.single-entry {
+  border-radius: 10px;
+  width: 99%;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  transition: width 0.5s;
+  margin-bottom: 1px;
+}
+
+.single-entry:hover {
+  width: 100%;
+}
+
+.name-entry {
+  font-size: 1.5em; /* Increase font size for problem name */
+  font-weight: bold;
+  margin-bottom: 5px; /* Add some space below the problem name */
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tags-entry,
+.submissions-entry,
+.difficulty-level {
+  white-space: nowrap;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 5px; /* Add some space between items */
+}
 
 
-.prblm-row {
-    display: flex;
-    margin-left:10px;
-    
-  }
-  
-  .prblm-entry {
-    flex: 1; /* Default to occupy remaining space */
-    /* border: 1px solid black; */
-    box-shadow: 0px 2px 3px red;
+.tags-entry {
+  background-color: rgb(239, 238, 238);
+  color: #333; /* Darkened text color */
+  font-size: 14px; /* Decreased font size */
+  font-weight: bold; /* Increased font weight */
+}
 
-  }
-  
-  .prblm-entry:nth-child(2) {
-    flex: 3;
-  }
-  
-  .prblm-entry:first-child,
-  .prblm-entry:last-child {
-    flex: 1; 
-  }
-  
+.submissions-entry {
+  background-color: #e7e7e7; /* Light grey background */
+  font-weight: bold; /* Increased font weight */
+  color: #333; /* Darkened text color */
+}
 
-  .prblm-row > .prblm-entry {
-    padding: 10px;
-    margin-right: 10px;
-  }
-  
-  .prblm-row {
-    border-radius: 5px;
-    /* margin: 10px; */
-    transition: transform 0.3s ease;
-  }
-  
-  .prblm-row:hover {
-    transform: scale(1.004);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  .prblm-entry:nth-child(2) {
-    flex: 3;
-    white-space: nowrap; /* Prevent wrapping */
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Add ellipsis for overflow */
-  }
-  
+.difficulty-level {
+  font-weight: bold;
+}
 
+.action {
+  margin-left: auto; /* Push the solve button to the right */
+}
 
-  .style-level{
-    /* border: 1px solid violet; */
-    /* padding: 3px; */
-    padding-left:12px;
-    padding-right:12px;
-    border-radius: 8px;
-  }
+.solve-button {
+  font-size: 17px;
+  color: grey;
+  cursor: pointer;
+  color: rgb(156, 23, 85);
+  transition: color 0.5s;
+}
 
-  .basic-difficulty span {
-    /* Styles for basic difficulty */
-/*     
-    border: 1px solid rgb(156, 232, 156);
-    color: white;
-    background-color: rgb(156, 232, 156); */
-    background-color: rgb(217, 241, 182);
-  }
-  
-  .easy-difficulty {
-    /* Styles for easy difficulty */
-  }
-  
-  .medium-difficulty {
-    /* Styles for medium difficulty */
-  }
-  
-  .hard-difficulty span{
-    background-color: rgb(246, 146, 146);
-    /* Styles for hard difficulty */
-  }
-  
+.solve-button:hover {
+  color: rgb(19, 125, 117);
+}
 
-  .solve-button {
-    background-color: #007bff; /* Blue */
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .solve-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-  }
-  
-  .prblm-entry {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .prblm-entry button {
-    align-self: flex-start; /* Align the button to the start of the flex container */
-  }
-  
+/* Difficulty level colors */
+.difficulty-level.basic-difficulty {
+  background-color: #fdf0d5;
+}
+
+.difficulty-level.easy-difficulty {
+  background-color: #78d0aa;
+}
+
+.difficulty-level.medium-difficulty {
+  background-color: #eb5e55;
+}
+
+.difficulty-level.hard-difficulty {
+  background-color: #e56881;
+}

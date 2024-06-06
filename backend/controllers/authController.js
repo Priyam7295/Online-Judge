@@ -190,11 +190,14 @@ module.exports.problem_details = async (req, res) => {
             name: prob.name,
             description: prob.description,
             difficulty: prob.difficulty,
-            testcase1:prob.testCases[0],
-            testcase2:prob.testCases[1],
+            inputLink:prob.inputLink,
+            outputLink:prob.outputLink,
             tags:prob.tags , 
             hints:prob.hints,
         };
+        
+        console.log("i----->", prob.inputLink);
+        console.log("o----->", prob.outputLink);
 
         res.json(to_send);
     } catch (error) {

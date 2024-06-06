@@ -140,11 +140,15 @@ function Contribute() {
         <div className="instructions">
           <h2 className="instructions_heading">Instructions:</h2>
           <p className="instructions_tagline">Read instructions carefully :</p>
-          <p className="instructions_points">
-            <span>1.</span> Add a minimum of 2, more test cases are preferred
-            depending on the problem.
+          <p className="instructions_points main_p">
+            <span>1.</span> The first line of your input Text must contain an integer , which means the number of TC , followed by the inputs of Testcases
           </p>
 
+          <p className="instructions_points">
+            {" "}
+            <span>2.</span> Add descriptive description and brief hints about
+            the problem , and submit the problem .{" "}
+          </p>
           <p className="instructions_points">
             {" "}
             <span>2.</span> Add descriptive description and brief hints about
@@ -224,7 +228,7 @@ function Contribute() {
               value={hints}
             />
             <br />
-            <p className="make_sure">Make sure that you have at least 30 Test Cases.</p>
+            <p className="make_sure">Make sure that you have at least <span>30</span> Test Cases.</p>
           </div>
         </div>
       </div>
