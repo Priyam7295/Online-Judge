@@ -11,8 +11,17 @@ const generateFile = require('./CC/generateFile');
 const executeCpp = require('./CC/executeCpp');
 const executePy = require('./CC/executePy');
 const generateInputFile = require('./CC/generateInputFile');
-
+const generateExpectedOutputFile= require('./CC/generateExpectedOutput');
 const PORT=5000;
+
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+
+const User = require('./models/User');
+const Problems = require('./models/Problems');
+
+
+dotenv.config();
 
 DBConnection();
 
@@ -125,7 +134,7 @@ app.post('/run', async (req, res) => {
           }
       }
       return res.status(500).json({ success: false, error: "Unknown error occurred" });
-  }
+  } 
 });
 
 
@@ -174,12 +183,66 @@ async function fetchFileContent(url) {
   }
 }
 
-app.post('/submit', async (req, res) => {
-  const { language, code, tcLink, ExpectedOutputLink } = req.body;
-  
 
-  console.log(tcLink);
-  console.log(ExpectedOutputLink);
+//  ----------------------------------------------------------------
+
+const compareOutputs = (userOutput, expectedOutput) => {
+  const userLines = userOutput.trim().split('\n');
+  const expectedLines = expectedOutput.trim().split('\n');
+
+  if (userLines.length !== expectedLines.length) {
+    return { success: false, error: 'Output length mismatch' };
+  }
+
+  const results = userLines.map((line, index) => {
+    const expectedLine = expectedLines[index].trim();
+    return {
+      testCase: index + 1,
+      passed: line.trim() === expectedLine,
+      userOutput: line.trim(),
+      expectedOutput: expectedLine,
+    };
+  });
+  const allPassed = results.every(result => result.passed);
+
+  return {
+    success: allPassed,
+    results: results,
+  };
+};
+
+// ------------------------------------
+
+// const jwt = require('jsonwebtoken');
+app.post('/submit', async (req, res) => {
+  // problemId: problem.problemID
+  const { language, code, tcLink, ExpectedOutputLink  , problemId } = req.body;
+  // console.log(problemId, language, code, tcLink, ExpectedOutputLink);
+  const token = req.cookies.jwt;
+  console.log("Token", token);
+  const decodedToken = jwt.verify(token,process.env.SECRET_KEY); //id of user
+
+
+
+  
+  // Fetch user by userId
+  const user = await User.findById(decodedToken.id);
+  console.log(user);
+  if (!user) {
+    return res.status(404).json({ success: false, error: 'User not found' });
+  }
+
+
+
+  console.log(req.body);
+
+  
+  console.log(problemId);
+
+
+
+
+
 
   try {
     const tcFilePath = decodeURIComponent(tcLink.split('/o/')[1].split('?alt=media')[0]);
@@ -196,9 +259,54 @@ app.post('/submit', async (req, res) => {
     try {
       const filePath =  await generateFile(language, code); 
       const inputPath = await generateInputFile(testCases);    
+      // const ExpectedOutputPath = await generateExpectedOutputFile(expectedOutput);
       const output = await executeCpp(filePath , inputPath);
 
-      res.json({ filePath, output });
+
+      // So we got output as user=== user output
+      // and expectedOutput as the Hardcoded corrert ouputs
+      // Needs to match both txt file if same or not and return success or false`
+      // check data type and value of both the file and return an object
+      // retunn an object in which tell testcase 1 passed , testcase 2 passed , the momemnt any testcase fails , return to frontend
+      // or if everything ok ,then 
+
+      const comparisionResult = compareOutputs(output , expectedOutput);
+
+      if(!comparisionResult.success){
+        const firstFailure = comparisionResult.results.find(result=>!result.passed);
+
+        return res.status(400).json({
+          success:false,
+          error: `Test case ${firstFailure.testCase} failed`,
+          first_failed:firstFailure.testCase,
+          expected: firstFailure.expectedOutput,
+          actual:firstFailure.userOutput,
+        })
+      }
+
+      console.log(problemId);
+      console.log(user.id);
+
+      try {
+        if (!user.solvedProblems.has(problemId)) {
+            user.solvedProblems.set(problemId, true);
+            await user.save();
+            console.log("User saved successfully with updated solvedProblems");
+        } else {
+            console.log("User already solved the problem:", problemId);
+        }
+    } catch (error) {
+        console.error("Error saving user:", error);
+        return res.status(500).json({ success: false, error: "Error saving user" });
+    }
+
+      // user.solvedProblems.set(problemId, true);
+      // await user.save();
+
+      res.status(200).json({success:true , message:"All test cases passed!" , results: comparisionResult.results})
+      
+      // console.log('User Output', output);
+      // res.json({ filePath, output });
     } catch (error) {
       if (error && error.message) {
         const errorMessage = error.message.toLowerCase(); 
@@ -212,7 +320,7 @@ app.post('/submit', async (req, res) => {
 
 
     console.log('TEST CASES FILE', testCases);
-    console.log('OUTPUT FILE', expectedOutput);
+    console.log('Expected OUTPUT FILE', expectedOutput);
 
     // res.status(200).send('Received successfully');
   } catch (error) {

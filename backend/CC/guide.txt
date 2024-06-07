@@ -1,0 +1,8 @@
+1.codes --- path where .cpp file is
+
+1.inputs --- path where input text is there
+
+3.outputs ---  this folder contains the .exe file for each .cpp in codes
+
+
+4.ExpectedOutputs = this folder contains the hardcoded .txt file that in db

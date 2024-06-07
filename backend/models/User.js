@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema({
     role:{
         type:String,
         required:[true,"Please enter your role"]
+    },
+    solvedProblems: {
+        type: Map,
+        of: Boolean,
+        default: {}
     }
 
     // the above messages gets stored in the error message 

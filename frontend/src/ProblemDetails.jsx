@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./ProblemDetails.css";
-import Twotc from "./Twotc.jsx";
+import Editor from "@monaco-editor/react";
+import HintsTab from "../smallCompo/HintsTab.jsx";
+import { Passed } from "../smallCompo/ShowTC.jsx";
+
+import { useNavigate } from 'react-router-dom';
 
 function ProblemDetails() {
   const { id } = useParams();
@@ -11,11 +15,14 @@ function ProblemDetails() {
   const [selectedLanguage, setSelectedLanguage] = useState("cpp");
   const [showCodingScreen, setShowCodingScreen] = useState(true);
   const [output, setOutput] = useState("");
+  const [verdict, setVerdict] = useState("");
   const [input, setInput] = useState("");
   const [activeTab, setActiveTab] = useState("input");
-
+  const [theme, setTheme] = useState("vs-dark");
+  const [showHints, setShowHints] = useState(false);
+  // const [firstFailed, setFirstFailed] = useState(-1); // Renamed to camelCase
   const sampleCodes = {
-    cpp: `#include <iostream>\nusing namespace std;\n\nint main(){\n\n   cout<<"Hello, World!"<<endl; \n\n   return 0;  \n}; `,
+    cpp: `#include <iostream>\nusing namespace std;\n\nint main(){\n  //Welcome to Crack the Code!  \n\n   return 0;  \n}; `,
     py: `print("Hello, World!")`,
     java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}`,
   };
@@ -45,24 +52,61 @@ function ProblemDetails() {
 
   const handleButtonClick = (buttonType) => {
     setActiveButton(buttonType);
+    if (buttonType === "p_hint") {
+      setShowHints(!showHints);
+    } else {
+      setShowHints(false);
+    }
+  };
+  console.log(problem.problemID);
+
+  const closeHints = () => {
+    setShowHints(false);
+    setActiveButton("p_desc"); // Optional: switch back to description tab
   };
 
-            
-  async function Code_Submit(){
-    const data_to_send = {language:selectedLanguage , code:code , tcLink: problem.inputLink , ExpectedOutputLink :problem.outputLink };
+  async function Code_Submit() {
+   
+    const data_to_send = {
+      language: selectedLanguage,
+      code: code,
+      tcLink: problem.inputLink,
+      ExpectedOutputLink: problem.outputLink,
+      problemId: problem.problemID,
+      
+    };
 
     try {
-      const response = await axios.post("http://localhost:5000/submit " , data_to_send,
+      const response = await axios.post(
+        "http://localhost:5000/submit",
+        data_to_send,
         {
-          withCredentials:true
-        },
+          withCredentials: true,
+        }
       );
 
-      console.log("Ouput received after running on test case input->",response.data.output);
+      console.log("Response:", response);
 
+      // If all the testcases are passed , ie expected output and hardcoded are same;
+      if (response.data.success) {
+        console.log("All test cases passed!");
+        setVerdict("All Test Cases Passed!");
+      }
+      // If fails , then we keep whats first failed;
+      else if (!response.data.success) {
+        console.log("Not all passed!");
+        console.log("First failed is", response.data.first_failed);
+        // setFirstFailed(response.data.first_failed); // Update state
+        setVerdict(response.data.error);
+      }
+      setActiveTab("verdict");
     } catch (error) {
-      console.log("Facaing error->" , error);
+      setActiveTab("verdict");
+      console.log("Error response:", error.response);
+      setVerdict(error.response?.data?.error || "An error occurred.");
     }
+
+    console.log("verdict after state update:", verdict);
   }
 
   async function Code_Run() {
@@ -77,24 +121,23 @@ function ProblemDetails() {
         }
       );
 
-      console.log("code is->", response.data);
-      console.log("code is->", response.data.output);
-      // Assuming the response contains the output of the code
-      if (response.status === 404) {
-        console.log(response.status);
-        setOutput("Noy");
-      }
-      setOutput(response.data.output);
+      console.log("Code Run Response:", response);
 
-      // Show the output section
-      setShowCodingScreen(false);
-      setActiveTab("output"); // Switch to the output tab
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
-        setOutput(`Currently ${selectedLanguage} is  not supported.`);
+      if (response.status === 200) {
+        setOutput(response.data.output);
       } else {
-        setOutput("There must be  some Error With your Code");
-        console.log("Geror", error);
+        setOutput("Unexpected response status.");
+      }
+
+      setShowCodingScreen(false);
+      setActiveTab("output");
+    } catch (error) {
+      setActiveTab("output");
+      if (error.response && error.response.status === 404) {
+        setOutput(`Currently ${selectedLanguage} is not supported.`);
+      } else {
+        setOutput("There must be some error with your code.");
+        console.log("Error:", error);
       }
     }
   }
@@ -103,6 +146,16 @@ function ProblemDetails() {
     setActiveTab(tabName);
   };
 
+  const handleCodeChange = (value) => {
+    setCode(value);
+  };
+
+  const navigate = useNavigate();
+  function goHome(e){
+    e.preventDefault();
+    navigate('/');
+  }
+
   return (
     <div>
       {problem ? (
@@ -110,7 +163,7 @@ function ProblemDetails() {
           <div className="navbar">
             <header className="header">
               <h1 className="logo">
-                <a href="#">Crack the Code</a>
+                <a href="#" onClick={goHome} >Crack the Code</a>
               </h1>
               <ul className="main-nav">
                 <li>
@@ -128,7 +181,7 @@ function ProblemDetails() {
               <div className="desc_and_hint">
                 <button
                   type="button"
-                  className={`  p_desc ${
+                  className={`p_desc ${
                     activeButton === "p_desc" ? "active" : ""
                   }`}
                   onClick={() => handleButtonClick("p_desc")}
@@ -137,13 +190,18 @@ function ProblemDetails() {
                 </button>
                 <button
                   type="button"
-                  className={`  p_hint ${
+                  className={`p_hint ${
                     activeButton === "p_hint" ? "active" : ""
                   }`}
                   onClick={() => handleButtonClick("p_hint")}
                 >
-                  Hint
+                  Hints
                 </button>
+                {activeButton === "p_hint" && (
+                  <div>
+                    <HintsTab hints={problem.hints} onClose={closeHints} />
+                  </div>
+                )}
 
                 <button className="my_sub">Submissions</button>
               </div>
@@ -173,42 +231,63 @@ function ProblemDetails() {
                   <div className="prob_description">{problem.description}</div>
 
                   <h2 className="tc_heading">TEST CASES:</h2>
-                  <h2>Link is -{problem.inputLink}</h2>
-                  <h2>{problem.outputLink}</h2>
+                  <div className="test_cases">
+                    <h3>INPUTS:</h3>
+                    <pre className="show_tc">{problem.showtc}</pre>
+                    <h3>OUTPUTS:</h3>
 
-                  {/* - - - - - - showing two sample TC block  - -- - - - - */}
-
-                  <Twotc
-                    inputLink={problem.inputLink}
-                    outputLink={problem.outputLink}
-                  />
+                    <pre className="show_output">{problem.showoutput}</pre>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div className="Item-2_prob">
-              <div className="choose_language">
-                <select
-                  name=""
-                  id=""
-                  value={selectedLanguage}
-                  onChange={(e) => {
-                    setSelectedLanguage(e.target.value);
-                  }}
-                >
-                  <option value="cpp">CPP</option>
-                  <option value="py">PYTHON</option>
-                  <option value="java">JAVA</option>
-                </select>
+              <div className="select_block">
+                <div className="choose_language">
+                  <select
+                    name=""
+                    id=""
+                    value={selectedLanguage}
+                    onChange={(e) => {
+                      setSelectedLanguage(e.target.value);
+                    }}
+                  >
+                    <option value="cpp">CPP</option>
+                    <option value="py">PYTHON</option>
+                    <option value="java">JAVA</option>
+                  </select>
+                </div>
+                <div className="choose_theme">
+                  <label htmlFor="themeSelect"></label>
+                  <select
+                    name=""
+                    id=""
+                    value={theme}
+                    onChange={(e) => {
+                      setTheme(e.target.value);
+                    }}
+                  >
+                    <option value="light">Light</option>
+                    <option value="vs-dark">Dark</option>
+                  </select>
+                </div>
               </div>
 
-              <textarea
+              <Editor
+                height="75%"
+                language={selectedLanguage}
+                theme={theme}
                 value={code}
-                className="code_block"
-                onChange={(e) => setCode(e.target.value)}
-                placeholder="Write your code here"
-                spellCheck="false"
-              ></textarea>
+                options={{
+                  inlineSuggest: true,
+                  fontSize: "16px",
+                  formatOnType: true,
+                  autoClosingBrackets: true,
+                  minimap: { scale: 10 },
+                }}
+                onChange={handleCodeChange}
+              />
 
               <div className="sample_io_section">
                 <div className="sample_io_headings">
@@ -230,11 +309,11 @@ function ProblemDetails() {
                   </div>
                   <div
                     className={`sample_io_heading ${
-                      activeTab === "testcases" ? "active" : ""
+                      activeTab === "verdict" ? "active" : ""
                     }`}
-                    onClick={() => toggleTab("testcases")}
+                    onClick={() => toggleTab("verdict")}
                   >
-                    ON TWO TESTCASES
+                    VERDICT
                   </div>
                 </div>
                 <div className="sample_io_content">
@@ -245,17 +324,25 @@ function ProblemDetails() {
                       onChange={(e) => setInput(e.target.value)}
                     />
                   )}
-                  {activeTab === "output" && (
-                    <div className="output_area">{output}</div>
-                  )}
-                  {activeTab === "testcases" && (
-                    <div className="testcases">
-                      {/* Render your test cases here */}
-                    </div>
-                  )}
-                </div>
-              </div>
 
+                  {activeTab === "output" && (
+                    <textarea
+                      className="output_area"
+                      value={output}
+                      onChange={(e) => setOutput(e.target.value)}
+                      />
+                      )}
+
+                  {activeTab === "verdict" && (
+                    <textarea
+                    className="verdict_area"
+                    value={verdict}
+                    onChange={(e) => setVerdict(e.target.value)}
+                    />
+                    )}
+                </div>
+                 
+              </div>
               <div className="button-group">
                 <button className="run-tc-button" onClick={Code_Run}>
                   Run Sample TC

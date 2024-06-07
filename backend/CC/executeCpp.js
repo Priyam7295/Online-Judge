@@ -20,7 +20,8 @@ const executeCPP = (filepath, inputPath) => {
     const outPath = path.join(outputPath, outputFilename);
 
     return new Promise((resolve, reject) => {
-        const command = `g++ "${filepath}" -o "${outPath}" && "${outPath}" < "${inputPath}"`;
+
+        const command = `g++ "${filepath}" -o "${outPath}" && cd "${outputPath}" && .\\${jobId}.exe < "${inputPath}"`;
         console.log(`Executing command: ${command}`);
 
         exec(command, (error, stdout, stderr) => {

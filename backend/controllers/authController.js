@@ -15,19 +15,19 @@ dotenv.config();
 
 
 const handleError = (err) => {
-    console.log(err.message , err.code);
-    let errors = {firstname:'',lastname:'',email:'' , password:''};
+    console.log(err.message, err.code);
+    let errors = { firstname: '', lastname: '', email: '', password: '' };
 
     // duplicate error code
 
-    if(err.code ===11000){
-        errors.email="That email is already registered";
+    if (err.code === 11000) {
+        errors.email = "That email is already registered";
         return errors;
     }
 
-    if(err.message.includes('User validation failed')){
-        Object.values(err.errors).forEach(({properties})=>{
-            errors[properties.path]=properties.message;
+    if (err.message.includes('User validation failed')) {
+        Object.values(err.errors).forEach(({ properties }) => {
+            errors[properties.path] = properties.message;
 
         });
     }
@@ -45,20 +45,20 @@ const handleError = (err) => {
 
 
 // creating token 
-const maxAge =5*60*60; //takes in sec
-const createToken = function(id){
-    return jwt.sign({id} ,process.env.SECRET_KEY , {expiresIn:maxAge}) //payload , secret key , 
+const maxAge = 5 * 60 * 60; //takes in sec
+const createToken = function (id) {
+    return jwt.sign({ id }, process.env.SECRET_KEY, { expiresIn: maxAge }) //payload , secret key , 
 }
 
 
-module.exports.login_get =(req , res)=>{
+module.exports.login_get = (req, res) => {
     res.sendFile(path.join(__dirname, '../views/login.html'));
 
 
 }
 
 // getting all problems
-module.exports.problems = async (req , res)=>{
+module.exports.problems = async (req, res) => {
     try {
         const all_problems = await Problems.find();
         console.log(all_problems);
@@ -66,54 +66,55 @@ module.exports.problems = async (req , res)=>{
         res.status(200).send(all_problems);
     } catch (error) {
         console.log(error);
-        res.status(500).send({"Error retreiving problems ": error});        
+        res.status(500).send({ "Error retreiving problems ": error });
     }
-    
+
 
 
 }
 
 
 
-module.exports.signup_post = async (req , res)=>{
+module.exports.signup_post = async (req, res) => {
 
     console.log("Request for signup");
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
     const email = req.body.email;
     let password = req.body.password;
-    let role=req.body.role;
-    
- 
+    let role = req.body.role;
+
+
 
     // hashing password 
-    let errors = {firstname:'',lastname:'',email:'' , password:'' };
-    
-    if (!password ) {
-        errors.password='Enter your password';
-        return res.status(400).json({errors});
+    let errors = { firstname: '', lastname: '', email: '', password: '' };
+
+    if (!password) {
+        errors.password = 'Enter your password';
+        return res.status(400).json({ errors });
     }
 
-    if(password.length <6){
-        errors.password='Password must be at least 6 characters long';
-        return res.status(400).json({errors});
+    if (password.length < 6) {
+        errors.password = 'Password must be at least 6 characters long';
+        return res.status(400).json({ errors });
     }
 
     let hashedPassword = await bcrypt.hash(password, 10);
     try {
-        password=hashedPassword;
-        const user = await User.create({firstname , lastname ,email ,password , role });
-        const token =createToken(user._id ,user.role);
+        password = hashedPassword;
+        const role = "admin"
+        const user = await User.create({ firstname, lastname, email, password, role });
+        const token = createToken(user._id, user.role);
 
         // place token inside cookie and send to client as response
-        res.cookie('jwt' , token , {httpOnly:true , maxAge:maxAge*1000}); //cookie expoects in milliseconds
-        console.log("Account created successfully");    
-        res.status(201).json({user:user._id , role:role}); //in above line created account in db , now sending back to frontend  
-    } 
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 }); //cookie expoects in milliseconds
+        console.log("Account created successfully");
+        res.status(201).json({ user: user._id, role: role }); //in above line created account in db , now sending back to frontend  
+    }
     catch (error) {
-        const errors =handleError(error);
-        res.status(400).json({errors});
-    } 
+        const errors = handleError(error);
+        res.status(400).json({ errors });
+    }
 }
 
 
@@ -127,15 +128,15 @@ module.exports.signup_post = async (req , res)=>{
 module.exports.login_post = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-    
-   let errors = {email:'' , password:''};
 
-   try {
+    let errors = { email: '', password: '' };
+
+    try {
         const user = await User.findOne({ email: email });
 
         if (!user) {
-            
-            errors.email='Email is not registered';
+
+            errors.email = 'Email is not registered';
             return res.status(404).json({ errors });
         }
 
@@ -143,24 +144,24 @@ module.exports.login_post = async (req, res) => {
 
         if (!passwordMatch) {
             // Here you can create and return JWT or any other authentication logic
-            errors.password='Enter correct password';
+            errors.password = 'Enter correct password';
             return res.status(400).json({ errors });
-        } 
-        
-        const token =createToken(user._id , user.role);
+        }
+
+        const token = createToken(user._id, user.role);
 
         // place token inside cookie and send to client as response
-        res.cookie('jwt' , token , {httpOnly:true , maxAge:maxAge*1000}); //cookie expoects in milliseconds
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 }); //cookie expoects in milliseconds
 
         res.status(201).json({ user: user._id });
     }
-    
-    
 
-    catch (err){
-        const errors =handleError(err);
+
+
+    catch (err) {
+        const errors = handleError(err);
         // console.log(errors);
-        res.status(400).json({errors});
+        res.status(400).json({ errors });
         // res
     }
 
@@ -169,10 +170,10 @@ module.exports.login_post = async (req, res) => {
 
 
 // logout
-module.exports.logout_get =(req , res)=>{
+module.exports.logout_get = (req, res) => {
     // changing the jwt to '' and with expiry time of 1 milliseconds
-    res.cookie('jwt','' , {maxAge:5000});
-    res.send({logout:"done"});
+    res.cookie('jwt', '', { maxAge: 5000 });
+    res.send({ logout: "done" });
 };
 
 
@@ -183,25 +184,28 @@ module.exports.problem_details = async (req, res) => {
         const prob_id = req.params.id;
         console.log(req.body);
         const prob = await Problems.findOne({ "_id": prob_id });
-        
+
         console.log(prob);
-        
+
         let to_send = {
             name: prob.name,
             description: prob.description,
             difficulty: prob.difficulty,
-            inputLink:prob.inputLink,
-            outputLink:prob.outputLink,
-            tags:prob.tags , 
-            hints:prob.hints,
+            inputLink: prob.inputLink,
+            outputLink: prob.outputLink,
+            tags: prob.tags,
+            hints: prob.hints,
+            showtc: prob.showtc,
+            showoutput: prob.showoutput,
+            problemID:prob.id,
         };
-        
+
         console.log("i----->", prob.inputLink);
         console.log("o----->", prob.outputLink);
 
         res.json(to_send);
     } catch (error) {
-        
+
         res.status(400).json({ message: "Internal server error" });
     }
 }
@@ -214,11 +218,11 @@ module.exports.problem_details = async (req, res) => {
 // posting problems , can be done by me only 
 module.exports.postProb = async (req, res) => {
     console.log(req.body.data);
-    
-    const { name, description, difficulty, inputLink , outputLink, tags , hints } = req.body;
 
-    let errors = { name: '', description: '', difficulty: '' , inputLink:'' , outputLink :''  };
-    
+    const { name, description, difficulty, inputLink, outputLink, tags, hints, showtc, showoutput } = req.body;
+
+    let errors = { name: '', description: '', difficulty: '', inputLink: '', outputLink: '', showtc: '', showoutput: '' };
+
     if (!name) {
         errors.name = 'Enter Problem name';
         return res.status(400).json({ errors });
@@ -231,19 +235,27 @@ module.exports.postProb = async (req, res) => {
         errors.difficulty = 'Enter the difficulty level';
         return res.status(400).json({ errors });
     }
-    if(!inputLink){
-        errors.inputLink="Input Link is not there";
-        return res.status(400).json({errors});
+    if (!inputLink) {
+        errors.inputLink = "Input Link is not there";
+        return res.status(400).json({ errors });
     }
-    if(!outputLink){
-        errors.outputLink="Output Link is not there";
-        return res.status(400).json({errors});
+    if (!outputLink) {
+        errors.outputLink = "Output Link is not there";
+        return res.status(400).json({ errors });
+    }
+    if (!showtc) {
+        errors.outputLink = "sample TC is not there for user";
+        return res.status(400).json({ errors });
+    }
+    if (!showoutput) {
+        errors.outputLink = "sample output of sample TC is not there for user";
+        return res.status(400).json({ errors });
     }
 
     try {
         // Create the problem with test cases
-        const createProblem = await Problems.create({ name  , tags , description , difficulty , hints , inputLink , outputLink  });
-        
+        const createProblem = await Problems.create({ name, tags, description, difficulty, hints, inputLink, outputLink, showtc, showoutput });
+
         console.log("Problem added successfully", createProblem);
         res.status(201).json({ createProblem });
     } catch (error) {
@@ -251,3 +263,4 @@ module.exports.postProb = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+

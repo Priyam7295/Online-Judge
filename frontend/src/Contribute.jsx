@@ -1,40 +1,43 @@
 // Contribute.js
-import React, { useState } from 'react';
-import './Contribute.css';
-import axios from 'axios';
-import My_image from './assets/two.png';
+import React, { useState } from "react";
+import "./Contribute.css";
+import axios from "axios";
+import My_image from "./assets/two.png";
 // import { Navigate } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import Upload from './Upload.jsx'
+import { useNavigate } from "react-router-dom";
+import Upload from "./Upload.jsx";
 
-import  { TestcasesDownloadLink, OutputsDownloadLink } from './Upload';
-
+import { TestcasesDownloadLink, OutputsDownloadLink } from "./Upload";
 
 function Contribute() {
-  const [name, setName] = useState('');
-  const [tags, setTags] = useState('');
-  const [description, setDescription] = useState('');
-  const [hints, setHints] = useState('');
-  const [difficulty, setDifficulty] = useState('');
-  const [testCases, setTestCases] = useState([{ inputs: [], expectedOutput: '' }]);
-  const [nameError, setNameError] = useState('');
-  const [descriptionError, setDescriptionError] = useState('');
-  const [difficultyError, setDifficultyError] = useState('');
+  const [name, setName] = useState("");
+  const [tags, setTags] = useState("");
+  const [description, setDescription] = useState("");
+  const [hints, setHints] = useState("");
+  const [difficulty, setDifficulty] = useState("");
+  const [testCases, setTestCases] = useState([
+    { inputs: [], expectedOutput: "" },
+  ]);
+  const [nameError, setNameError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const [difficultyError, setDifficultyError] = useState("");
   const [redirect, setRedirect] = useState(false);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const [showtc, setShowtc] = useState("");
+  const [showoutput, setShowoutput] = useState("");
+
   // First checking that if user authenticated or not if not then redirect
-      
-  const fetchData = async function() {
+
+  const fetchData = async function () {
     try {
-      const res = await axios.get('http://localhost:5000/problems_post', {
-        withCredentials: true
+      const res = await axios.get("http://localhost:5000/problems_post", {
+        withCredentials: true,
       });
       // Handle response data here
-      if(!res.data.authenticated){
-        console.log("Pakda liya na bssdke")
-        navigate('/login');
-
+      if (!res.data.authenticated) {
+        console.log("Pakda liya na bssdke");
+        navigate("/login");
       }
 
       setIsLoading(false);
@@ -42,12 +45,15 @@ function Contribute() {
       console.log(res.data);
     } catch (error) {
       // Handle errors here
-      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-        navigate('/login');
+      if (
+        error.response &&
+        (error.response.status === 401 || error.response.status === 403)
+      ) {
+        navigate("/login");
       }
     }
   };
-  
+
   // Call the fetchData function
   fetchData();
 
@@ -58,22 +64,24 @@ function Contribute() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
-      
-    
     console.log(TestcasesDownloadLink);
     console.log(OutputsDownloadLink);
     try {
-      const response = await axios.post('http://localhost:5000/problems_post', {
-        name,
-        description,
-        difficulty,
-        tags,
-        hints,
-        inputLink:TestcasesDownloadLink, 
-        outputLink:OutputsDownloadLink,
-        
-      }, { withCredentials: true });
+      const response = await axios.post(
+        "http://localhost:5000/problems_post",
+        {
+          name,
+          description,
+          difficulty,
+          tags,
+          hints,
+          inputLink: TestcasesDownloadLink,
+          outputLink: OutputsDownloadLink,
+          showtc ,
+          showoutput
+        },
+        { withCredentials: true }
+      );
       const data = response.data;
       console.log("data", response.data);
       if (data.errors) {
@@ -83,7 +91,7 @@ function Contribute() {
       } else {
         console.log("Question added successfully");
         alert("Thank you for your contribution!");
-        navigate('/');
+        navigate("/");
         setRedirect(true);
         // Redirect or handle success
       }
@@ -92,7 +100,7 @@ function Contribute() {
     }
   };
 
-  if(redirect){
+  if (redirect) {
     return <Navigate to="/" />;
   }
 
@@ -109,7 +117,7 @@ function Contribute() {
   };
 
   const addTestCase = () => {
-    setTestCases([...testCases, { inputs: [], expectedOutput: '' }]);
+    setTestCases([...testCases, { inputs: [], expectedOutput: "" }]);
   };
 
   const removeTestCase = (index) => {
@@ -120,7 +128,7 @@ function Contribute() {
 
   const addInputField = (testCaseIndex) => {
     const updatedTestCases = [...testCases];
-    updatedTestCases[testCaseIndex].inputs.push({ key: '', value: '' });
+    updatedTestCases[testCaseIndex].inputs.push({ key: "", value: "" });
     setTestCases(updatedTestCases);
   };
 
@@ -129,7 +137,9 @@ function Contribute() {
     updatedTestCases[testCaseIndex].inputs.splice(inputIndex, 1);
     setTestCases(updatedTestCases);
   };
-  const minTC =2;
+  const minTC = 2;
+  // console.log(showtc);
+  // console.log(showoutput);
   return (
     <div className="container">
       <div className="left-section">
@@ -141,17 +151,19 @@ function Contribute() {
           <h2 className="instructions_heading">Instructions:</h2>
           <p className="instructions_tagline">Read instructions carefully :</p>
           <p className="instructions_points main_p">
-            <span>1.</span> The first line of your input Text must contain an integer , which means the number of TC , followed by the inputs of Testcases
+            <span>1.</span> The first line of your input Text must contain an
+            integer , which means the number of TC , followed by the inputs of
+            Testcases
           </p>
 
           <p className="instructions_points">
             {" "}
-            <span>2.</span> Add descriptive description and brief hints about
-            the problem , and submit the problem .{" "}
+            <span>2.</span>Make sure you give Test-Cases in the first txt file and outputs corresponding to the input Test-Cases in the second txt File. 
+            .{" "}
           </p>
           <p className="instructions_points">
             {" "}
-            <span>2.</span> Add descriptive description and brief hints about
+            <span>3.</span> Add descriptive description and brief hints about
             the problem , and submit the problem .{" "}
           </p>
         </div>
@@ -161,23 +173,29 @@ function Contribute() {
         <div className="form-container">
           <div className="first_form">
             <form onSubmit={handleSubmit} action="POST">
-              <label className="probniklenge">PROBLEM NAME:</label>
-              <input
-                type="text"
-                onChange={(e) => setName(e.target.value)}
-                required
-                value={name}
-              />
+              <label className="probniklenge">
+                PROBLEM NAME:
+                <input
+                  classname="prob_inp"
+                  type="text"
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  value={name}
+                />
+              </label>
               <br />
 
               <label className="tagsniklenge">Choose Tags</label>
+              <br />
               <select
                 className="DropDown"
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
                 required
               >
-                <option value="">Select Tags</option>
+                <option value="" className="select_best_tag">
+                  Select the best Suited Tag
+                </option>
                 <option value="arrays">Arrays</option>
                 <option value="Hash-Map">Hash-Map</option>
                 <option value="Maths">Maths</option>
@@ -186,6 +204,7 @@ function Contribute() {
               <br />
 
               <label className="levelniklenge">Difficulty Level:</label>
+              <br />
               <select
                 className="DropDown"
                 value={difficulty}
@@ -199,36 +218,68 @@ function Contribute() {
                 <option value="hard">Hard</option>
               </select>
               <br />
+              <br />
+              <br />
 
+              <div className="label_show_tc">
+                Add Sample TC to show it to User
+                <textarea
+                  className="show_tc"
+                  type="text"
+                  onChange={(e) => setShowtc(e.target.value)}
+                  required
+                  value={showtc}
+                ></textarea>
+              </div>
 
+              <div className="label_show_output">
+                Add Output to show User
+                <textarea
+                  className="show_output"
+                  type="text"
+                  onChange={(e) => setShowoutput(e.target.value)}
+                  required
+                  value={showoutput}
+                ></textarea>
+              </div>
+
+              <br />
             </form>
-
-              <Upload/>
-              
-            <input  onClick={handleSubmit} className="create_prob" type="submit" value="Submit" />
           </div>
 
           <div className="second_form">
-            <label className="add_desc">ADD DESCRIPTION:</label>
-            <textarea
-              className="desc_area"
-              type="text"
-              onChange={(e) => setDescription(e.target.value)}
-              required
-              value={description}
-            />
-            <br />
+            <form onSubmit={handleSubmit} action="POST">
+              <div className="add_desc">ADD DESCRIPTION:
+              <textarea
+                className="desc_area"
+                type="text"
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                value={description}
+              />
+              <br />
 
-            <label className="add_hints">HINTS:</label>
-            <textarea
-              className="hints_area"
-              type="text"
-              onChange={(e) => setHints(e.target.value)}
-              required
-              value={hints}
-            />
-            <br />
-            <p className="make_sure">Make sure that you have at least <span>30</span> Test Cases.</p>
+              </div>
+
+              <div className="add_hints">HINTS:
+
+              <textarea
+                className="hints_area"
+                type="text"
+                onChange={(e) => setHints(e.target.value)}
+                required
+                value={hints}
+              />
+              <br />
+              </div>
+              <p className="make_sure">
+                Make sure that you have at least <span>30</span> Test Cases .
+              </p>
+
+              <Upload />
+
+              <input className="create_prob" type="submit" value="Submit" />
+            </form>
           </div>
         </div>
       </div>

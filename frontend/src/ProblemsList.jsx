@@ -55,6 +55,7 @@ const ProblemsList = () => {
           });
 
           setBasicP(countBasic);
+          
           setEasyP(countEasy);
           setMediumP(countMedium);
           setHardP(countHard);
