@@ -461,18 +461,30 @@ a {
 
 .p_levelbasic {
   background-color: greenyellow;
+/* color: white; */
+padding-left:9px;
 }
 
 .p_leveleasy {
   background-color: #7ef97e;
+/* color: white; */
+padding-left:9px;
 }
 
 .p_levelmedium {
   background-color: #f9d076;
+color: white;
+text-transform: uppercase;
+padding-left:9px;
 }
 
 .p_levelhard {
   background-color: #ff6666;
+  text-transform: uppercase;
+  color: white;
+  padding-left:9px;
+  letter-spacing: 1px;
+  padding-right:9px;
 }
 
 .button-group {

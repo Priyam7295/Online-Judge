@@ -6,7 +6,7 @@ import "./ProblemsList.css";
 import { useNavigate } from "react-router-dom";
 import User_img from "./assets/user.png";
 import ShowSingleP from "./ShowSingleP";
-
+// import { useNavigate } from "react-router-dom"
 Chart.register(ArcElement);
 
 const ProblemsList = () => {
@@ -18,6 +18,16 @@ const ProblemsList = () => {
   const [mediumP, setMediumP] = useState(0);
   const [hardP, setHardP] = useState(0);
   const navigate = useNavigate();
+  const [solved_easy, setSolved_easy] = useState(0);
+  const [solved_basic, setSolved_basic] = useState(0);
+  const [solved_medium, setSolved_medium] = useState(0);
+  const [solved_hard, setSolved_hard] = useState(0);
+  const [userid, setUserid] = useState(null);
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  const calculateWidth = (solved, total) => {
+    return total === 0 ? "0%" : `${(solved / total) * 100}%`;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,16 +36,28 @@ const ProblemsList = () => {
           withCredentials: true,
         });
 
-        if (Array.isArray(response.data)) {
+        if (Array.isArray(response.data.all_problems)) {
           setIsAuthenticated(true);
-          setProblems(response.data);
+          setProblems(response.data.all_problems);
 
+          // TOTAL PROBLEMS
           let countBasic = 0;
           let countEasy = 0;
           let countMedium = 0;
           let countHard = 0;
+          console.log(response);
 
-          response.data.forEach((problem) => {
+          // SOLVED BY USERS
+          setSolved_easy(response.data.easySolved);
+          setSolved_basic(response.data.basicSolved);
+          setSolved_medium(response.data.mediumSolved);
+          setSolved_hard(response.data.hardSolved);
+          const user_id = response.data.user_id;
+          setUserid(user_id);
+          setDataLoaded(true);  // Mark data as loaded
+          console.log(user_id);
+
+          response.data.all_problems.forEach((problem) => {
             switch (problem.difficulty) {
               case "basic":
                 countBasic++;
@@ -55,7 +77,6 @@ const ProblemsList = () => {
           });
 
           setBasicP(countBasic);
-          
           setEasyP(countEasy);
           setMediumP(countMedium);
           setHardP(countHard);
@@ -86,6 +107,10 @@ const ProblemsList = () => {
     return <div>Error: {error.message}</div>;
   }
 
+  if (!dataLoaded) {
+    return <div>Loading...</div>;  // Ensure data is loaded before rendering
+  }
+
   const data = {
     labels: ["Basic", "Easy", "Medium", "Hard"],
     datasets: [
@@ -97,12 +122,16 @@ const ProblemsList = () => {
     ],
   };
 
+  function moveHome(){
+    navigate("/");
+  }
+
   return (
     <div>
       <div className="navbar navbar_more">
         <header className="header header_more">
           <h1 className="logo">
-            <a href="#">Crack the Code</a>
+            <a href="#" onClick={moveHome}>Crack the Code</a>
           </h1>
           <ul className="main-nav">
             <img className="User_img" src={User_img} alt="" />
@@ -133,7 +162,9 @@ const ProblemsList = () => {
                   problems.map((problem) => (
                     <ShowSingleP
                       key={problem._id}
-                      id={problem._id}
+                      prob_id={problem._id}
+                      user_id={userid}
+
                       name={problem.name}
                       description={problem.description}
                       difficulty={problem.difficulty}
@@ -150,28 +181,48 @@ const ProblemsList = () => {
         </div>
 
         <div className="side_block">
-           <h4> Total Problems:</h4>
+          <h4>Total Problems:</h4>
           <div className="pie-chart-container">
             <Pie data={data} />
           </div>
-            <h3 className="bar_g">Your Progress</h3>
+          <h3 className="bar_g">Your Progress</h3>
           <div className="solved-problems">
             <ul>
               <li className="bar basic-bar">
-                <div className="bar-inner basic-bar" style={{ width: "50%" }}></div>
-                <span className="count">2/{basicP}</span>
+                <div
+                  className="bar-inner basic-bar"
+                  style={{ width: calculateWidth(solved_basic, basicP) }}
+                ></div>
+                <span className="count">
+                  {solved_basic}/{basicP}
+                </span>
               </li>
               <li className="bar easy-bar">
-                <div className="bar-inner easy-bar" style={{ width: "20%" }}></div>
-                <span className="count">1/{easyP}</span>
+                <div
+                  className="bar-inner easy-bar"
+                  style={{ width: calculateWidth(solved_easy, easyP) }}
+                ></div>
+                <span className="count">
+                  {solved_easy}/{easyP}
+                </span>
               </li>
               <li className="bar medium-bar">
-                <div className="bar-inner medium-bar" style={{ width: "100%" }}></div>
-                <span className="count">1/{mediumP}</span>
+                <div
+                  className="bar-inner medium-bar"
+                  style={{ width: calculateWidth(solved_medium, mediumP) }}
+                ></div>
+                <span className="count">
+                  {solved_medium}/{mediumP}
+                </span>
               </li>
               <li className="bar hard-bar">
-                <div className="bar-inner hard-bar" style={{ width: "50%" }}></div>
-                <span className="count">1/{hardP}</span>
+                <div
+                  className="bar-inner hard-bar"
+                  style={{ width: calculateWidth(solved_hard, hardP) }}
+                ></div>
+                <span className="count">
+                  {solved_hard}/{hardP}
+                </span>
               </li>
             </ul>
           </div>

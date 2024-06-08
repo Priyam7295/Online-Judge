@@ -60,10 +60,19 @@ module.exports.login_get = (req, res) => {
 // getting all problems
 module.exports.problems = async (req, res) => {
     try {
+        const token =req.cookies.jwt;
+        console.log("Token ->>>",req.cookies.jwt);  //token
+        const decodedToken = jwt.verify(token, process.env.SECRET_KEY); // decoding --got user details like payload given and expiry time
+        const user = await User.findById(decodedToken.id); //Fetching by userID
+        console.log(user.easyP);
+        console.log(user.basicP);
+        console.log(user.mediumP);
+        console.log(user.hardP);
+
         const all_problems = await Problems.find();
-        console.log(all_problems);
+        // console.log(all_problems);
         // all_problems is an array in which each problem is an object
-        res.status(200).send(all_problems);
+        res.status(200).json({all_problems:all_problems ,"easySolved" :user.easyP , "basicSolved" :user.basicP  ,"mediumSolved":user.mediumP ,"hardSolved":user.hardP , "user_id":decodedToken.id});
     } catch (error) {
         console.log(error);
         res.status(500).send({ "Error retreiving problems ": error });

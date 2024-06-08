@@ -6,7 +6,7 @@ import Editor from "@monaco-editor/react";
 import HintsTab from "../smallCompo/HintsTab.jsx";
 import { Passed } from "../smallCompo/ShowTC.jsx";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function ProblemDetails() {
   const { id } = useParams();
@@ -19,7 +19,11 @@ function ProblemDetails() {
   const [input, setInput] = useState("");
   const [activeTab, setActiveTab] = useState("input");
   const [theme, setTheme] = useState("vs-dark");
+  const [showsubmissions, setShowsubmissions] = useState(false);
   const [showHints, setShowHints] = useState(false);
+  const [countpassed, setCountpassed] = useState(0);
+  const [countfailed, setCountfailed] = useState(0);
+
   // const [firstFailed, setFirstFailed] = useState(-1); // Renamed to camelCase
   const sampleCodes = {
     cpp: `#include <iostream>\nusing namespace std;\n\nint main(){\n  //Welcome to Crack the Code!  \n\n   return 0;  \n}; `,
@@ -58,7 +62,7 @@ function ProblemDetails() {
       setShowHints(false);
     }
   };
-  console.log(problem.problemID);
+  // console.log(problem.problemID);
 
   const closeHints = () => {
     setShowHints(false);
@@ -66,14 +70,12 @@ function ProblemDetails() {
   };
 
   async function Code_Submit() {
-   
     const data_to_send = {
       language: selectedLanguage,
       code: code,
       tcLink: problem.inputLink,
       ExpectedOutputLink: problem.outputLink,
       problemId: problem.problemID,
-      
     };
 
     try {
@@ -88,9 +90,17 @@ function ProblemDetails() {
       console.log("Response:", response);
 
       // If all the testcases are passed , ie expected output and hardcoded are same;
-      if (response.data.success) {
+      if (response.data.success && !response.data.alreadySolved) {
         console.log("All test cases passed!");
         setVerdict("All Test Cases Passed!");
+        setCountpassed(countpassed + 1);
+      } else if (response.data.success && response.data.alreadySolved) {
+        // when all passed but already solved earlier
+        console.log("All test case passed but it was solved earlier");
+        setVerdict(
+          "All Test Cases Passed!\nYou will Get Marks only for first Submission"
+        );
+
       }
       // If fails , then we keep whats first failed;
       else if (!response.data.success) {
@@ -98,10 +108,12 @@ function ProblemDetails() {
         console.log("First failed is", response.data.first_failed);
         // setFirstFailed(response.data.first_failed); // Update state
         setVerdict(response.data.error);
+       
       }
       setActiveTab("verdict");
     } catch (error) {
       setActiveTab("verdict");
+
       console.log("Error response:", error.response);
       setVerdict(error.response?.data?.error || "An error occurred.");
     }
@@ -151,9 +163,13 @@ function ProblemDetails() {
   };
 
   const navigate = useNavigate();
-  function goHome(e){
+  function goHome(e) {
     e.preventDefault();
-    navigate('/');
+    navigate("/");
+  }
+
+  function Submissions() {
+    setShowsubmissions(!showsubmissions);
   }
 
   return (
@@ -163,7 +179,9 @@ function ProblemDetails() {
           <div className="navbar">
             <header className="header">
               <h1 className="logo">
-                <a href="#" onClick={goHome} >Crack the Code</a>
+                <a href="#" onClick={goHome}>
+                  Crack the Code
+                </a>
               </h1>
               <ul className="main-nav">
                 <li>
@@ -203,8 +221,12 @@ function ProblemDetails() {
                   </div>
                 )}
 
-                <button className="my_sub">Submissions</button>
+                <button className="my_sub" onClick={Submissions}>
+                  Submissions
+                </button>
               </div>
+
+
 
               <div>
                 <div className="name_and_tags">
@@ -330,18 +352,17 @@ function ProblemDetails() {
                       className="output_area"
                       value={output}
                       onChange={(e) => setOutput(e.target.value)}
-                      />
-                      )}
+                    />
+                  )}
 
                   {activeTab === "verdict" && (
                     <textarea
-                    className="verdict_area"
-                    value={verdict}
-                    onChange={(e) => setVerdict(e.target.value)}
+                      className="verdict_area"
+                      value={verdict}
+                      onChange={(e) => setVerdict(e.target.value)}
                     />
-                    )}
+                  )}
                 </div>
-                 
               </div>
               <div className="button-group">
                 <button className="run-tc-button" onClick={Code_Run}>
