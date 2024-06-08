@@ -23,7 +23,7 @@ function ProblemDetails() {
   const [showHints, setShowHints] = useState(false);
   const [countpassed, setCountpassed] = useState(0);
   const [countfailed, setCountfailed] = useState(0);
-
+  
   // const [firstFailed, setFirstFailed] = useState(-1); // Renamed to camelCase
   const sampleCodes = {
     cpp: `#include <iostream>\nusing namespace std;\n\nint main(){\n  //Welcome to Crack the Code!  \n\n   return 0;  \n}; `,
@@ -125,34 +125,36 @@ function ProblemDetails() {
     const data_to_send = { language: selectedLanguage, code: code, input };
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/run",
-        data_to_send,
-        {
-          withCredentials: true,
+        const response = await axios.post(
+            "http://localhost:5000/run",
+            data_to_send,
+            {
+                withCredentials: true,
+            }
+        );
+
+        console.log("Code Run Response:", response);
+
+        if (response.status === 200) {
+            setOutput(response.data.output);
+        } else {
+            setOutput("Unexpected response status.");
         }
-      );
+        console.log(response);
 
-      console.log("Code Run Response:", response);
-
-      if (response.status === 200) {
-        setOutput(response.data.output);
-      } else {
-        setOutput("Unexpected response status.");
-      }
-
-      setShowCodingScreen(false);
-      setActiveTab("output");
+        setShowCodingScreen(false);
+        setActiveTab("output");
     } catch (error) {
-      setActiveTab("output");
-      if (error.response && error.response.status === 404) {
-        setOutput(`Currently ${selectedLanguage} is not supported.`);
-      } else {
-        setOutput("There must be some error with your code.");
-        console.log("Error:", error);
-      }
+        setActiveTab("output");
+        if (error.response && error.response.status === 404) {
+            setOutput(`Currently ${selectedLanguage} is not supported.`);
+        } else {
+            setOutput(error.response?.data?.error || "There must be some error with your code.");
+            console.log("Error:", error);
+        }
     }
-  }
+}
+
 
   const toggleTab = (tabName) => {
     setActiveTab(tabName);

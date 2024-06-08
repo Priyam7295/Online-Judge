@@ -133,7 +133,7 @@ app.post('/run', async (req, res) => {
         return res.status(400).json({ success: false, error: error.message });
       }
     }
-    return res.status(500).json({ success: false, error: "Unknown error occurred" });
+    return res.status(500).json({ success: false, error: error });
   }
 });
 
@@ -392,7 +392,7 @@ app.get('/users/:userId', async (req, res) => {
     if (!user) {
       // Return a 404 response if user not found
       
-      return res.status(404).json({ error: 'User not found' });
+      return res.status (404).json({ error: 'User not found' });
     }
 
     // User found, return user data

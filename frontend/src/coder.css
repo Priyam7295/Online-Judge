@@ -52,17 +52,31 @@
 
   .tagline {
     font-family: 'Abril Fatface', cursive;
-    /* font-size: 50px; */
     padding: 40px;
     margin: auto;
     margin-left: 85px;
     color: #1C2541;
     font-size: 48px;
     font-weight: 500;
-    display: inline-block; /* Allows width adjustment */
-    border-bottom: 3px solid #FF5733; /* Change the color of the underline */
-    width: 70%; /* Adjust the width of the underline */
-}
+    display: inline-block;
+    border-bottom: 3px solid #FF5733;
+    width: 70%;
+    opacity: 0; /* Start with zero opacity */
+    transform: scale(0.5); /* Start with smaller size */
+    animation: revealText 1s ease forwards;
+  }
+  
+  @keyframes revealText {
+    0% {
+      opacity: 0; /* Start with zero opacity */
+      transform: scale(0.5); /* Start with smaller size */
+    }
+    100% {
+      opacity: 1; /* End with full opacity */
+      transform: scale(1); /* End with original size */
+    }
+  }
+  
 
 
 .description {

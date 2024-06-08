@@ -33,7 +33,7 @@ const executeCPP = (filepath, inputPath) => {
 
             if (stderr) {
                 console.warn(`Execution stderr:`, stderr);
-                reject(`Execution stderr: ${stderr}`);
+                reject(stderr);
                 return;
             }
 
