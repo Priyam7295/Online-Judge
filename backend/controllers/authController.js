@@ -207,6 +207,7 @@ module.exports.problem_details = async (req, res) => {
             showtc: prob.showtc,
             showoutput: prob.showoutput,
             problemID:prob.id,
+            constraints:prob.constraints,
         };
 
         console.log("i----->", prob.inputLink);
@@ -228,9 +229,9 @@ module.exports.problem_details = async (req, res) => {
 module.exports.postProb = async (req, res) => {
     console.log(req.body.data);
 
-    const { name, description, difficulty, inputLink, outputLink, tags, hints, showtc, showoutput } = req.body;
+    const { name, description, difficulty, inputLink, outputLink, tags, hints, showtc, showoutput , constraints } = req.body;
 
-    let errors = { name: '', description: '', difficulty: '', inputLink: '', outputLink: '', showtc: '', showoutput: '' };
+    let errors = { name: '', description: '', difficulty: '', inputLink: '', outputLink: '', showtc: '', showoutput: ''  , constraints};
 
     if (!name) {
         errors.name = 'Enter Problem name';
@@ -260,10 +261,14 @@ module.exports.postProb = async (req, res) => {
         errors.outputLink = "sample output of sample TC is not there for user";
         return res.status(400).json({ errors });
     }
+    if (!constraints) {
+        errors.outputLink = "sample output of sample TC is not there for user";
+        return res.status(400).json({ errors });
+    }
 
     try {
         // Create the problem with test cases
-        const createProblem = await Problems.create({ name, tags, description, difficulty, hints, inputLink, outputLink, showtc, showoutput });
+        const createProblem = await Problems.create({ name, tags, description, difficulty, hints, inputLink, outputLink, showtc, showoutput , constraints });
 
         console.log("Problem added successfully", createProblem);
         res.status(201).json({ createProblem });

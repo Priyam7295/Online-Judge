@@ -289,6 +289,7 @@ a {
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
   border-radius: 20px;
   /* font-size: 10px; */
+  margin-bottom: 23px;
   font-weight: 400;
   word-spacing: 1.4px;
 }
@@ -668,7 +669,26 @@ padding-left:9px;
 }
 
 
+.prob_constraints{
+  border:1ps solid black;
+}
 
 
+
+.con{
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-left:15px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  margin-top:10px;
+  border-radius: 7px;
+  padding-bottom: 10px;
+  word-spacing: 2px;
+  /* background-color: #17a2b8; */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-right:10px;
+  margin-left:14px;
+}
 
 

@@ -21,6 +21,10 @@ const problemSchema = new mongoose.Schema({
     type: String,
     required: [true, "Enter hints"],
   },
+  constraints:{
+    type:String , 
+    required:[true , "Enter the contrainst"],
+  },
   showtc :{
     type:String ,
     required:[true , "Enter 1-2 Tc to show"]

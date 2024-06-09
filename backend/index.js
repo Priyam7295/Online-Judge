@@ -273,8 +273,8 @@ app.post('/submit', async (req, res) => {
 
       const comparisionResult = compareOutputs(output, expectedOutput);
 
-      // console.log("User output" , output);
-      // console.log('Expected OUTPUT FILE', expectedOutput);
+      console.log("User output" , output);
+      console.log('Expected OUTPUT FILE', expectedOutput);
 
       // output length didnot match
       if (!comparisionResult.success) {

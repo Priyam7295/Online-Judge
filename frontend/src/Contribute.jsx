@@ -1,9 +1,7 @@
-// Contribute.js
 import React, { useState } from "react";
 import "./Contribute.css";
 import axios from "axios";
 import My_image from "./assets/two.png";
-// import { Navigate } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import Upload from "./Upload.jsx";
 
@@ -15,6 +13,7 @@ function Contribute() {
   const [description, setDescription] = useState("");
   const [hints, setHints] = useState("");
   const [difficulty, setDifficulty] = useState("");
+  const [constraints, setConstraints] = useState("");
   const [testCases, setTestCases] = useState([
     { inputs: [], expectedOutput: "" },
   ]);
@@ -77,8 +76,9 @@ function Contribute() {
           hints,
           inputLink: TestcasesDownloadLink,
           outputLink: OutputsDownloadLink,
-          showtc ,
-          showoutput
+          showtc,
+          showoutput,
+          constraints,
         },
         { withCredentials: true }
       );
@@ -158,8 +158,9 @@ function Contribute() {
 
           <p className="instructions_points">
             {" "}
-            <span>2.</span>Make sure you give Test-Cases in the first txt file and outputs corresponding to the input Test-Cases in the second txt File. 
-            .{" "}
+            <span>2.</span>Make sure you give Test-Cases in the first txt file
+            and outputs corresponding to the input Test-Cases in the second txt
+            File. .{" "}
           </p>
           <p className="instructions_points">
             {" "}
@@ -242,43 +243,57 @@ function Contribute() {
                   value={showoutput}
                 ></textarea>
               </div>
-
+              
+              <label className="constraintsniklenge">
+                <h2>ADD CONSTRAINTS:</h2>
+                <textarea
+                  className="constraints_area"
+                  type="text"
+                  onChange={(e) => setConstraints(e.target.value)}
+                  required
+                  value={constraints}
+                />
+              </label>
               <br />
             </form>
           </div>
 
           <div className="second_form">
             <form onSubmit={handleSubmit} action="POST">
-              <div className="add_desc">ADD DESCRIPTION:
-              <textarea
-                className="desc_area"
-                type="text"
-                onChange={(e) => setDescription(e.target.value)}
-                required
-                value={description}
-              />
+              <div className="add_desc">
+                ADD DESCRIPTION:
+                <textarea
+                  className="desc_area"
+                  type="text"
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                  value={description}
+                />
+                <br />
+              </div>
               <br />
 
+              <div className="add_hints">
+                HINTS:
+                <textarea
+                  className="hints_area"
+                  type="text"
+                  onChange={(e) => setHints(e.target.value)}
+                  required
+                  value={hints}
+                />
+                <br />
               </div>
-
-              <div className="add_hints">HINTS:
-
-              <textarea
-                className="hints_area"
-                type="text"
-                onChange={(e) => setHints(e.target.value)}
-                required
-                value={hints}
-              />
-              <br />
-              </div>
-              <p className="make_sure">
-                Make sure that you have at least <span>30</span> Test Cases .
-              </p>
+              <p className="upload_txt">UPLOAD YOUR TEXT-FILES HERE:</p>
 
               <Upload />
 
-              <input className="create_prob" type="submit" value="Submit" />
+              <div className="submit">
+                <button className="submit-button" type="submit">
+                  Submit
+                </button>
+              </div>
+              <br />
             </form>
           </div>
         </div>

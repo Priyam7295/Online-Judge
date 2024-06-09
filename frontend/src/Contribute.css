@@ -182,12 +182,18 @@
 .add_desc,
 .add_hints,
 .levelniklenge,
-.tagsniklenge {
+.tagsniklenge ,
+.add_constraints {
   letter-spacing: 1px;
   font-weight: 600;
   font-size: 18px;
   padding-top: 10px;
   
+  }
+
+  .hints_area{
+    height:70px;
+    max-height: 70px;
   }
   
   .probniklenge {
@@ -244,6 +250,7 @@
   resize: vertical;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
 
 .label_show_tc textarea:focus, .label_show_output textarea:focus {
   border-color: #66afe9;
@@ -336,4 +343,72 @@
   border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 12px;
+}
+
+.submit_button {
+  width:70%;
+  padding-left: 30px;
+width: 100%;
+}
+.submit{
+  margin-top:20px;
+  /* background-color:#ff5733 ; */
+  }
+
+  .constraintsniklenge{
+    height: 30px;
+  }
+
+
+
+  /* Styling for constraints textarea */
+.constraints_area {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  margin: 10px 0;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  resize: vertical;
+}
+
+
+/* Ensure styles for the overall form elements */
+textarea {
+  font-family: Arial, sans-serif;
+}
+
+input, select, textarea {
+  box-sizing: border-box;
+}
+
+
+.upload_txt{
+  margin-top:80px;
+  margin-left: 20px;
+}
+
+.upload_comp{
+  background-color: pink;
+}
+
+.constraintsniklenge h2{
+  letter-spacing: 1px;
+  margin-top: 4px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.constraints_area{
+  
+  max-height:100px ;
+  background-color:#f8f8f8;
+}
+
+
+.upload_txt{
+  /* background-color: #ddd; */
+  font-weight: 600;
 }

@@ -7,6 +7,7 @@ import HintsTab from "../smallCompo/HintsTab.jsx";
 import { Passed } from "../smallCompo/ShowTC.jsx";
 
 import { useNavigate } from "react-router-dom";
+// import {  } from "./PassedButton.jsx";
 
 function ProblemDetails() {
   const { id } = useParams();
@@ -23,7 +24,7 @@ function ProblemDetails() {
   const [showHints, setShowHints] = useState(false);
   const [countpassed, setCountpassed] = useState(0);
   const [countfailed, setCountfailed] = useState(0);
-  
+
   // const [firstFailed, setFirstFailed] = useState(-1); // Renamed to camelCase
   const sampleCodes = {
     cpp: `#include <iostream>\nusing namespace std;\n\nint main(){\n  //Welcome to Crack the Code!  \n\n   return 0;  \n}; `,
@@ -53,7 +54,7 @@ function ProblemDetails() {
 
     fetchProblem();
   }, [id]);
-
+  // console.log(response.data);
   const handleButtonClick = (buttonType) => {
     setActiveButton(buttonType);
     if (buttonType === "p_hint") {
@@ -62,7 +63,7 @@ function ProblemDetails() {
       setShowHints(false);
     }
   };
-  // console.log(problem.problemID);
+  // console.log(problem);
 
   const closeHints = () => {
     setShowHints(false);
@@ -100,7 +101,6 @@ function ProblemDetails() {
         setVerdict(
           "All Test Cases Passed!\nYou will Get Marks only for first Submission"
         );
-
       }
       // If fails , then we keep whats first failed;
       else if (!response.data.success) {
@@ -108,7 +108,6 @@ function ProblemDetails() {
         console.log("First failed is", response.data.first_failed);
         // setFirstFailed(response.data.first_failed); // Update state
         setVerdict(response.data.error);
-       
       }
       setActiveTab("verdict");
     } catch (error) {
@@ -125,36 +124,38 @@ function ProblemDetails() {
     const data_to_send = { language: selectedLanguage, code: code, input };
 
     try {
-        const response = await axios.post(
-            "http://localhost:5000/run",
-            data_to_send,
-            {
-                withCredentials: true,
-            }
-        );
-
-        console.log("Code Run Response:", response);
-
-        if (response.status === 200) {
-            setOutput(response.data.output);
-        } else {
-            setOutput("Unexpected response status.");
+      const response = await axios.post(
+        "http://localhost:5000/run",
+        data_to_send,
+        {
+          withCredentials: true,
         }
-        console.log(response);
+      );
 
-        setShowCodingScreen(false);
-        setActiveTab("output");
+      console.log("Code Run Response:", response);
+
+      if (response.status === 200) {
+        setOutput(response.data.output);
+      } else {
+        setOutput("Unexpected response status.");
+      }
+      console.log(response);
+
+      setShowCodingScreen(false);
+      setActiveTab("output");
     } catch (error) {
-        setActiveTab("output");
-        if (error.response && error.response.status === 404) {
-            setOutput(`Currently ${selectedLanguage} is not supported.`);
-        } else {
-            setOutput(error.response?.data?.error || "There must be some error with your code.");
-            console.log("Error:", error);
-        }
+      setActiveTab("output");
+      if (error.response && error.response.status === 404) {
+        setOutput(`Currently ${selectedLanguage} is not supported.`);
+      } else {
+        setOutput(
+          error.response?.data?.error ||
+            "There must be some error with your code."
+        );
+        console.log("Error:", error);
+      }
     }
-}
-
+  }
 
   const toggleTab = (tabName) => {
     setActiveTab(tabName);
@@ -173,7 +174,7 @@ function ProblemDetails() {
   function Submissions() {
     setShowsubmissions(!showsubmissions);
   }
-
+  console.log(problem);
   return (
     <div>
       {problem ? (
@@ -228,8 +229,6 @@ function ProblemDetails() {
                 </button>
               </div>
 
-
-
               <div>
                 <div className="name_and_tags">
                   <div className="prob_name">{problem.name}</div>
@@ -253,6 +252,11 @@ function ProblemDetails() {
                 <div className="prob_info">
                   <h2 className="prob_state">Problem Statement</h2>
                   <div className="prob_description">{problem.description}</div>
+
+                  <div className="prob_constraints">
+                    <h2 className="prob_state prob_con">CONSTRAINTS</h2>
+                    <div className="con">{problem.constraints} </div>
+                  </div>
 
                   <h2 className="tc_heading">TEST CASES:</h2>
                   <div className="test_cases">

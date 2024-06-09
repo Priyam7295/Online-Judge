@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import app from "./firebase.js";
+import "./Upload.css"
 import {
   getStorage,
   ref,
@@ -69,7 +70,7 @@ function Upload() {
     <div className="upload">
       <form>
         <div>
-          <label htmlFor="testcases">TESTCASES:</label>{" "}
+          <label className="upload_heading" htmlFor="testcases">TESTCASES:</label>{" "}
           {tcperc && "Uploading " + tcperc + "%"}
           <br />
           <input
@@ -82,7 +83,7 @@ function Upload() {
         <div>
           <br />
           <div>
-            <label htmlFor="outputs">Output:</label>{" "}
+            <label className="upload_heading" htmlFor="outputs">Output:</label>{" "}
             {outperc && "Uploading " + outperc + "%"}
             <br />
             <input
@@ -93,7 +94,7 @@ function Upload() {
             />
           </div>
           <br />
-          <button type="submit">Upload</button>
+          {/* <button type="submit">Upload</button> */}
         </div>
       </form>
     </div>
