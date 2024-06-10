@@ -6,6 +6,7 @@ import "./ProblemsList.css";
 import { useNavigate } from "react-router-dom";
 import User_img from "./assets/user.png";
 import ShowSingleP from "./ShowSingleP";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // import { useNavigate } from "react-router-dom"
 Chart.register(ArcElement);
 
@@ -32,7 +33,7 @@ const ProblemsList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/problems", {
+        const response = await axios.get(`${API_BASE_URL}/problems`, {
           withCredentials: true,
         });
 
@@ -91,6 +92,7 @@ const ProblemsList = () => {
           error.response &&
           (error.response.status === 401 || error.response.status === 403)
         ) {
+          // console.log("pkda")
           navigate("/login");
         }
       }
@@ -116,7 +118,7 @@ const ProblemsList = () => {
     datasets: [
       {
         data: [basicP, easyP, mediumP, hardP],
-        backgroundColor: ["#FDF0D5", "#78D0AA", "#EB5E55", "#e56881"],
+        backgroundColor: ["#CCE8CC", "#AEE1AE", "#FF8360", "#E94233"],
         hoverBackgroundColor: ["#FFD54F", "#81C784", "#FF8A65", "#FF5252"],
       },
     ],

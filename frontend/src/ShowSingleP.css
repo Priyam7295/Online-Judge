@@ -1,88 +1,93 @@
 .single-entry {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 columns with equal width */
+  gap: 5px; /* Gap between grid items */
   border-radius: 10px;
-  width: 99%;
   border: 1px solid #ccc;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   padding: 10px;
   transition: width 0.5s;
-  margin-bottom: 1px;
+  margin-right: 10px;
+  margin-bottom: 10px; /* Increased margin-bottom for better spacing */
+}
+.single-entry:hover{
+  
+}
+/* Apply red underline if problem is not attempted */
+.single-entry.not-attempted {
+  border-left: 3px solid red;
 }
 
-.single-entry:hover {
-  width: 100%;
+/* Apply green underline if problem is done */
+.single-entry.done {
+  border-left: 3px solid green;
 }
 
-.name-entry {
-  font-size: 1.5em; /* Increase font size for problem name */
-  font-weight: bold;
-  margin-bottom: 5px; /* Add some space below the problem name */
-}
-
-.details {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
+/* Other styles for grid items */
+.name-entry,
 .tags-entry,
 .submissions-entry,
-.difficulty-level {
-  white-space: nowrap;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 5px; /* Add some space between items */
-}
-
-
-.tags-entry {
-  background-color: rgb(239, 238, 238);
-  color: #333; /* Darkened text color */
-  font-size: 14px; /* Decreased font size */
-  font-weight: bold; /* Increased font weight */
-}
-
-.submissions-entry {
-  background-color: #e7e7e7; /* Light grey background */
-  font-weight: bold; /* Increased font weight */
-  color: #333; /* Darkened text color */
-}
-
-.difficulty-level {
-  font-weight: bold;
-}
-
+.difficulty-level,
 .action {
-  margin-left: auto; /* Push the solve button to the right */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  font-size: 14px;
+  }
+  
+  .name-entry{
+    font-weight: 630;
+    font-size: 18px;
+
 }
 
+/* Style for solve button */
 .solve-button {
-  font-size: 17px;
+  font-size: 18px;
   color: grey;
   cursor: pointer;
   color: rgb(156, 23, 85);
+  /* border: 0.5px solid black; */
   transition: color 0.5s;
+  font-weight: 600;
+  transition: color 0.6s;
 }
 
 .solve-button:hover {
-  color: rgb(19, 125, 117);
+  color: rgb(227, 145, 196);
 }
 
 /* Difficulty level colors */
 .difficulty-level.basic-difficulty {
-  background-color: #fdf0d5;
+  border:1px solid #CCE8CC;
+text-transform:uppercase;
+border-radius: 20px;
+font-weight: 500; 
 }
+
+
 
 .difficulty-level.easy-difficulty {
-  background-color: #78d0aa;
-}
+  /* background-color: #AEE1AE; */
+  border-radius: 20px;
+  border:2px solid #CCE8CC;
+  font-weight: 500;
+  /* color:#CCE8CC; */
 
-.difficulty-level.medium-difficulty {
-  background-color: #eb5e55;
+  text-transform:uppercase;
+  /* margin-left: 20px; */
+  /* margin-left: 20px; */
+  }
+  
+  .difficulty-level.medium-difficulty {
+    border-radius: 20px;
+    text-transform:uppercase;
+    border:2px solid #FF8360;
+    }
+    
+    .difficulty-level.hard-difficulty {
+    border-radius: 20px;
+  text-transform:uppercase;
+  border:2px solid #E94233;
 }
-
-.difficulty-level.hard-difficulty {
-  background-color: #e56881;
-  /* color: white; */
-}
-

@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import "./SLoginSignup.css"
 import { useNavigate } from 'react-router-dom';
 import Home_image from './assets/house-icon.png'
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function SLoginSignup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,7 +12,7 @@ function SLoginSignup() {
   const [passwordError, setPasswordError] = useState('');
   const [cookies, setCookie] = useCookies(['token']);
   const [loggedin, setIsloggedin] = useState(false);
-
+  console.log(API_BASE_URL);
   const navigate =useNavigate();
 
   const data_send_to_backend = {
@@ -23,7 +23,7 @@ function SLoginSignup() {
   const login = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/login', data_send_to_backend, { withCredentials: true });
+      const res = await axios.post(`${API_BASE_URL}/login`, data_send_to_backend, { withCredentials: true });
       const data = await res.data;
       console.log(res);
       if (data.errors) {

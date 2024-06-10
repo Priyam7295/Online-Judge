@@ -4,7 +4,7 @@ import axios from "axios";
 import My_image from "./assets/two.png";
 import { useNavigate } from "react-router-dom";
 import Upload from "./Upload.jsx";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { TestcasesDownloadLink, OutputsDownloadLink } from "./Upload";
 
 function Contribute() {
@@ -30,12 +30,12 @@ function Contribute() {
 
   const fetchData = async function () {
     try {
-      const res = await axios.get("http://localhost:5000/problems_post", {
+      const res = await axios.get(`${API_BASE_URL}/problems_post`, {
         withCredentials: true,
       });
       // Handle response data here
       if (!res.data.authenticated) {
-        console.log("Pakda liya na bssdke");
+        console.log("Caught You");
         navigate("/login");
       }
 
@@ -67,7 +67,7 @@ function Contribute() {
     console.log(OutputsDownloadLink);
     try {
       const response = await axios.post(
-        "http://localhost:5000/problems_post",
+        `${API_BASE_URL}/problems_post`,
         {
           name,
           description,

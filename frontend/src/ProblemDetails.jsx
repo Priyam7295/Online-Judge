@@ -5,7 +5,7 @@ import "./ProblemDetails.css";
 import Editor from "@monaco-editor/react";
 import HintsTab from "../smallCompo/HintsTab.jsx";
 import { Passed } from "../smallCompo/ShowTC.jsx";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { useNavigate } from "react-router-dom";
 // import {  } from "./PassedButton.jsx";
 
@@ -41,7 +41,7 @@ function ProblemDetails() {
     const fetchProblem = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/problems/${id}`,
+          `${API_BASE_URL}/problems/${id}`,
           {
             withCredentials: true,
           }
@@ -81,7 +81,7 @@ function ProblemDetails() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/submit",
+        `${API_BASE_URL}/submit`,
         data_to_send,
         {
           withCredentials: true,
@@ -125,7 +125,7 @@ function ProblemDetails() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/run",
+        `${API_BASE_URL}/run`,
         data_to_send,
         {
           withCredentials: true,

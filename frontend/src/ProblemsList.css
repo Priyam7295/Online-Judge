@@ -118,8 +118,15 @@
   margin-right: 30px;
   margin-left: 30px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-  padding: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
   border-radius: 10px;
+  padding-top:15px;
+  padding-bottom:30px;
+  padding-right:25px;
+  margin-left: 50px;
+  padding-left: 15px;
+  margin-right: 50px;
 }
 
 .solved-problems h3 {
@@ -158,20 +165,26 @@
   height: 100%;
 }
 
+.bar_g{
+  font-weight: 600;
+  margin-bottom: 17px;
+  font-size: 23px;
+}
+
 .solved-problems .bar-inner.basic-bar {
-  background-color: #FDF0D5;
+  background-color: #CCE8CC;
 }
 
 .solved-problems .bar-inner.easy-bar {
-  background-color: #78D0AA;
+  background-color: #AEE1AE;
 }
 
 .solved-problems .bar-inner.medium-bar {
-  background-color: #EB5E55;
+  background-color: #FF8360;
 }
 
 .solved-problems .bar-inner.hard-bar {
-  background-color: #e56881;
+  background-color: #E94233;
 }
 
 .solved-problems .count {
@@ -196,4 +209,14 @@
   font-size:21px;
   font-weight: 500;
   
+
+
+}
+
+
+.leader_board{
+  margin-top:20px;
+  font-size:22px;
+  font-weight: 600;
+  color:#3e3e3e;
 }

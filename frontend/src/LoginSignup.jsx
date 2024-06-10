@@ -5,6 +5,7 @@ import "./LoginSignup.css"
 import image from './assets/two.png'
 import Home_image from './assets/house-icon.png'
 import { useNavigate } from 'react-router-dom';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function LoginSignup() {
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
@@ -26,7 +27,7 @@ function LoginSignup() {
   const submit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/signup', data_send_to_backend, { withCredentials: true });
+      const res = await axios.post(`${API_BASE_URL}/signup`, data_send_to_backend, { withCredentials: true });
       const data = res.data;
       if (data.errors) {
         setEmailError(data.errors.email || '');

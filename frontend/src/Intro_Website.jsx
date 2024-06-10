@@ -2,7 +2,7 @@ import React from 'react'
 import gifImage from './assets/coder.gif'
 import './coder.css'
 import {Link} from 'react-router-dom'
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Intro_Website() {
   return (
     <div className="coder-image" >

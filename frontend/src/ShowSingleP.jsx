@@ -2,32 +2,15 @@ import React, { useState, useEffect } from "react";
 import "./ShowSingleP.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+
 
 function ShowSingleP({ user_id, prob_id, name, description, difficulty, tags, submissions }) {
   const navigate = useNavigate();
   const [probsolved, setProbsolved] = useState("NOT ATTEMPTED");
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/users/${user_id}`, { withCredentials: true });
-        const userData = response.data;
-        const solvedProblems = userData.solvedProblems;
-        const solvedProblemsMap = new Map(Object.entries(solvedProblems));
-
-        if (solvedProblemsMap.has(prob_id)) {
-          setProbsolved("DONE");
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      } finally {
-        setLoading(false); // Set loading to false after fetching data
-      }
-    };
-
-    fetchUserData();
-  }, [user_id, prob_id]);
 
   function getDifficultyClass(difficulty) {
     switch (difficulty) {
@@ -43,23 +26,43 @@ function ShowSingleP({ user_id, prob_id, name, description, difficulty, tags, su
         return "";
     }
   }
+  
+
+
+  useEffect(() => {
+
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/users/${user_id}`, { withCredentials: true });
+        const userData = response.data;
+        const solvedProblems = userData.solvedProblems;
+        const solvedProblemsMap = new Map(Object.entries(solvedProblems));
+
+        if (solvedProblemsMap.has(prob_id)) {
+          setProbsolved("DONE");
+        } else {
+          setProbsolved("NOT ATTEMPTED"); // Ensure that "NOT ATTEMPTED" state is set
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [user_id, prob_id]);
 
   function Solve_this_Problem() {
     navigate(`/problems/${prob_id}`);
   }
 
   return (
-    <div className="single-entry">
+    <div className={`single-entry ${probsolved === "DONE" ? "done" : "not-attempted"}`}>
       <div className="name-entry">{name}</div>
-      <div className="details">
-        <div className="tags-entry">
-          <div className="tags_sty">{tags}</div>
-        </div>
-        <div className="submissions-entry">{loading ? "LOADING" : probsolved}</div> {/* Display "LOADING" while loading */}
-        <div className={`difficulty-level ${getDifficultyClass(difficulty)}`}>
-          {difficulty}
-        </div>
-      </div>
+      <div className="tags-entry">{tags}</div>
+      <div className="submissions-entry">{loading ? "LOADING" : probsolved}</div>
+      <div className={`difficulty-level ${getDifficultyClass(difficulty)}`}>{difficulty}</div>
       <div className="action">
         <button className={`solve-button ${probsolved === "DONE" ? "done" : "not-attempted"}`} onClick={Solve_this_Problem}>
           Solve &gt;
@@ -68,5 +71,6 @@ function ShowSingleP({ user_id, prob_id, name, description, difficulty, tags, su
     </div>
   );
 }
+
 
 export default ShowSingleP;

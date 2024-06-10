@@ -3,7 +3,7 @@ import './HeaderLogin.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Header() {
   const [logout, setLogout] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState('');
@@ -14,7 +14,7 @@ function Header() {
 
   const manageLogout = async () => {
     try {
-      await axios.get(`http://localhost:5000/logout`, {
+      await axios.get(`${API_BASE_URL}/logout`, {
         withCredentials: true
       });
       setLogout(true);
@@ -49,11 +49,11 @@ function Header() {
           Logout
         </button>
         
-        {!isLoggedIn && (
+        {/* {!isLoggedIn && ( */}
           <button className="signup-button">
             <Link to="/login">Login</Link>
           </button>
-        )}
+        {/* )} */}
 
 
       </div>
