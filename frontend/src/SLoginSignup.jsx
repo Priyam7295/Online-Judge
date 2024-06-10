@@ -26,6 +26,9 @@ function SLoginSignup() {
       const res = await axios.post(`${API_BASE_URL}/login`, data_send_to_backend, { withCredentials: true });
       const data = await res.data;
       console.log(res);
+      console.log(res.cookies);
+      console.log(res);
+      console.log(res.headers);
       if (data.errors) {
         console.log(data.errors);
         setEmailError(data.errors.email || '');
@@ -34,7 +37,7 @@ function SLoginSignup() {
         console.log("Login Successfully");
         setCookie('jwt', res.headers['set-cookie'], { path: '/' });
         setIsloggedin(true);
-        location.assign('/');
+        // location.assign('/');
       }
     } catch (err) {
       if (err.response && err.response.status === 400) {
