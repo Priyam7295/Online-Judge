@@ -10,7 +10,7 @@ function SLoginSignup() {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [cookies, setCookie] = useCookies(['token']);
+
   const [loggedin, setIsloggedin] = useState(false);
   console.log(API_BASE_URL);
   const navigate =useNavigate();
@@ -25,7 +25,10 @@ function SLoginSignup() {
     try {
       const res = await axios.post(`${API_BASE_URL}/login`, data_send_to_backend, { withCredentials: true });
       const data = await res.data;
-      console.log(res);
+      console.log(res.data);
+      console.log(res.header);
+      const {token_got} =res.data;
+      console.log("Toek got->",token_got);
       console.log(res.cookies);
       console.log(res);
       console.log(res.headers);
@@ -35,7 +38,7 @@ function SLoginSignup() {
         setPasswordError(data.errors.password || '');
       } else {
         console.log("Login Successfully");
-        setCookie('jwt', res.headers['set-cookie'], { path: '/' });
+
         setIsloggedin(true);
         // location.assign('/');
       }

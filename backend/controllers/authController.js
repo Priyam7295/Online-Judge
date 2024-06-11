@@ -116,7 +116,7 @@ module.exports.signup_post = async (req, res) => {
         const token = createToken(user._id, user.role);
 
         // place token inside cookie and send to client as response
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 }); //cookie expoects in milliseconds
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 ,sameSite:'None', secure: true });//cookie expoects in milliseconds
         console.log("Account created successfully");
         res.status(201).json({ user: user._id, role: role }); //in above line created account in db , now sending back to frontend  
     }
@@ -160,9 +160,9 @@ module.exports.login_post = async (req, res) => {
         const token = createToken(user._id, user.role);
 
         // place token inside cookie and send to client as response
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 , sameSite:'none' , secure: true }); //cookie expoects in milliseconds
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 ,sameSite:'None' , secure: true }); //cookie expoects in milliseconds
 
-        res.status(201).json({ user: user._id });
+        res.status(201).json({ user: user._id,jwt: token });
     }
 
 
@@ -181,7 +181,7 @@ module.exports.login_post = async (req, res) => {
 // logout
 module.exports.logout_get = (req, res) => {
     // changing the jwt to '' and with expiry time of 1 milliseconds
-    res.cookie('jwt', '', { maxAge: 5000 });
+    res.cookie('jwt', '', { maxAge: 5000 ,sameSite:'None' , secure: true }); // cookie expoects in milliseconds
     res.send({ logout: "done" });
 };
 
