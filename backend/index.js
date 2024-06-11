@@ -32,7 +32,7 @@ app.use(cookieParser()); //we need to use this middleware for cookie
 
 app.use(
   cors({
-    origin: ['http://localhost:5176','http://localhost:5173','http://localhost:5174','https://localhost:5174','https://localhost:5173' ,  ], // Replace with your React app's domain
+    origin: ['https://online-judge-4ypq6yt.vercel.app','https://online-judge-4ypq6yt-priyams-projects-c7c3c963.vercel.app' , 'http://localhost:5176'  ], // Replace with your React app's domain
     credentials: true, // This allows the server to accept cookies from the client
   })
 );
@@ -93,7 +93,7 @@ app.get('/read-cookies', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
-  res.clearCookie('jwt', { httpOnly: true, secure: false, sameSite: 'none' , secure:true });
+  res.clearCookie('jwt', { httpOnly: true, secure: false, SameSite: 'None' , Secure:true });
   // Send a response to the client
   res.status(200).json({ message: 'Logged out successfully' });
 });

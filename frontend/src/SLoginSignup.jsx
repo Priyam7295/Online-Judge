@@ -40,7 +40,7 @@ function SLoginSignup() {
         console.log("Login Successfully");
 
         setIsloggedin(true);
-        // location.assign('/');
+        location.assign('/');
       }
     } catch (err) {
       if (err.response && err.response.status === 400) {

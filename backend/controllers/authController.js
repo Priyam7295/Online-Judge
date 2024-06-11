@@ -181,7 +181,7 @@ module.exports.login_post = async (req, res) => {
 // logout
 module.exports.logout_get = (req, res) => {
     // changing the jwt to '' and with expiry time of 1 milliseconds
-    res.cookie('jwt', '', { maxAge: 5000 ,sameSite:'None' , secure: true }); // cookie expoects in milliseconds
+    res.cookie('jwt', '', { maxAge: 5000 ,sameSite:'None' , secure:true });
     res.send({ logout: "done" });
 };
 
