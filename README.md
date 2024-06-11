@@ -4,8 +4,8 @@
 
 ### CONTENTS
 * #### FEATURES
-* #### DEMO
 * #### TECH STACK USED
+* #### DEMO
 * #### INSTALLATION
   
 
@@ -18,11 +18,9 @@
 * User can also filter out the questions based on tags , and can solve questions related to that particular topic.
 * Questions can also be filtered on the basis of **DIFFICULTY** level , which makes it accessible to for every kind of users , from bigginner to advanced.
 * It shows user an interface where one can see how many questions he/she has solved out of total based on difficulty level.
-* It supports multple Coding Languages like **CPP** and **PYTHON** and Java to be added very soon.
+* It supports multiple Coding Languages like **CPP** and **PYTHON** and Java to be added very soon.
 
 
-
-### DEMO
 
 
 
@@ -34,7 +32,6 @@
 
 <div style="display: flex;">
   <img src="https://github.com/Priyam7295/Online-Judge/assets/136225328/9fd4595f-7262-4f22-a3be-951a150bb938" width="160"  />
-
 </div>
 
 #### BACKEND
@@ -85,7 +82,19 @@ Jason Web Token `(JWT)` - Used to ensure robust **AUTHENTICATION** and **AUTHORI
 
 `VERCEL` - for deploying frontend
 
-![image](https://github.com/Priyam7295/Online-Judge/assets/136225328/683b7956-6df3-43f4-8a5f-6872377da36b)
+
+### DEMO
+#### HIGH LEVEL DESIGN 
+
+
+<img src="HLD.png" alt="Image Description" style="width:340px;">
+
+
+#### DEMO VIDEO
+https://github.com/Priyam7295/Online-Judge/assets/136225328/8176d230-f115-4ebb-b393-96b3c2174f6e
+
+
+
 
 
 
