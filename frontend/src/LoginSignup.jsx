@@ -28,7 +28,7 @@ function LoginSignup() {
     e.preventDefault();
     try {
       const res = await axios.post(`${API_BASE_URL}/signup`, data_send_to_backend, { withCredentials: true });
-      const data = res.data;
+      const data =await  res.data;
       if (data.errors) {
         setEmailError(data.errors.email || '');
         setPasswordError(data.errors.password || '');

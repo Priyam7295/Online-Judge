@@ -160,7 +160,7 @@ module.exports.login_post = async (req, res) => {
         const token = createToken(user._id, user.role);
 
         // place token inside cookie and send to client as response
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 }); //cookie expoects in milliseconds
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 , sameSite:'none' , secure: true }); //cookie expoects in milliseconds
 
         res.status(201).json({ user: user._id });
     }

@@ -32,7 +32,7 @@ app.use(cookieParser()); //we need to use this middleware for cookie
 
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Replace with your React app's domain
+    origin: ['http://localhost:5173','http://localhost:5174','https://localhost:5174','https://localhost:5173' ], // Replace with your React app's domain
     credentials: true, // This allows the server to accept cookies from the client
   })
 );
