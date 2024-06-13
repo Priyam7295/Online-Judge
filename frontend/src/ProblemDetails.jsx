@@ -24,7 +24,7 @@ function ProblemDetails() {
   const [showHints, setShowHints] = useState(false);
   const [countpassed, setCountpassed] = useState(0);
   const [countfailed, setCountfailed] = useState(0);
-
+  const [passed , setPassed] =useState(0);
   // const [firstFailed, setFirstFailed] = useState(-1); // Renamed to camelCase
   const sampleCodes = {
     cpp: `#include <iostream>\nusing namespace std;\n\nint main(){\n  //Welcome to Crack the Code!  \n\n   return 0;  \n}; `,
@@ -70,6 +70,16 @@ function ProblemDetails() {
     setActiveButton("p_desc"); // Optional: switch back to description tab
   };
 
+  // ////////// adding history of submissions
+
+  // /////////////
+
+
+  function Submission_history(){
+    console.log("Submissions button clicked")
+    navigate(`/submission_history/${id}`);
+  }
+
   async function Code_Submit() {
     const data_to_send = {
       language: selectedLanguage,
@@ -94,6 +104,7 @@ function ProblemDetails() {
       if (response.data.success && !response.data.alreadySolved) {
         console.log("All test cases passed!");
         setVerdict("All Test Cases Passed!");
+        setPassed(1);
         setCountpassed(countpassed + 1);
       } else if (response.data.success && response.data.alreadySolved) {
         // when all passed but already solved earlier
@@ -101,6 +112,7 @@ function ProblemDetails() {
         setVerdict(
           "All Test Cases Passed!\nYou will Get Marks only for first Submission"
         );
+        setPassed(1);
       }
       // If fails , then we keep whats first failed;
       else if (!response.data.success) {
@@ -108,8 +120,14 @@ function ProblemDetails() {
         console.log("First failed is", response.data.first_failed);
         // setFirstFailed(response.data.first_failed); // Update state
         setVerdict(response.data.error);
+        setPassed(0);
       }
       setActiveTab("verdict");
+
+
+
+
+
     } catch (error) {
       setActiveTab("verdict");
 
@@ -224,7 +242,7 @@ function ProblemDetails() {
                   </div>
                 )}
 
-                <button className="my_sub" onClick={Submissions}>
+                <button className="my_sub" onClick={Submission_history}>
                   Submissions
                 </button>
               </div>

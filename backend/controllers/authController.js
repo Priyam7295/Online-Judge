@@ -1,6 +1,7 @@
 const path = require('path');
 const User = require('../models/User');
 const Problems = require('../models/Problems');
+const Submission =require('../models/Submissions');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
@@ -278,3 +279,5 @@ module.exports.postProb = async (req, res) => {
     }
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//            ADDING PAST SUBMISSIONS HISTORY 

@@ -6,13 +6,14 @@ const path = require('path');
 const cors = require('cors');
 const authController = require('./controllers/authController');
 const { requireAuth } = require('./middleware/authMiddleware');
-const { useNavigate } = require('react-router-dom');
+const { useNavigate, useParams } = require('react-router-dom');
 const generateFile = require('./CC/generateFile');
 const executeCpp = require('./CC/executeCpp');
 const executePy = require('./CC/executePy');
 const generateInputFile = require('./CC/generateInputFile');
 const generateExpectedOutputFile = require('./CC/generateExpectedOutput');
 const PORT = 5000;
+// const PORT = 8080;
 
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
@@ -32,7 +33,7 @@ app.use(cookieParser()); //we need to use this middleware for cookie
 
 app.use(
   cors({
-    origin: ['https://online-judge-4ypq6yt.vercel.app','https://online-judge-4ypq6yt-priyams-projects-c7c3c963.vercel.app' , 'http://localhost:5176'  ], // Replace with your React app's domain
+    origin: ['https://online-judge-4ypq6yt.vercel.app', 'https://online-judge-4ypq6yt-priyams-projects-c7c3c963.vercel.app', 'http://localhost:5176', 'http://localhost:5174'], // Replace with your React app's domain
     credentials: true, // This allows the server to accept cookies from the client
   })
 );
@@ -93,7 +94,7 @@ app.get('/read-cookies', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
-  res.clearCookie('jwt', { httpOnly: true, secure: false, SameSite: 'None' , Secure:true });
+  res.clearCookie('jwt', { httpOnly: true, secure: false, SameSite: 'None', Secure: true });
   // Send a response to the client
   res.status(200).json({ message: 'Logged out successfully' });
 });
@@ -213,16 +214,50 @@ const compareOutputs = (userOutput, expectedOutput) => {
 
 // ------------------------------------
 
+
+
+
+const Submission = require('./models/Submissions');
+
+async function AddSubmission(submission_data) {
+  try {
+    const { user_id, prob_id, language, code, verdict,  prob_name } = submission_data;
+
+    const newSubmission = {
+      language: language,
+      code: code,
+      verdict: verdict,
+    
+      prob_name: prob_name,
+    };
+
+    await Submission.updateOne(
+      { user_id: user_id, prob_id: prob_id, prob_name: prob_name },
+      { $push: { submissions: { $each: [newSubmission], $position: 0 } } },
+      { upsert: true }
+    );
+    
+    console.log('Submission data added successfully');
+  } catch (error) {
+    console.error('Error adding submission data:', error);
+  }
+}
+
+
+
+
+
 // const jwt = require('jsonwebtoken');
 app.post('/submit', async (req, res) => {
   // problemId: problem.problemID
   const { language, code, tcLink, ExpectedOutputLink, problemId } = req.body;
   // console.log(problemId, language, code, tcLink, ExpectedOutputLink);
   const token = req.cookies.jwt;
-  console.log("Token", token);
+
   const decodedToken = jwt.verify(token, process.env.SECRET_KEY); //id of user
+  console.log("decoded Token is ", decodedToken);
 
-
+  // user_id is==> decodedToken.id;
 
 
   // Fetch user by userId
@@ -230,20 +265,8 @@ app.post('/submit', async (req, res) => {
   const prob = await Problems.findById(problemId);
   console.log(user);
   if (!user) {
-    return res.status(404).json({ success: false, error: 'User not found' });
+    return res.status(404).json({ success: false, error: 'User not found ! Login to Submit Code' });
   }
-
-
-
-  // console.log(req.body);
-
-
-  // console.log(problemId);
-
-
-
-
-
 
   try {
     const tcFilePath = decodeURIComponent(tcLink.split('/o/')[1].split('?alt=media')[0]);
@@ -256,12 +279,26 @@ app.post('/submit', async (req, res) => {
     const expectedOutput = await fetchFileContent(outputSignedUrl);
 
 
+    // ////////////////////////////////////////////
+    let add_in_his = {
+      code: code,
+      language: language,
 
+      user_id: decodedToken.id,
+      prob_id: problemId,
+      prob_name: prob.name,
+      success: 0,
+
+
+    }
     try {
       const filePath = await generateFile(language, code);
       const inputPath = await generateInputFile(testCases);
       // const ExpectedOutputPath = await generateExpectedOutputFile(expectedOutput);
       const output = await executeCpp(filePath, inputPath);
+
+
+      // to send to submission history blcok / / // / / / / /
 
 
       // So we got output as user=== user output
@@ -273,12 +310,16 @@ app.post('/submit', async (req, res) => {
 
       const comparisionResult = compareOutputs(output, expectedOutput);
 
-      console.log("User output" , output);
-      console.log('Expected OUTPUT FILE', expectedOutput);
+      // console.log("User output" , output);
+      // console.log('Expected OUTPUT FILE', expectedOutput);
 
       // output length didnot match
       if (!comparisionResult.success) {
         if (comparisionResult.error === 'Output length mismatched , Check what you are printing!!') {
+          add_in_his.verdict = "Output length mismatched";
+          add_in_his.success = 1;
+          // 287
+          await AddSubmission(add_in_his);
           return res.status(400).json({
             success: false,
             error: comparisionResult.error,
@@ -289,7 +330,9 @@ app.post('/submit', async (req, res) => {
 
       if (!comparisionResult.success) {
         const firstFailure = comparisionResult.results.find(result => !result.passed);
-
+        add_in_his.verdict = `TC ${firstFailure.testCase} failed`;
+        add_in_his.success = 0;
+        await AddSubmission(add_in_his);
         return res.status(400).json({
           success: false,
           error: `Test case ${firstFailure.testCase} failed`,
@@ -301,7 +344,7 @@ app.post('/submit', async (req, res) => {
 
       // console.log(problemId);
       // console.log(user.id);
-      let earlierSolved =false;
+      let earlierSolved = false;
       try {
         if (!user.solvedProblems.has(problemId)) {
           user.solvedProblems.set(problemId, true);
@@ -310,21 +353,21 @@ app.post('/submit', async (req, res) => {
           console.log("User saved successfully with updated solvedProblems");
           /////////////// UPDATING THE SOLVED PROBLEM COUNT BY USER /////////
           console.log(prob.difficulty);
-          const probLevel =  prob.difficulty;
-          if (probLevel === "easy" && user.easyP===0) {
+          const probLevel = prob.difficulty;
+          if (probLevel === "easy" && user.easyP === 0) {
             user.easyP += 1;
             user.save();
           }
 
-          else if (probLevel === "basic" && user.basicP===0) {
+          else if (probLevel === "basic" && user.basicP === 0) {
             user.basicP += 1;
             user.save();
           }
-          else if (probLevel ==="medium" && user.mediumP===0) {
+          else if (probLevel === "medium" && user.mediumP === 0) {
             user.mediumP += 1;
             user.save();
           }
-          else if(probLevel==="hard" && user.hardP===0) {
+          else if (probLevel === "hard" && user.hardP === 0) {
             user.hardP += 1;
             user.save();
           }
@@ -334,8 +377,7 @@ app.post('/submit', async (req, res) => {
           /////////////////////////////////////////////////////////////
         } else {
           console.log("User already solved the problem:", problemId);
-
-          earlierSolved=true;
+          earlierSolved = true;
 
         }
       } catch (error) {
@@ -346,27 +388,39 @@ app.post('/submit', async (req, res) => {
       // user.solvedProblems.set(problemId, true);
       // await user.save();
 
-      const pass_to_user = { success: true, message: "All test cases passed!", results: comparisionResult.results , alreadySolved:false };
-      if(earlierSolved){
-        pass_to_user.alreadySolved =true;
+      const pass_to_user = { success: true, message: "All test cases passed!", results: comparisionResult.results, alreadySolved: false };
+      add_in_his.verdict = "PASSED";
+      add_in_his.success = 1;
+      await AddSubmission(add_in_his);
+      if (earlierSolved) {
+        pass_to_user.alreadySolved = true;
       }
       res.status(200).json(pass_to_user);
 
       // console.log('User Output', output);
       // res.json({ filePath, output });
     } catch (error) {
+
+   
+      add_in_his.verdict = "COMPILATION ERROR";
+      add_in_his.success = 0;
+      await AddSubmission(add_in_his);
       if (error && error.message) {
         const errorMessage = error.message.toLowerCase();
         if (errorMessage.includes('error') || errorMessage.includes('syntax error')) {
-          return res.status(400).json({ success: false, error: error.message });
+
+
+          return res.status(400).json({ success: false, error: error });
         }
       }
-      return res.status(500).json({ success: false, error: "Unknown error occurred" });
+
+
+      return res.status(500).json({ success: false, error: error});
     }
 
 
 
-   
+
 
 
     // res.status(200).send('Received successfully');
@@ -379,8 +433,8 @@ app.post('/submit', async (req, res) => {
 
 
 
-// --------  WHILE SHOWING PROBLEM LIST , CALL IS MADE TO SEE
-//   IF PROB EARLIER SOLVED OR NOT
+// --------  WHILE SHOWING PROBLEM LIST , CALL IS MADE TO SEE -----------------------
+//   IF PROB EARLIER SOLVED OR NOT //////////////////////////////////////////////////
 
 app.get('/users/:userId', async (req, res) => {
   const { userId } = req.params;
@@ -391,8 +445,8 @@ app.get('/users/:userId', async (req, res) => {
     const user = await User.findById(userId);
     if (!user) {
       // Return a 404 response if user not found
-      
-      return res.status (404).json({ error: 'User not found' });
+
+      return res.status(404).json({ error: 'User not found' });
     }
 
     // User found, return user data
@@ -400,6 +454,40 @@ app.get('/users/:userId', async (req, res) => {
   } catch (error) {
     console.error('Error fetching user data:', error);
     res.status(500).json({ error: 'Internal server error' });
-  
+
   }
 });
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////                 SHOW SUBMISSION LIST          //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.get("/your_submissions/:id", async (req, res) => {
+
+  try {
+    const { id } = req.params;
+    console.log("Show the submission histroy");
+    // console.log();
+    const token = req.cookies.jwt;
+
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY); //id of user
+    console.log("user id is ", decodedToken.id);
+    const user_id = decodedToken.id;
+    // const id=useParams();
+
+    // Query the database to find submissions for the soecified user_id and id(prob_id)
+    const submissions = await Submission.find({ user_id: user_id, prob_id: id });
+    res.status(200).send(submissions);
+
+
+  } catch (error) {
+    console.log("Error fetching submissions", error);
+    return res.status(500).json({ success: false, error: "Error Fetching Submissions" });
+  }
+
+
+})

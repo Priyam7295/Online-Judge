@@ -220,3 +220,33 @@
   font-weight: 600;
   color:#3e3e3e;
 }
+
+@media (max-width: 600px) {
+  .main_block {
+    /* display: flex; */
+    flex-direction: column; /* Specify direction */
+    background-attachment: black;
+  }
+
+  .side_block{
+    height: 100px;
+    /* width: 100px; */
+  }
+}
+
+@media (max-width: 450px) {
+  .main_block {
+    /* display: flex; */
+
+    flex-direction: column; /* Specify direction */
+    background-attachment: black;
+  }
+
+  .heading_p{
+    font-size: 20px;
+  }
+
+  .pie-chart-container{
+    width: 80%;
+  }
+}

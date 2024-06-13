@@ -1,0 +1,247 @@
+.submission_navbar {
+  background-color: rgb(237, 237, 237);
+  opacity: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.account_Section {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+}
+.account_Section img {
+  /* margin-right:20px; */
+  height: 42px;
+}
+.account_Section h2 {
+  margin-right: 20px;
+  letter-spacing: 1.6px;
+  margin-top: auto;
+  font-weight: 600;
+  color: grey;
+  margin-bottom: auto;
+  transition: color 0.7s;
+  /* height:42px; */
+}
+.account_Section h2:hover {
+  color: black;
+
+  /* height:42px; */
+}
+.return_to_home {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 10px;
+  letter-spacing: 1px;
+  font-size: 20px;
+  cursor: pointer;
+  color: rgb(145, 122, 122);
+  transition: color 0.8s;
+}
+.return_to_home:hover {
+  color: black;
+  cursor: pointer;
+}
+.submission_header {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.Submission_heading {
+  text-align: center;
+  font-size: 30px;
+  letter-spacing: 1px;
+  margin-left: 30px;
+  margin-top: 10px;
+  font-weight: 400;
+  flex: 30%;
+  padding-top: 20px;
+  display: flex;
+  color: rgb(94, 33, 7);
+}
+.Submission_heading img {
+  height: 150px;
+  margin-left: 20px;
+}
+
+.Submission_heading_image {
+  margin-top: 20px;
+  width: 220px;
+  text-align: left;
+}
+
+.hist_head {
+  letter-spacing: 1px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: 500;
+  width: 250px;
+}
+
+.hist_table {
+  margin: 20px auto;
+  margin-top: 20px;
+  /* margin-left: 30px; */
+  text-align: center;
+
+  /* margin-right:0; */
+  border: 1px solid rgb(219, 212, 212);
+
+  border-collapse: collapse;
+  width: calc(80% - 60px);
+}
+
+.hist_table th,
+.hist_table td {
+  text-align: center;
+  border-bottom: 0.3px solid gray;
+  transition: font-weight 0.5s;
+}
+
+.hist_table tr:nth-child(even) {
+  background-color: #f7f2ec;
+}
+
+.hist_table tr {
+  height: 10px;
+  transition: font-weight 0.5s;
+}
+
+
+button {
+  cursor: pointer;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-top: 5px;
+  /* border:1px solid gray; */
+  padding-left: 5px;
+  padding-right: 5px;
+  letter-spacing: 1px;
+}
+
+/* button:hover {
+    background-color: #45a049;
+    }
+   */
+.view_code_hist {
+  /* background-color: pink; */
+  /* border:1px solid gray; */
+  padding-left: 5px;
+  font-weight: 500;
+  padding-right: 5px;
+  letter-spacing: 1px;
+}
+
+.hist_lang {
+  letter-spacing: 1px;
+}
+.hist_lang {
+  letter-spacing: 1px;
+}
+.hist_verdict {
+  letter-spacing: 1px;
+}
+.hist_date {
+  letter-spacing: 1px;
+}
+
+.hist_table th {
+  border-bottom: 1px solid black;
+  border-radius: 5px;
+}
+
+.passed {
+  background-color: rgb(19, 172, 19);
+  margin-top: 1px;
+  margin-bottom: 1px;
+  cursor: default;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: white;
+}
+
+.compilation-error,
+.outout-length-mismatched,
+.test-case-failed {
+  background-color: rgb(241, 103, 103);
+  padding-left: 8px;
+  padding-right: 8px;
+  cursor: default;
+  color: white;
+  margin-top: 2px;
+  margin-bottom: 1px;
+}
+.prob_name_hist {
+  text-align: center;
+}
+.prob_name_hist span {
+  font-weight: 500;
+  /* margin-right:60px; */
+  text-align: center;
+  margin-top: 30px;
+  font-size: 30px;
+  letter-spacing: 1px;
+  margin-left: 10px;
+  border-bottom: 2px solid black;
+}
+
+.name_prob_hist {
+  margin-top: 21px;
+  margin-right: 70px;
+}
+.go_to_prob_his {
+  text-align: center;
+  font-weight: 500;
+  transition: font-weight 0.3s;
+  letter-spacing: 1px;
+  color: gray;
+  transition: color 0.3s;
+  margin-top: 5px;
+}
+.go_to_prob_his:hover {
+  text-align: center;
+  /* font-weight: 500; */
+  color: black;
+}
+
+.go_to_all_prob {
+  /* border: 1px solid gray; */
+  /* margin-left:auto; */
+  margin-right: 10px;
+  display: flex;
+  border: 0.5px solid gray;
+  border-radius: 10px;
+  /* left:auto; */
+  padding: 4px;
+  padding-right: 10px;
+  padding-bottom: 6px;
+  margin-top: 7px;
+  flex-direction: column;
+}
+.solve_more_hist {
+  transition: color 0.3s;
+  margin-top: 6px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: gray;
+  text-align: center;
+}
+.solve_more_hist:hover {
+  color: black;
+}
+
+.go_to_all_prob span {
+  margin-right: 10px;
+  content: "\2190";
+  font-size: 18px;
+  /* border: 1px solid gray; */
+  /* border-radius: 30px; */
+  padding: 6px;
+}
