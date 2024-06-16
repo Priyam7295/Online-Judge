@@ -84,14 +84,24 @@ Jason Web Token `(JWT)` - Used to ensure robust **AUTHENTICATION** and **AUTHORI
 
 
 ### DEMO
-#### HIGH LEVEL DESIGN 
-
-
-<img src="HLD.png" alt="Image Description" style="width:340px;">
-
 
 #### DEMO VIDEO
 https://github.com/Priyam7295/Online-Judge/assets/136225328/8176d230-f115-4ebb-b393-96b3c2174f6e
+
+
+<a href="https://www.youtube.com/embed/fkzfqiyb4Nk" target="_blank">Checkout Our Full Working Video</a>
+
+#### SOME KEY FEATURES 
+<div >
+  <img src="https://github.com/Priyam7295/Online-Judge/assets/136225328/b4f7cb14-2d7a-41c7-8660-fd225053ee0d" width="260" style="margin-right: 10px;" />
+  <img src="https://github.com/Priyam7295/Online-Judge/assets/136225328/fc92edaa-acbb-4d5c-a170-7fb1814b4ad3" width="260" style="margin-right: 10px;" />
+  <img src="https://github.com/Priyam7295/Online-Judge/assets/136225328/10ee4cb2-1d01-4f7a-b95c-06fc61a5c234" width="260" style="margin-right: 10px;" />
+  <img src="https://github.com/Priyam7295/Online-Judge/assets/136225328/1de93f90-9422-4ec0-9f79-29a246ffc723" width="260" style="margin-right: 10px;" />
+
+
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/136225328/339648763-c122b5d8-adb5-4e66-9fef-f20f4cb850e0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240614%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240614T055306Z&X-Amz-Expires=300&X-Amz-Signature=456916dc9fd3f904bae069c78a26baa79d68605e76c5d0e079b87d85a63252c6&X-Amz-SignedHeaders=host&actor_id=136225328&key_id=0&repo_id=807286634" width="260" style="margin-right: 10px;" />
+</div>
+
 
 
 
