@@ -1,0 +1,9 @@
+.report_Card{
+    cursor: default;
+    padding-top:10px;
+    font-size: 16px;
+    letter-spacing: 1 px;
+    font-weight: 500;
+    color: gray;
+    padding-bottom: 10px;
+}

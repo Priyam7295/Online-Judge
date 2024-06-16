@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import "./LoginSignup.css"
+import swal from 'sweetalert';
 import image from './assets/two.png'
 import Home_image from './assets/house-icon.png'
 import { useNavigate } from 'react-router-dom';
@@ -36,7 +37,14 @@ function LoginSignup() {
       if (data.user) {
         console.log('Data sent successfully');
         setCookie('jwt', res.headers['set-cookie'], { path: '/' });
-        location.assign('/');
+        swal({title:"Account Created" , text:`Click "OK" to start solving!`,icon:"success"})
+        .then((value) => {
+          // navigate("/login");
+          location.assign('/');
+          setIsloggedin(true);
+          
+        });
+        // location.assign('/');
       }
     } catch (err) {
       if (err.response && err.response.status === 400) {

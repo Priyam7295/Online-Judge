@@ -2,15 +2,13 @@ import React, { useState, useEffect } from "react";
 import "./ShowSingleP.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Checkmark } from 'react-checkmark';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-
 
 function ShowSingleP({ user_id, prob_id, name, description, difficulty, tags, submissions }) {
   const navigate = useNavigate();
   const [probsolved, setProbsolved] = useState("NOT ATTEMPTED");
   const [loading, setLoading] = useState(true);
-
 
   function getDifficultyClass(difficulty) {
     switch (difficulty) {
@@ -26,11 +24,8 @@ function ShowSingleP({ user_id, prob_id, name, description, difficulty, tags, su
         return "";
     }
   }
-  
-
 
   useEffect(() => {
-
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/users/${user_id}`, { withCredentials: true });
@@ -41,7 +36,7 @@ function ShowSingleP({ user_id, prob_id, name, description, difficulty, tags, su
         if (solvedProblemsMap.has(prob_id)) {
           setProbsolved("DONE");
         } else {
-          setProbsolved("NOT ATTEMPTED"); // Ensure that "NOT ATTEMPTED" state is set
+          setProbsolved("NOT ATTEMPTED");
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -61,7 +56,10 @@ function ShowSingleP({ user_id, prob_id, name, description, difficulty, tags, su
     <div className={`single-entry ${probsolved === "DONE" ? "done" : "not-attempted"}`}>
       <div className="name-entry">{name}</div>
       <div className="tags-entry">{tags}</div>
-      <div className="submissions-entry">{loading ? "LOADING" : probsolved}</div>
+      <div className="submissions-entry">
+        { (probsolved === "DONE" && <Checkmark size='24px' color='green' />)}
+        {/* { (probsolved !== "DONE" && <Checkmark size='16px' color='blue' />)} */}
+      </div>
       <div className={`difficulty-level ${getDifficultyClass(difficulty)}`}>{difficulty}</div>
       <div className="action">
         <button className={`solve-button ${probsolved === "DONE" ? "done" : "not-attempted"}`} onClick={Solve_this_Problem}>
@@ -71,6 +69,5 @@ function ShowSingleP({ user_id, prob_id, name, description, difficulty, tags, su
     </div>
   );
 }
-
 
 export default ShowSingleP;

@@ -610,8 +610,10 @@ padding-left:9px;
   width: 100%;
   height: 140px;
 }
+
+
 .input_area,
-.output_area , .verdict_area
+.output_area 
  {
     
   background-color: #ffffff; /* White background */
@@ -623,6 +625,15 @@ padding-left:9px;
 
 
 
+.verdict_area{
+  background-color: #ffffff; /* White background */
+  border: 1px solid #ccc; 
+  border-radius: 5px;
+  padding: 15px; 
+  letter-spacing: 1px;
+  font-weight: 400;
+  
+}
 
 .verdict {
 

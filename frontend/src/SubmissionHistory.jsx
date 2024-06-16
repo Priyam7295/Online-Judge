@@ -84,7 +84,7 @@ function SubmissionHistory() {
         </div>
         <div className="account_Section" >
             <img src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png" alt="Image" />
-            <h2>ACCOUNT</h2>
+            <h2 onClick={()=>{navigate("/myaccount")}} >ACCOUNT</h2>
         </div>
       </div>
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import "./SLoginSignup.css"
 import { useNavigate } from 'react-router-dom';
+import swal from 'sweetalert';
 import Home_image from './assets/house-icon.png'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function SLoginSignup() {
@@ -37,10 +38,15 @@ function SLoginSignup() {
         setEmailError(data.errors.email || '');
         setPasswordError(data.errors.password || '');
       } else {
-        console.log("Login Successfully");
+        swal({title:"Logged in Successfully" , text:"Authenticated Successfully.",icon:"success"})
+        .then((value) => {
+          // navigate("/login");
+          location.assign('/');
+          setIsloggedin(true);
+          
+        });
 
-        setIsloggedin(true);
-        location.assign('/');
+
       }
     } catch (err) {
       if (err.response && err.response.status === 400) {

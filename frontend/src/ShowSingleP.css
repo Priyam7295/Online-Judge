@@ -35,6 +35,11 @@
   padding: 5px;
   font-size: 14px;
   }
+
+  .tags-entry{
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
   
   .name-entry{
     font-weight: 630;

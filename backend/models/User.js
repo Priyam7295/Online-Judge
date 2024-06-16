@@ -28,8 +28,8 @@ const userSchema = new mongoose.Schema({
     },
     solvedProblems: {
         type: Map,
-        of: Boolean,
-        default: {}
+        of: String,
+        default:{},
     },
     basicP: {
         type: Number,

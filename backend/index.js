@@ -12,6 +12,7 @@ const executeCpp = require('./CC/executeCpp');
 const executePy = require('./CC/executePy');
 const generateInputFile = require('./CC/generateInputFile');
 const generateExpectedOutputFile = require('./CC/generateExpectedOutput');
+const fs = require('fs');
 const PORT = 5000;
 // const PORT = 8080;
 
@@ -94,7 +95,7 @@ app.get('/read-cookies', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
-  res.clearCookie('jwt', { httpOnly: true, secure: false, SameSite: 'None', Secure: true });
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true  });
   // Send a response to the client
   res.status(200).json({ message: 'Logged out successfully' });
 });
@@ -120,6 +121,20 @@ app.post('/run', async (req, res) => {
     let output;
     if (language === 'cpp') {
       output = await executeCpp(filePath, inputPath);
+
+      try {
+        // Delete the file containing the user's code
+        await fs.promises.unlink(filePath);
+        console.log(`Deleted file: ${filePath}`);
+      
+        // Delete the file containing the test cases
+        await fs.promises.unlink(inputPath);
+        console.log(`Deleted file: ${inputPath}`);
+      } catch (err) {
+        console.error('Error deleting files:', err);
+      }
+
+
     } else if (language === 'py') {
       output = await executePy(filePath, inputPath);
     } else {
@@ -245,11 +260,9 @@ async function AddSubmission(submission_data) {
 
 
 
-
-
 // const jwt = require('jsonwebtoken');
 app.post('/submit', async (req, res) => {
-  // problemId: problem.problemID
+// problemId: problem.problemID
   const { language, code, tcLink, ExpectedOutputLink, problemId } = req.body;
   // console.log(problemId, language, code, tcLink, ExpectedOutputLink);
   const token = req.cookies.jwt;
@@ -308,10 +321,23 @@ app.post('/submit', async (req, res) => {
       // retunn an object in which tell testcase 1 passed , testcase 2 passed , the momemnt any testcase fails , return to frontend
       // or if everything ok ,then 
 
-      const comparisionResult = compareOutputs(output, expectedOutput);
+      const comparisionResult= compareOutputs(output, expectedOutput);
 
       // console.log("User output" , output);
       // console.log('Expected OUTPUT FILE', expectedOutput);
+
+      try {
+        // Delete the file containing the user's code
+        await fs.promises.unlink(filePath);
+        console.log(`Deleted file: ${filePath}`);
+      
+        // Delete the file containing the test cases
+        await fs.promises.unlink(inputPath);
+        console.log(`Deleted file: ${inputPath}`);
+      } catch (err) {
+        console.error('Error deleting files:', err);
+      }
+
 
       // output length didnot match
       if (!comparisionResult.success) {
@@ -346,8 +372,9 @@ app.post('/submit', async (req, res) => {
       // console.log(user.id);
       let earlierSolved = false;
       try {
-        if (!user.solvedProblems.has(problemId)) {
-          user.solvedProblems.set(problemId, true);
+        const varia = await user.solvedProblems.has(problemId)
+        if (!varia) {
+          user.solvedProblems.set(problemId, prob.name);
           await user.save();
 
           console.log("User saved successfully with updated solvedProblems");
@@ -374,7 +401,7 @@ app.post('/submit', async (req, res) => {
 
 
 
-          /////////////////////////////////////////////////////////////
+          ////////////////////////////////////////////////////////////////////////////
         } else {
           console.log("User already solved the problem:", problemId);
           earlierSolved = true;
@@ -491,3 +518,57 @@ app.get("/your_submissions/:id", async (req, res) => {
 
 
 })
+// ///////////////// for my account page
+app.get("/my_account" , authController.my_account);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////// CHECKING IF ADMIN OR NOT ////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.get("/check_if_admin" ,async (req,  res)=>{
+  const token =req.cookies.jwt;
+  let to_send ={
+    role:"",
+    authorized:"",
+  }
+  try {
+    const decodedToken= jwt.verify(token, process.env.SECRET_KEY);
+    const user_id = decodedToken.id;
+    console.log("USER ID IS--->",user_id);
+    // const role = User.findById(user_id);
+    const user =await User.findById(user_id);
+    const role =user.role;
+    to_send.role=role;
+    to_send.authorized=true;
+    res.json(to_send);
+
+  } catch (error) {
+      console.log("Error verfidying token ");
+      to_send.authorized=false;
+      res.json(to_send);
+  }
+
+
+
+});
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+app.get("/query/problem/:tag", async (req, res) => {
+  try {
+    const { tag } = req.params; // Getting the tag from URL parameters
+    console.log("Tag received in backend:", tag);
+
+ 
+      const problems = await Problems.find({ tags: tag }).exec();
+      console.log(problems);
+      
+      res.json(problems);
+
+
+  } catch (error) {
+    console.log("Error in backend:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});

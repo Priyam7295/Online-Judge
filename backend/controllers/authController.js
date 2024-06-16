@@ -112,7 +112,7 @@ module.exports.signup_post = async (req, res) => {
     let hashedPassword = await bcrypt.hash(password, 10);
     try {
         password = hashedPassword;
-        const role = "admin"
+        const role = "user"
         const user = await User.create({ firstname, lastname, email, password, role });
         const token = createToken(user._id, user.role);
 
@@ -229,7 +229,7 @@ module.exports.problem_details = async (req, res) => {
 // posting problems , can be done by me only 
 module.exports.postProb = async (req, res) => {
     console.log(req.body.data);
-
+    
     const { name, description, difficulty, inputLink, outputLink, tags, hints, showtc, showoutput , constraints } = req.body;
 
     let errors = { name: '', description: '', difficulty: '', inputLink: '', outputLink: '', showtc: '', showoutput: ''  , constraints};
@@ -280,4 +280,92 @@ module.exports.postProb = async (req, res) => {
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//            ADDING PAST SUBMISSIONS HISTORY 
+//               SHOWING MY ACCOUNT SECTION HERE
+
+
+
+module.exports.my_account =async (req , res)=>{
+        const token=req.cookies.jwt;
+        
+        try {
+            const decodedToken= jwt.verify(token, process.env.SECRET_KEY);
+
+            const user_id = decodedToken.id;
+   
+            const to_send={
+                firstname:"",
+                lastname:"",
+                role:"",
+                basicP:0,
+                easyP:0,
+                mediumP:0,
+                hardP:0,
+            };
+
+
+            const user =await User.findById(user_id);
+            console.log(user);
+            to_send.firstname=user.firstname;
+            to_send.lastname=user.lastname;
+            to_send.role=user.role;
+            to_send.easyP=user.easyP;
+            to_send.basicP=user.basicP;
+            to_send.mediumP=user.mediumP;
+            to_send.hardP=user.hardP;
+            to_send.solved_problems = user.solvedProblems;
+            // console.log("solv",user.solvedProblems);
+            const totalProblems = await Problems.countDocuments();
+            // to_send.totalProblems=user.hardP;
+            const categoryCounts = await Problems.aggregate([
+                {
+                  $group: {
+                    _id: '$difficulty', // Group by category field
+                    count: { $sum: 1 } // Count documents in each category group
+                  }
+                  }
+              ]);
+            console.log(categoryCounts);
+            console.log(totalProblems);
+            to_send.totalProblems=totalProblems;
+
+            to_send.total_question = categoryCounts;
+
+
+
+
+            let a = 0, b = 0, c = 0, d = 0;
+            categoryCounts.forEach(category => {
+              switch (category._id) {
+                case 'easy':
+                  a = category.count;
+                  break;
+                case 'medium':
+                  b = category.count;
+                  break;
+                case 'basic':
+                  c = category.count;
+                  break;
+                case 'hard':
+                  d = category.count;
+                  break;
+                default:
+                  break;
+              }
+            });
+        
+            // Assign these counts to to_send object
+            to_send.easyT = a;
+            to_send.mediumT = b;
+            to_send.basicT = c;
+            to_send.hardT = d;
+
+
+
+            res.status(200).json({data:to_send});
+
+        } catch (error) {
+            console.log("Error verifying token",error);
+            res.json({ error: "Authentication Failed ! Login Again"});
+            
+        }
+}

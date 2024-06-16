@@ -8,6 +8,7 @@ import { Passed } from "../smallCompo/ShowTC.jsx";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { useNavigate } from "react-router-dom";
 // import {  } from "./PassedButton.jsx";
+import swal from 'sweetalert';
 
 function ProblemDetails() {
   const { id } = useParams();
@@ -25,7 +26,7 @@ function ProblemDetails() {
   const [countpassed, setCountpassed] = useState(0);
   const [countfailed, setCountfailed] = useState(0);
   const [passed , setPassed] =useState(0);
-  // const [firstFailed, setFirstFailed] = useState(-1); // Renamed to camelCase
+  // const [firstFailed, setFirstFailed] = useSbar_gtate(-1); // Renamed to camelCase
   const sampleCodes = {
     cpp: `#include <iostream>\nusing namespace std;\n\nint main(){\n  //Welcome to Crack the Code!  \n\n   return 0;  \n}; `,
     py: `print("Hello, World!")`,
@@ -56,14 +57,19 @@ function ProblemDetails() {
   }, [id]);
   // console.log(response.data);
   const handleButtonClick = (buttonType) => {
-    setActiveButton(buttonType);
-    if (buttonType === "p_hint") {
-      setShowHints(!showHints);
-    } else {
-      setShowHints(false);
-    }
+    swal({title:"HINTS" , text:"Showing Hints will deduct your score",icon:"warning",button:"SHOW HINTS "
+    })
+    .then((value) => {
+      setActiveButton(buttonType);
+      if (buttonType === "p_hint") {
+        setShowHints(!showHints);
+      } else {
+        setShowHints(false);
+      }
+      
+    });
   };
-  // console.log(problem);
+
 
   const closeHints = () => {
     setShowHints(false);
@@ -192,6 +198,9 @@ function ProblemDetails() {
   function Submissions() {
     setShowsubmissions(!showsubmissions);
   }
+  function move_to_Account() {
+    navigate(`/myaccount`);
+  }
   console.log(problem);
   return (
     <div>
@@ -206,7 +215,7 @@ function ProblemDetails() {
               </h1>
               <ul className="main-nav">
                 <li>
-                  <a href="#">Account</a>
+                  <a href="#" onClick={move_to_Account}>Account</a>
                 </li>
                 <li>
                   <a href="#">Report an issue</a>

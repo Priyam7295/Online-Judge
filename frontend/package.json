@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.5.2",
     "@monaco-editor/react": "^4.6.0",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
@@ -20,9 +21,13 @@
     "js-cookie": "^3.0.5",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
+    "react-checkmark": "^2.0.0",
+    "react-circular-progressbar": "^2.1.0",
     "react-cookie": "^7.1.4",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.23.1"
+    "react-modal": "^3.16.1",
+    "react-router-dom": "^6.23.1",
+    "sweetalert": "^2.1.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

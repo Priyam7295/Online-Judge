@@ -8,6 +8,7 @@ import Home from './Home';
 import ProblemsList from './ProblemsList';
 import Contribute from './Contribute';
 import ProblemDetails from './ProblemDetails';
+import Myaccount from './Myaccount';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<SLoginSignup/>} />
         <Route path="/signup" element={<LoginSignup/>} />
+        <Route path="/myaccount" element={<Myaccount/>} />
         {/* getting problems page */}
         <Route path='/problems' element={<ProblemsList/>} />
         {/* posting problems page */}

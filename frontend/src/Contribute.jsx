@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Upload from "./Upload.jsx";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { TestcasesDownloadLink, OutputsDownloadLink } from "./Upload";
-
+import swal from 'sweetalert';
 function Contribute() {
   const [name, setName] = useState("");
   const [tags, setTags] = useState("");
@@ -28,41 +28,41 @@ function Contribute() {
 
   // First checking that if user authenticated or not if not then redirect
 
-  const fetchData = async function () {
-    try {
-      const res = await axios.get(`${API_BASE_URL}/problems_post`, {
-        withCredentials: true,
-      });
-      // Handle response data here
-      if (!res.data.authenticated) {
-        console.log("Caught You");
-        navigate("/login");
-      }
+  // const fetchData = async function () {
+  //   try {
+  //     const res = await axios.get(`${API_BASE_URL}/problems_post`, {
+  //       withCredentials: true,
+  //     });
+  //     // Handle response data here
+  //     if (!res.data.authenticated) {
+  //       console.log("Caught You");
+  //       navigate("/login");
+  //     }
 
-      setIsLoading(false);
+  //     setIsLoading(false);
 
-      console.log(res.data);
-    } catch (error) {
-      // Handle errors here
-      if (
-        error.response &&
-        (error.response.status === 401 || error.response.status === 403)
-      ) {
-        navigate("/login");
-      }
-    }
-  };
+  //     console.log(res.data);
+  //   } catch (error) {
+  //     // Handle errors here
+  //     if (
+  //       error.response &&
+  //       (error.response.status === 401 || error.response.status === 403)
+  //     ) {
+  //       navigate("/login");
+  //     }
+  //   }
+  // };
 
-  // Call the fetchData function
-  fetchData();
+  // // Call the fetchData function
+  // fetchData();
 
-  if (isLoading) {
-    return <div>Please Wait!!</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Please Wait!!</div>;
+  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     console.log(TestcasesDownloadLink);
     console.log(OutputsDownloadLink);
     try {
@@ -90,10 +90,13 @@ function Contribute() {
         setDifficultyError(data.errors.difficulty);
       } else {
         console.log("Question added successfully");
-        alert("Thank you for your contribution!");
-        navigate("/");
-        setRedirect(true);
-        // Redirect or handle success
+        swal({title:"Question Added" , text:"Thank you for your Contributions!.",icon:"success"})
+        .then((value) => {
+          navigate("/");
+          setRedirect(true);
+          
+        });
+
       }
     } catch (error) {
       console.log(error);
@@ -177,7 +180,7 @@ function Contribute() {
               <label className="probniklenge">
                 PROBLEM NAME:
                 <input
-                  classname="prob_inp"
+                  className="prob_inp"
                   type="text"
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -201,6 +204,7 @@ function Contribute() {
                 <option value="Hash-Map">Hash-Map</option>
                 <option value="Maths">Maths</option>
                 <option value="Binary-Search">Binary-Search</option>
+                <option value="Tree">Tree</option>
               </select>
               <br />
 

@@ -24,7 +24,7 @@ const executeCPP = (filepath, inputPath) => {
         const command = `g++ "${filepath}" -o "${outPath}" && cd "${outputPath}" && ./${jobId}.out < "${inputPath}"`;
         console.log(`Executing command: ${command}`);
 
-        exec(command, (error, stdout, stderr) => {
+        exec(command, async (error, stdout, stderr) => {
             if (error) {
                 console.error(`Execution error:`, error);
                 reject(`Execution error: ${error.message}`);
@@ -37,9 +37,27 @@ const executeCPP = (filepath, inputPath) => {
                 return;
             }
 
+            // Resolve with stdout
             resolve(stdout);
+
+            // Delete .exe file after execution
+            try {
+                await deleteFile(outPath);
+                console.log(`Deleted ${outPath} after execution.`);
+            } catch (deleteError) {
+                console.error(`Error deleting ${outPath}:`, deleteError);
+            }
         });
     });
 };
+
+// Function to delete a file
+async function deleteFile(filePath) {
+    try {
+        await fs.promises.unlink(filePath); // Deletes the file
+    } catch (error) {
+        throw new Error(`Error deleting file ${filePath}: ${error.message}`);
+    }
+}
 
 module.exports = executeCPP;
