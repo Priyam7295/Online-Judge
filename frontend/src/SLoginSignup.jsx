@@ -26,15 +26,15 @@ function SLoginSignup() {
     try {
       const res = await axios.post(`${API_BASE_URL}/login`, data_send_to_backend, { withCredentials: true });
       const data = await res.data;
-      console.log("jhy",res.data);
+      console.log("Received data:", res.data);
 
       const token_got =res.data.jwt;
 
    
-      console.log("Toek got->",token_got);
-      console.log(res.cookies);
-      console.log(res);
-      console.log(res.headers);
+      // console.log("Toek got->",token_got);
+      // console.log(res.cookies);
+      // console.log(res);
+      // console.log(res.headers);
       if (data.errors) {
         console.log(data.errors);
         setEmailError(data.errors.email || '');
