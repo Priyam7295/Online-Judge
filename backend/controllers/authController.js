@@ -182,6 +182,12 @@ module.exports.login_post = async (req, res) => {
 // logout
 module.exports.logout_get = (req, res) => {
     // changing the jwt to '' and with expiry time of 1 milliseconds
+
+    // Check if user is loged in or not 
+    // if logged in then only do logout ,or show any other message
+    const token=req.cookies.jwt;
+    console.log("asdkjghkjgiug");
+    console.log("tokenu is",token);
     res.cookie('jwt', '', { maxAge: 5000 ,sameSite:'None' , secure:true });
     res.send({ logout: "done" });
 };

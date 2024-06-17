@@ -13,6 +13,7 @@ const executePy = require('./CC/executePy');
 const generateInputFile = require('./CC/generateInputFile');
 const generateExpectedOutputFile = require('./CC/generateExpectedOutput');
 const fs = require('fs');
+const { promisify } = require('util');
 const PORT = 5000;
 // const PORT = 8080;
 
@@ -121,6 +122,8 @@ app.post('/run', async (req, res) => {
     let output;
     if (language === 'cpp') {
       output = await executeCpp(filePath, inputPath);
+      await promisify(fs.unlink)(filePath);
+      await promisify(fs.unlink)(inputPath);
 
       try {
         // Delete the file containing the user's code
@@ -323,6 +326,8 @@ app.post('/submit', async (req, res) => {
 
       const comparisionResult= compareOutputs(output, expectedOutput);
 
+      await promisify(fs.unlink)(filePath);
+      await promisify(fs.unlink)(inputPath);
       // console.log("User output" , output);
       // console.log('Expected OUTPUT FILE', expectedOutput);
 
