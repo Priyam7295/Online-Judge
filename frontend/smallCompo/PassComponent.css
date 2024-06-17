@@ -1,0 +1,45 @@
+/* PassComponent.css */
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .test-case-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* padding-left: 10px; */
+    /* padding-right: 5px; */
+
+    gap: 4px;
+    padding-top: 3px;
+  }
+  
+  .test-case-button {
+    background-color: #021203; /* Green */
+    color: white;
+    border: none;
+    padding: 2px 4px;
+    font-weight: 600;
+    cursor: default;
+    margin-top:4px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    /* cursor: pointer; */
+    letter-spacing: 1px;
+    border-radius: 5px;
+    font-size: 15px;
+
+  }
+  
+  .test-case-button.passed {
+    background-color: #3ac441; /* Green */
+    /* letter-spacing: px; */
+  }
+  
+  .test-case-button.failed {
+    background-color: #f44336; /* Red */
+  }
+  

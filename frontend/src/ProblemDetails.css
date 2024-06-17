@@ -702,4 +702,23 @@ padding-left:9px;
   margin-left:14px;
 }
 
+.first_sub_marks{
+  letter-spacing: 1px;
+  text-align: center;
+  margin-top:20px;
+  font-weight: 500;
+  color:gray;
+}
 
+
+
+.pass_compo{
+  border: 1px solid #ccc;
+  height: 130px; 
+
+  border-radius: 10px;
+  overflow-y: auto; 
+  overflow-x: auto; 
+  white-space: pre-wrap; 
+  padding:5px;
+}

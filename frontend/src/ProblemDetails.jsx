@@ -8,7 +8,9 @@ import { Passed } from "../smallCompo/ShowTC.jsx";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { useNavigate } from "react-router-dom";
 // import {  } from "./PassedButton.jsx";
-import swal from 'sweetalert';
+import swal from "sweetalert";
+
+import PassComponent from "../smallCompo/PassComponent.jsx";
 
 function ProblemDetails() {
   const { id } = useParams();
@@ -25,7 +27,9 @@ function ProblemDetails() {
   const [showHints, setShowHints] = useState(false);
   const [countpassed, setCountpassed] = useState(0);
   const [countfailed, setCountfailed] = useState(0);
-  const [passed , setPassed] =useState(0);
+  const [passed, setPassed] = useState(0);
+  const [beforeSolved ,SetbeforeSolved] = useState(false);
+  const [tcPassed, setTCPassed] = useState(0);
   // const [firstFailed, setFirstFailed] = useSbar_gtate(-1); // Renamed to camelCase
   const sampleCodes = {
     cpp: `#include <iostream>\nusing namespace std;\n\nint main(){\n  //Welcome to Crack the Code!  \n\n   return 0;  \n}; `,
@@ -33,6 +37,7 @@ function ProblemDetails() {
     java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}`,
   };
 
+  console.log("vv", verdict);
   const [code, setCode] = useState(sampleCodes[selectedLanguage]);
   useEffect(() => {
     setCode(sampleCodes[selectedLanguage]);
@@ -41,12 +46,9 @@ function ProblemDetails() {
   useEffect(() => {
     const fetchProblem = async () => {
       try {
-        const response = await axios.get(
-          `${API_BASE_URL}/problems/${id}`,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${API_BASE_URL}/problems/${id}`, {
+          withCredentials: true,
+        });
         setProblem(response.data);
       } catch (error) {
         console.error("Error fetching problem details:", error);
@@ -57,19 +59,20 @@ function ProblemDetails() {
   }, [id]);
   // console.log(response.data);
   const handleButtonClick = (buttonType) => {
-    swal({title:"HINTS" , text:"Showing Hints will deduct your score",icon:"warning",button:"SHOW HINTS "
-    })
-    .then((value) => {
+    swal({
+      title: "HINTS",
+      text: "Showing Hints will deduct your score",
+      icon: "warning",
+      button: "SHOW HINTS ",
+    }).then((value) => {
       setActiveButton(buttonType);
       if (buttonType === "p_hint") {
         setShowHints(!showHints);
       } else {
         setShowHints(false);
       }
-      
     });
   };
-
 
   const closeHints = () => {
     setShowHints(false);
@@ -80,13 +83,13 @@ function ProblemDetails() {
 
   // /////////////
 
-
-  function Submission_history(){
-    console.log("Submissions button clicked")
+  function Submission_history() {
+    console.log("Submissions button clicked");
     navigate(`/submission_history/${id}`);
   }
 
   async function Code_Submit() {
+    setTCPassed(0);
     const data_to_send = {
       language: selectedLanguage,
       code: code,
@@ -105,16 +108,24 @@ function ProblemDetails() {
       );
 
       console.log("Response:", response);
+      console.log("Response:", response.data.results);
+      console.log(
+        "Length of response.data.results:",
+        response.data.results.length
+      );
 
+      setTCPassed(response.data.results.length);
       // If all the testcases are passed , ie expected output and hardcoded are same;
       if (response.data.success && !response.data.alreadySolved) {
         console.log("All test cases passed!");
         setVerdict("All Test Cases Passed!");
         setPassed(1);
         setCountpassed(countpassed + 1);
+        setCountpassed(response.data.passedTestCases);
       } else if (response.data.success && response.data.alreadySolved) {
         // when all passed but already solved earlier
         console.log("All test case passed but it was solved earlier");
+        SetbeforeSolved(true);
         setVerdict(
           "All Test Cases Passed!\nYou will Get Marks only for first Submission"
         );
@@ -129,11 +140,6 @@ function ProblemDetails() {
         setPassed(0);
       }
       setActiveTab("verdict");
-
-
-
-
-
     } catch (error) {
       setActiveTab("verdict");
 
@@ -148,13 +154,9 @@ function ProblemDetails() {
     const data_to_send = { language: selectedLanguage, code: code, input };
 
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/run`,
-        data_to_send,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(`${API_BASE_URL}/run`, data_to_send, {
+        withCredentials: true,
+      });
 
       console.log("Code Run Response:", response);
 
@@ -215,7 +217,9 @@ function ProblemDetails() {
               </h1>
               <ul className="main-nav">
                 <li>
-                  <a href="#" onClick={move_to_Account}>Account</a>
+                  <a href="#" onClick={move_to_Account}>
+                    Account
+                  </a>
                 </li>
                 <li>
                   <a href="#">Report an issue</a>
@@ -296,6 +300,9 @@ function ProblemDetails() {
                 </div>
               </div>
             </div>
+            {/* <div className="passed-tests">
+  Passed Test Cases: {countpassed}
+</div> */}
 
             <div className="Item-2_prob">
               <div className="select_block">
@@ -387,14 +394,31 @@ function ProblemDetails() {
                       onChange={(e) => setOutput(e.target.value)}
                     />
                   )}
+                  {/* All Test Cases Passed! */}
 
                   {activeTab === "verdict" && (
-                    <textarea
-                      className="verdict_area"
-                      value={verdict}
-                      onChange={(e) => setVerdict(e.target.value)}
-                    />
+                    <>
+                      {verdict === "All Test Cases Passed!" ||
+                      verdict ===
+                        "All Test Cases Passed!\nYou will Get Marks only for first Submission" ? (
+                          <div className="pass_compo">
+                            <PassComponent totalTC={tcPassed} />
+                            {beforeSolved && <div className="first_sub_marks">You will get marks for first Submission Only!!</div>  }
+                          </div>
+                      ) : (
+                        <textarea
+                          className="verdict_area"
+                          value={verdict}
+                          onChange={(e) => setVerdict(e.target.value)}
+                          readOnly
+                        />
+                      )}
+                    </>
                   )}
+
+
+
+                  {/* <div>{tcPassed}</div> */}
                 </div>
               </div>
               <div className="button-group">

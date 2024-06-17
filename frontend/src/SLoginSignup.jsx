@@ -26,9 +26,11 @@ function SLoginSignup() {
     try {
       const res = await axios.post(`${API_BASE_URL}/login`, data_send_to_backend, { withCredentials: true });
       const data = await res.data;
-      console.log(res.data);
-      console.log(res.header);
-      const {token_got} =res.data;
+      console.log("jhy",res.data);
+
+      const token_got =res.data.jwt;
+
+   
       console.log("Toek got->",token_got);
       console.log(res.cookies);
       console.log(res);
@@ -38,6 +40,7 @@ function SLoginSignup() {
         setEmailError(data.errors.email || '');
         setPasswordError(data.errors.password || '');
       } else {
+        document.cookie = `jwt=${res.data.token}; path=/; secure; sameSite=None`;
         swal({title:"Logged in Successfully" , text:"Authenticated Successfully.",icon:"success"})
         .then((value) => {
           // navigate("/login");

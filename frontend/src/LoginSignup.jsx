@@ -36,15 +36,13 @@ function LoginSignup() {
       }
       if (data.user) {
         console.log('Data sent successfully');
-        setCookie('jwt', res.headers['set-cookie'], { path: '/' });
-        swal({title:"Account Created" , text:`Click "OK" to start solving!`,icon:"success"})
-        .then((value) => {
-          // navigate("/login");
-          location.assign('/');
-          setIsloggedin(true);
-          
-        });
-        // location.assign('/');
+        // Set the JWT token as a cookie
+        document.cookie = `jwt=${res.data.token}; path=/; secure; sameSite=None`;
+        swal({ title: "Account Created", text: `Click "OK" to start solving!`, icon: "success" })
+          .then((value) => {
+            location.assign('/');
+            setIsloggedin(true);
+          });
       }
     } catch (err) {
       if (err.response && err.response.status === 400) {
