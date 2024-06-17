@@ -15,7 +15,7 @@ const generateExpectedOutputFile = require('./CC/generateExpectedOutput');
 const fs = require('fs');
 const { promisify } = require('util');
 const PORT = 5000;
-// const PORT = 8080;
+
 
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
@@ -35,7 +35,7 @@ app.use(cookieParser()); //we need to use this middleware for cookie
 
 app.use(
   cors({
-    origin: ['https://online-judge-4ypq6yt.vercel.app', 'https://online-judge-4ypq6yt-priyams-projects-c7c3c963.vercel.app', 'http://localhost:5176', 'http://localhost:5174'], // Replace with your React app's domain
+    origin: ['https://online-judge-4ypq6yt.vercel.app', 'https://online-judge-4ypq6yt-priyams-projects-c7c3c963.vercel.app', 'http://localhost:5174'], // Replace with your React app's domain
     credentials: true, // This allows the server to accept cookies from the client
   })
 );
