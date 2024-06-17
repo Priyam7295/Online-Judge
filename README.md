@@ -86,10 +86,8 @@ Jason Web Token `(JWT)` - Used to ensure robust **AUTHENTICATION** and **AUTHORI
 ### DEMO
 
 #### DEMO VIDEO
-https://github.com/Priyam7295/Online-Judge/assets/136225328/8176d230-f115-4ebb-b393-96b3c2174f6e
 
-
-<a href="https://www.youtube.com/embed/fkzfqiyb4Nk" target="_blank">Checkout Our Full Working Video</a>
+[CLICK me](https://www.loom.com/share/df43669e2ae14b7aab8b9aacc7afc0d1?sid=79fc5590-7975-4254-8e5a-a9cd710182ab) to watch the complete demo video for a detailed walkthrough.
 
 #### SOME KEY FEATURES 
 <div >
