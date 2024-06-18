@@ -82,6 +82,7 @@ Jason Web Token `(JWT)` - Used to ensure robust **AUTHENTICATION** and **AUTHORI
 
 `VERCEL` - for deploying frontend
 
+`FIREBASE` - used to serve static files (input output files for each problems)
 
 ### DEMO
 
