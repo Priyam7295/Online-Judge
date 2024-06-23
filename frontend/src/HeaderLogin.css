@@ -1,15 +1,24 @@
 .headerf {
-    position: relative;
-    height: 50px; /* Adjust height as needed */
-    background-color: rgb(249, 246, 246);
+  position: relative;
+  height: 50px;
+  background-color: rgb(249, 246, 246);
+  box-shadow: 0 0 5px grey;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px; /* Add some padding to the sides */
+}
 
-    box-shadow: 0 0 5px grey;
-  }
-  
-  .logo {
-    /* Your logo styles */
-  }
-  
+.logo_banner {
+  height: 100%;
+  max-height: 40px; /* Adjust as needed */
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+}
+
   .auth-buttons {
     position: absolute;
     top: 0;
@@ -18,6 +27,8 @@
     align-items: center;
     height: 100%;
   }
+  
+
   
   .login-button, .signup-button  , .logout-button {
     /* background-color: #007bff; Blue  */
@@ -80,7 +91,7 @@
   
   .logout-message {
     color: white;
-    background-color: #f76e56; /* Tomato color */
+    background-color: #f76e56; 
     padding: 10px 20px; /* Add padding */
     border-radius: 5px; /* Add border radius */
     margin-right: 20px;

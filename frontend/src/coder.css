@@ -1,3 +1,10 @@
+
+body{
+  margin: 0;
+  padding: 0;
+  /* text-align: center; */
+  /* margin-right: 100px; */
+}
 .coder-image {
     display: flex;
     justify-content: space-between; 
@@ -9,7 +16,7 @@
     /* background-color: pink; */
     display: flex;
     justify-content: center;
-    
+    /* margin-top: 100px; */
   }
   
   .entry h1 {
@@ -19,28 +26,30 @@
 
   .entry img {
     max-width: 100%;
-    height: auto; 
+    height: 450px; 
   }
   
 
   .solverButton {
-    background-color: #3949ab; /* Navy blue background */
-    border: none; /* No border */
-    border-radius: 20px; /* Rounded corners */
-    padding: 10px 20px; /* Padding */
-    margin-top: 40px; /* Top margin */
-    display: block; /* Block-level element */
-    margin: 0 auto; /* Center horizontally */
-    color: #fff; /* White text */
-    font-size: 16px; /* Font size */
-    font-weight: bold; /* Bold font weight */
-    text-transform: uppercase; /* Uppercase text */
-    text-decoration: none; /* No underline */
-    cursor: pointer; /* Pointer cursor */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Shadow */
-    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Transition effects */
-  }
-  
+    background-color: #5f6ae7;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    /* margin-top: 120px; */
+    margin-top: 40px;
+    display: block;
+    margin: 0 auto;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.9s, transform 0.2s, box-shadow 0.3s;
+    /* padding-top: 20px; */
+}
+
   .solverButton:hover {
     background-color: #5c6bc0; /* Lighter navy blue on hover */
     transform: scale(1.04); /* Slightly larger size on hover */
@@ -50,22 +59,29 @@
   
   
 
-  .tagline {
-    font-family: 'Abril Fatface', cursive;
-    padding: 40px;
-    margin: auto;
-    margin-left: 85px;
-    color: #1C2541;
-    font-size: 48px;
-    font-weight: 500;
-    display: inline-block;
-    border-bottom: 3px solid #FF5733;
-    width: 70%;
-    opacity: 0; /* Start with zero opacity */
-    transform: scale(0.5); /* Start with smaller size */
-    animation: revealText 1s ease forwards;
-  }
-  
+
+
+.website_name {
+  font-family: "Arial Black";
+  font-weight: normal;
+  color: #1C2541;
+  font-size: 58px;
+  display: inline-block;
+
+  text-align: center;
+  width: 100%;
+  margin: auto;
+  padding: 20px 0;
+  line-height: 1.2;
+  transform: scale(0.5);
+  animation: revealText 1s ease forwards;
+  margin-top: 40px;
+  /* margin-bottom: 40px; */
+}
+ 
+.website_name span{
+  color: rgb(86, 86, 87);
+}
   @keyframes revealText {
     0% {
       opacity: 0; /* Start with zero opacity */
@@ -81,12 +97,39 @@
 
 .description {
     margin-left:80px;
-    font-family: 'Pacifico', cursive;
-    font-size: 18px;
-    margin-right: 70px;
+   
+    /* font-family: 'Pacifico', cursive; */
+    /* margin-right: 70px; */
+    margin-top: 70px;
+    padding-left:60px;
+    padding-right:70px;
+    font-size: 19px;
+    color: rgb(46, 44, 44);
+    text-align: center;
+    justify-content: center;
+    /* letter-spacing: 1px; */
+    padding-top: 20px;
+
+
 }
+.description h1 span {
+  color: black;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+.description h1  {
+  padding-bottom: 40px;
+}
+
 .oneliner{
-    font-size:20px;
-    color:#522B47;
+    font-size:24px;
+    /* margin-top: 3px; */
+    width: 100%;
+    /* background-color: pink; */
+    text-align: center;
+    color: gray;
+    margin-left: 30px;
+    padding-right: 230px;
+    padding-left: 230px;
 }
 

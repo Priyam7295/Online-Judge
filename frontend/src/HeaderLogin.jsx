@@ -5,6 +5,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
+import Logo from './assets/logo2.png'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Header() {
@@ -66,12 +67,7 @@ function Header() {
 
             navigate("/problems_post");
           });
-          // const confirmNavigation = window.confirm("You are naviagating as an admin! . Do you want to continue?");
-          // if(confirmNavigation){
-          // }
-          // else{
-          //   console.log("Navigation cancelled by admin");
-          // }
+
         }
         else{
           // alert("Only Admin can contribute!");
@@ -90,8 +86,11 @@ function Header() {
 
   return (
     <div className="headerf">
+        <img className="logo_banner" src={Logo} alt="NOT FOUND" />
       <div className="auth-buttons">
         {/* Display logout message */}
+        
+
         {logoutMessage && <p className="logout-message">{logoutMessage}</p>}
         <button className="contribute" onClick={go_to_contributionPage}>
           Contribute
@@ -100,7 +99,6 @@ function Header() {
         <button className="login-button">
           <Link to="/signup">SignUp</Link>
         </button>
-
         <button className="logout-button" onClick={manageLogout}>
           Logout
         </button>

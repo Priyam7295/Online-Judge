@@ -50,6 +50,7 @@
   font-size: 29px;
   letter-spacing: 1.4px;
   font-family: Arial, sans-serif;
+  /* font-family: "Arial Black"; */
   font-weight: 620;
   margin-top: 30px;
   height: 90px;
@@ -58,6 +59,7 @@
   flex:1;
   color:#484848;
   text-transform: uppercase;
+  /* color:#d39090; */
   
 
 
@@ -265,6 +267,7 @@
 
   .heading_p{
     font-size: 20px;
+    
   }
 
   .pie-chart-container{

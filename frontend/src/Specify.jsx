@@ -13,7 +13,7 @@ function Specify() {
 
                 </div  >
                 <div className="specify-item-child practice " >
-                    <h1>Feeling bored with just learning DSA concepts?</h1>
+                    <h1>Feeling bored with just learning <span>DSA</span>  concepts?</h1>
                     <p>"Strengthen your grasp on DSA topics by diving into practical questions and challenges on our code practice website. Engage in hands-on problem-solving to master Data Structures and Algorithms effectively. We believe in Learning by doing."</p>
                 </div>
             </div>
@@ -25,7 +25,7 @@ function Specify() {
 
                 </div  >
                 <div className="specify-item-child practice " >
-                    <h1>Problems categorized by topic and difficulty rating!</h1>
+                    <h1>Problems categorized by <span>topic</span> and <span>difficulty </span> rating!</h1>
                     <p>"Explore our comprehensive collection of Data Structures and Algorithms problems, categorized by topic and difficulty rating for easy sorting and solving, making learning and practicing DSA more efficient and enjoyable."</p>
                 </div>
             </div>
