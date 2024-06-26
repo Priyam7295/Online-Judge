@@ -1,6 +1,7 @@
 .specify1{
     margin-top: 30px;
     /* background-color: palegoldenrod; */
+    padding-top: 50px;
 }
 
 
@@ -26,6 +27,7 @@
 .specify-item-child h1{
     font-size:21px;
     font-family: 'Sans-serif' Verdana;
+    
     margin-bottom: 9px;
     color: #F6AF65;
     font-weight: 700;
@@ -40,6 +42,107 @@
     padding-left: 50px;
     padding-right: 50px;
 }
+
 .practice p{
-    font-family: 'Abril Fatface', cursive;
+    /* font-family: 'Abril Fatface', cursive; */
+    text-align: center;
+    word-spacing: 1px;
 }
+
+.coding_experience {
+    text-align: center;
+    margin-top: 75px;
+    padding-top: 15px;
+    background-color: rgb(245, 251, 253);
+    margin-bottom: 20px;
+    padding-bottom: 50px;
+    position: relative;
+    transition: opacity 0.4s;
+    
+}
+
+.coding_experience:hover {
+    opacity: 0.9;
+}
+
+.my_website_image {
+    position: relative;
+}
+
+.start_coding_button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); /* Start with scale 0 */
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    letter-spacing: 2px;
+    border: none;
+    cursor: pointer;
+    opacity: 0; /* Start with opacity 0 */
+    transition: transform 0.4s, opacity 0.4s; /* Smooth transition for transform and opacity */
+}
+
+.my_website_image:hover .start_coding_button {
+    opacity: 1; /* Change the opacity to 1 for fade-in effect */
+    transform: translate(-50%, -50%) scale(1); /* Scale up to 1 for popping out effect */
+}
+
+
+
+.coding_experience h1 {
+    padding-top: 30px;
+    font-size: 26px;
+    font-weight: 600; 
+    color: #5c5c5c;
+    border-radius: 10px;
+    position: relative;
+    display: inline-block;
+    /* color: #1C2541; */
+    
+}
+
+.coding_experience h1::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    /* background: linear-gradient(90deg, rgb(5, 13, 53) 0%, rgb(44, 20, 81) 100%); */
+    bottom: -10px;
+    left: 0;
+    border-radius: 2px;
+}
+
+.oneliner2 {
+    font-size: 19px;
+    padding-top: 5px;
+    /* margin-top: 10px; */
+    width: 100%;
+    text-align: center;
+    color: gray;
+    margin-left: 30px;
+    padding-right: 230px;
+    padding-left: 230px;
+}
+
+.specify_coding_area {
+    margin: 40px 180px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 -4px 8px rgba(0, 0, 0, 0.1), 4px 0 8px rgba(0, 0, 0, 0.1), -4px 0 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+    border-radius: 15px;
+    gap: 10px;
+    background-color: white;
+}
+
+.my_website_image {
+    border: 2px solid rgb(236, 231, 231);
+    flex: 95%;
+    border-radius: 5px;
+    /* padding:40px; */
+    margin: 40px;
+}
+
+ 
+

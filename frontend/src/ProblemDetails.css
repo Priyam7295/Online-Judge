@@ -418,10 +418,11 @@ a {
 
 .button-group {
   display: flex;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4); */
   justify-content: flex-end;
-  background-color: rgb(239, 237, 237);
+  /* background-color: rgb(239, 237, 237); */
   margin-top: 5px;
+ 
 
   padding-right: 2px;
 }
@@ -439,6 +440,7 @@ a {
   letter-spacing: 0.7px;
   cursor: pointer;
   margin-top: 2px;
+  margin-bottom: 5px;
 
   transition: background-color 0.3s;
 }
@@ -493,11 +495,12 @@ padding-left:9px;
   bottom: 0; /* Align to the bottom of the viewport */
   right: 0; /* Align to the right side */
   display: flex;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4); */
   justify-content: flex-end; /* Align buttons to the right */
-  background-color: rgb(239, 237, 237);
+  /* background-color: rgb(239, 237, 237); */
   margin-top: 5px;
   padding-right: 2px;
+  /* background-color: pink; */
 }
 
 /* SHPWING TC AND OUTPUT BLOCK */
