@@ -36,7 +36,7 @@ app.use(cookieParser()); //we need to use this middleware for cookie
 
 app.use(
   cors({
-    origin: ['https://online-judge-4ypq6yt.vercel.app', 'https://online-judge-4ypq6yt-priyams-projects-c7c3c963.vercel.app', 'http://localhost:5174'], // Replace with your React app's domain
+    origin: ['https://online-judge-4ypq6yt.vercel.app', 'https://online-judge-4ypq6yt-git-master-priyams-projects-c7c3c963.vercel.app','https://online-judge-4ypq6yt-f1af3yd5t-priyams-projects-c7c3c963.vercel.app' ,'http://localhost:5174'], // Replace with your React app's domain
     credentials: true, // This allows the server to accept cookies from the client
   })
 );
